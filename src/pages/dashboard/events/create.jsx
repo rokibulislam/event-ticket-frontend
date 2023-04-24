@@ -74,12 +74,12 @@ const EventCreate = () => {
       <form action='' method='post' onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor=""> Event Name </label>
-          <input type="text" name="event_name" id="" className="form-control" onChange={handleChange}  />
+          <input type="text" name="event_name" id="" className="form-control mb-4" onChange={handleChange}  />
         </div>
 
         <div className="form-group">
           <label htmlFor=""> Event Type </label>
-          <select className="form-control" name="event_type" id="" onChange={handleChange} >
+          <select className="form-control mb-4" name="event_type" id="" onChange={handleChange} >
             {
               eventtypes.length > 0  ? (
                 eventtypes.map( ( item, i ) =>{
@@ -96,7 +96,7 @@ const EventCreate = () => {
 
         <div className="form-group">
           <label htmlFor=""> Event Category </label>
-          <select className="form-control" name="event_category" id="" onChange={handleChange} >
+          <select className="form-control mb-4" name="event_category" id="" onChange={handleChange} >
           {
               eventcategories.length > 0  ? (
                 eventcategories.map( ( item, i ) =>{
@@ -113,7 +113,7 @@ const EventCreate = () => {
 
         <div className="form-group">
           <label htmlFor=""> Event Venue </label>
-          <select className="form-control" name="event_venue" id="" onChange={handleChange} >
+          <select className="form-control mb-4" name="event_venue" id="" onChange={handleChange} >
             { 
               venues.length > 0  ? (
                 venues.map( ( item, i ) =>{
@@ -130,7 +130,7 @@ const EventCreate = () => {
 
         <div className="form-group">
           <label htmlFor="event_description"> About Your Event </label>
-          <textarea name="event_description" id="event_description" className="form-control" onChange={handleChange}> 
+          <textarea name="event_description" id="event_description" className="form-control mb-4" onChange={handleChange}> 
            </textarea>
         </div>
       

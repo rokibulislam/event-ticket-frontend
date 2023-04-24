@@ -34,33 +34,35 @@ const Register = () => {
 
   return (
     <Layout>
-    <h2> Register </h2>
-    <form action='' method='post' onSubmit={handleSubmit}>
+      <h2 className='jumbotron text-center bg-primary square p-5 text-white'> Register </h2>
+      <div className='col-md-4 offset-md-4'>
+        <form action='' method='post' onSubmit={handleSubmit}>
 
-      <div className='form-group'>
-        <label htmlFor=""> Username </label>
-        <input type="text" name="username" id="" className="form-control" onChange={handleChange} value={input.title}/>
-      </div>
+          <div className='form-group'>
+            <label htmlFor=""> Username </label>
+            <input type="text" name="username" id="" className="form-control mb-4" onChange={handleChange} value={input.title}/>
+          </div>
 
-      <div className='form-group'>
-        <label htmlFor=""> Email Address </label>
-        <input type="text" name="email" id="" className="form-control" onChange={handleChange} value={input.email} />
-      </div>
+          <div className='form-group'>
+            <label htmlFor=""> Email Address </label>
+            <input type="text" name="email" id="" className="form-control mb-4" onChange={handleChange} value={input.email} />
+          </div>
 
-      <div className='form-group'>
-        <label htmlFor=""> Password </label>
-        <input type="text" name="password" id="" className="form-control" onChange={handleChange} value={input.password}/>
-      </div>
+          <div className='form-group'>
+            <label htmlFor=""> Password </label>
+            <input type="text" name="password" id="" className="form-control mb-4" onChange={handleChange} value={input.password}/>
+          </div>
 
-      <div className='form-group'>
-        <label htmlFor=""> Confirm Password </label>
-        <input type="text" name="confirm_password" id="" className="form-control" onChange={handleChange} value={input.confirm_password}/>
-      </div>
+          <div className='form-group'>
+            <label htmlFor=""> Confirm Password </label>
+            <input type="text" name="confirm_password" id="" className="form-control mb-4" onChange={handleChange} value={input.confirm_password}/>
+          </div>
 
-      <div className="form-group">
-        <button className="btn btn-primary"> Register </button>
+          <div className="form-group">
+            <button className="btn btn-primary"> Register </button>
+          </div>
+        </form>
       </div>
-    </form>
     </Layout>
   )
 }

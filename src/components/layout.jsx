@@ -51,97 +51,62 @@ const Layout = ( { children }) => {
 
   return (
     <>
-    <div className="container">
         
         <AntLayout>
+            <div className="container">
 
-            <Row gutter={16}>
-            
-                <Col span={4}>
-                    <Link href="/" className='logo'> Simple Logo </Link>
-                </Col>
+                <Row gutter={16}>
                 
-                <Col span={8}>
-                    <Menu
-                        style={{
-                            background: "none"
-                        }}
-                        mode="horizontal"
-                        onClick={ (item) => {
-                        router.push(item.key);
-                        }}
-                        items={[
-                            {
-                                label: 'Home',
-                                key: '/'
-                            }, 
-                            {
-                                label: 'Events',
-                                key: '/events'
-                            }, 
-                            {
-                                label: 'Checkout',
-                                key: '/checkout'
-                            }, 
-                        ]}
-                    />
-    {/* 
-                    <ul className="nav">
-                        <li className="nav-item">
-                            <Link className="nav-link" href="/">Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" href="/events">Events</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" href="/checkout">Checkout</Link>
-                        </li>
-                    </ul> */}
-                </Col>
-                
-                <Col span={4}>
+                    <Col span={4}>
+                        <Link href="/" className='logo'> Simple Logo </Link>
+                    </Col>
                     
-                    {/* <ul className="nav"> */}
+                    <Col span={8}>
+                        <Menu
+                            style={{
+                                background: "none"
+                            }}
+                            mode="horizontal"
+                            onClick={ (item) => {
+                            router.push(item.key);
+                            }}
+                            items={[
+                                {
+                                    label: 'Home',
+                                    key: '/'
+                                }, 
+                                {
+                                    label: 'Events',
+                                    key: '/events'
+                                }, 
+                                {
+                                    label: 'Checkout',
+                                    key: '/checkout'
+                                }, 
+                            ]}
+                        />
+        {/* 
+                        <ul className="nav">
+                            <li className="nav-item">
+                                <Link className="nav-link" href="/">Home</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" href="/events">Events</Link>
+                            </li>
 
-                        { user ? (
-                            <>
+                            <li className="nav-item">
+                                <Link className="nav-link" href="/checkout">Checkout</Link>
+                            </li>
+                        </ul> */}
+                    </Col>
+                    
+                    <Col span={4}>
                         
-                                <Menu
-                                    style={{
-                                        background: "none"
-                                    }}
-                                    mode="horizontal"
-                                    onClick={ (item) => {
-                                        if(item.key=="logut") {
-                                            handleLogout();
-                                        } else{
-                                            router.push(item.key);
-                                        }
-                                    }}
-                                    items={[
-                                        {
-                                            label: 'Dashboard',
-                                            key: '/dashboard'
-                                        }, 
-                                        {
-                                            label: 'Logout',
-                                            key: '/logout'
-                                        }, 
-                                    ]}
-                                />
+                        {/* <ul className="nav"> */}
 
-                                {/* <li className="nav-item">
-                                    <Link className="nav-link" href="/dashboard">Dashboard</Link>
-                                </li> 
-
-                                <li className="nav-item">
-                                    <Link  href="/logout" onClick={handleLogout} className="nav-link button button-danger"> Logout </Link>
-                                </li>  */}
-                            </>
-                            ) : (
+                            { user ? (
                                 <>
-                                
+                            
                                     <Menu
                                         style={{
                                             background: "none"
@@ -156,37 +121,71 @@ const Layout = ( { children }) => {
                                         }}
                                         items={[
                                             {
-                                                label: 'Login',
-                                                key: '/auth/login'
+                                                label: 'Dashboard',
+                                                key: '/dashboard'
                                             }, 
                                             {
-                                                label: 'Register',
-                                                key: '/auth/register'
+                                                label: 'Logout',
+                                                key: '/logout'
                                             }, 
                                         ]}
                                     />
+
                                     {/* <li className="nav-item">
-                                        <Link className="btn btn-outline-primary me-2" href="/auth/login"> Login </Link>
-                                    </li>
+                                        <Link className="nav-link" href="/dashboard">Dashboard</Link>
+                                    </li> 
+
                                     <li className="nav-item">
-                                        <Link className="btn btn-primary" href="/auth/register"> Register </Link>
-                                    </li> */}
+                                        <Link  href="/logout" onClick={handleLogout} className="nav-link button button-danger"> Logout </Link>
+                                    </li>  */}
                                 </>
-                        ) } 
-                    {/* </ul> */}
-                </Col>
+                                ) : (
+                                    <>
+                                    
+                                        <Menu
+                                            style={{
+                                                background: "none"
+                                            }}
+                                            mode="horizontal"
+                                            onClick={ (item) => {
+                                                if(item.key=="logut") {
+                                                    handleLogout();
+                                                } else{
+                                                    router.push(item.key);
+                                                }
+                                            }}
+                                            items={[
+                                                {
+                                                    label: 'Login',
+                                                    key: '/auth/login'
+                                                }, 
+                                                {
+                                                    label: 'Register',
+                                                    key: '/auth/register'
+                                                }, 
+                                            ]}
+                                        />
+                                        {/* <li className="nav-item">
+                                            <Link className="btn btn-outline-primary me-2" href="/auth/login"> Login </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link className="btn btn-primary" href="/auth/register"> Register </Link>
+                                        </li> */}
+                                    </>
+                            ) } 
+                        {/* </ul> */}
+                    </Col>
+                
+                </Row>
+            </div>
             
-            </Row>
-        
         </AntLayout>
 
         <Space />
-                            
+        
         <div className='row'>
             { children }
         </div>
-    </div>
-
     </>
   )
 }

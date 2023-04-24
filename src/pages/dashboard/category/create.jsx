@@ -30,7 +30,7 @@ const CategoryCreate = () => {
               
               <div className="form-group">
                     <label htmlFor=""> Category Name </label>
-                    <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => {
+                    <input type="text" name="type_name" id="" value={name} className="form-control mb-4" onChange={ (e) => {
                       setName(e.target.value)
                     }}  />
               </div>

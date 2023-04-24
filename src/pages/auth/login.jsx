@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/slices/auth'
+import Link from 'next/link';
 
 // import { Form, Input } from 'antd';
 
@@ -34,7 +35,7 @@ const Login = () => {
 
   return (
     <Layout>
-      <h2> Login </h2>
+      <h2 className='jumbotron text-center bg-primary square p-5 text-white'> Login </h2>
 
       {/* <Form>
 
@@ -66,22 +67,49 @@ const Login = () => {
 
       </Form> */}
 
+
+<div className='col-md-4 offset-md-4'>
+
       <form action='' method='post' onSubmit={handleSubmit}>
 
         <div className="form-group">
           <label htmlFor=""> Email Address </label>
-          <input type="text" name="email" id="" className="form-control" onChange={handleChange} value={input.email} />
+          <input 
+            type="text" 
+            name="email" 
+            id="" 
+            className="form-control mb-4" 
+            onChange={handleChange} 
+            value={input.email} 
+            placeholder='Enter Email Address'
+          />
         </div>
 
         <div className="form-group">
           <label htmlFor=""> Password </label>
-          <input type="text" name="password" id="" className="form-control" onChange={handleChange} value={input.password}/>
+          <input type="text" name="password" id="" 
+            className="form-control mb-4" 
+            onChange={handleChange} 
+            value={input.password}
+            placeholder='Enter password'
+          />
         </div>
 
-        <div className="form-group">
-          <button className="btn btn-primary"> Login </button>
-        </div>
+        {/* <div className="form-group"> */}
+          <button type='submit' className="btn btn-primary btn-lg btn-block"> Login </button>
+        {/* </div> */}
       </form>
+
+      <p className='text-center p-3'>
+        Not yet registered? 
+        <Link href="/auth/register"> Register </Link>
+      </p>
+
+      <p className='text-center text-danger'>
+        <Link href="/auth/forget-password" className='text-danger'> Forgot password </Link>
+      </p>
+</div>
+
     </Layout>
   )
 }
