@@ -12,6 +12,8 @@ const Events = () => {
   const dispatch = useDispatch();
 
   const events =  useSelector( state => state.event.items );
+  const status =  useSelector( state => state.event.status );
+  const error  =  useSelector( state => state.event.error );
 
   useEffect( () => {
     dispatch(getEvents())

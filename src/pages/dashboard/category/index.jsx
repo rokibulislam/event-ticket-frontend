@@ -11,6 +11,8 @@ const Category = () => {
     const dispatch = useDispatch();
 
     const eventcategories =  useSelector( state => state.eventcategory.items );
+    const status =  useSelector( state => state.eventcategory.status );
+    const error  =  useSelector( state => state.eventcategory.error );
   
     useEffect( () => {
       dispatch(getEventCategories())

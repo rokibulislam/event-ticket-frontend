@@ -12,6 +12,8 @@ const Users = () => {
     const dispatch = useDispatch();
 
     const users =  useSelector( state => state.user.items );
+    const status =  useSelector( state => state.user.status );
+    const error  =  useSelector( state => state.user.error );
   
     useEffect( () => {
       dispatch(getUsers())

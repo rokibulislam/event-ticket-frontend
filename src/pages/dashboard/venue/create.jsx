@@ -47,34 +47,34 @@ const VenueCreate = () => {
 
          <form action='' method='post' onSubmit={handleSubmit}>   
           
-            <div className="form-group">
-                <label htmlFor=""> Venue Name </label>
-                <input type="text" name="name" id="" className="form-control mb-4" onChange={handleChange}  />
+            <div className="form-group mb-4">
+                <label htmlFor="name" className='form-label'> Venue Name </label>
+                <input type="text" name="name" id="name" className="form-control" onChange={handleChange}  />
             </div>
 
-            <div className="form-group">
-                <label htmlFor=""> Venue Nickname </label>
-                <input type="text" name="nickname" id="" className="form-control mb-4" onChange={handleChange}  />
+            <div className="form-group mb-4">
+                <label htmlFor="nickname" className='form-label'> Venue Nickname </label>
+                <input type="text" name="nickname" id="nickname" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
-            <div className="form-group">
-                <label htmlFor=""> PostCode </label>
-                <input type="text" name="postcode" id="" className="form-control mb-4" onChange={handleChange}  />
+            <div className="form-group mb-4">
+                <label htmlFor="postcode" className='form-label'> PostCode </label>
+                <input type="text" name="postcode" id="postcode" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
-            <div className="form-group">
-                <label htmlFor=""> Country </label>
-                <input type="text" name="country" id="" className="form-control mb-4" onChange={handleChange}  />
+            <div className="form-group mb-4">
+                <label htmlFor="country" className='form-label'> Country </label>
+                <input type="text" name="country" id="country" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
-            <div className="form-group">
-                <label htmlFor=""> State </label>
-                <input type="text" name="state" id="" className="form-control mb-4" onChange={handleChange}  />
+            <div className="form-group mb-4">
+                <label htmlFor="state" className='form-label'> State </label>
+                <input type="text" name="state" id="state" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
-            <div className="form-group">
-                <label htmlFor=""> City </label>
-                <input type="text" name="city" id="" className="form-control mb-4" onChange={handleChange}  />
+            <div className="form-group mb-4">
+                <label htmlFor="city" className='form-label'> City </label>
+                <input type="text" name="city" id="city" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
             <div className="form-group">

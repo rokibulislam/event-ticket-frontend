@@ -5,48 +5,32 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createEventType } from '@/store/slices/eventtype'
+import { useForm } from "react-hook-form";
 
 const TypesCreate = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [ name, setName ] = useState ('')
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm();
 
-    setInput({
-      ...input,
-      [name]: value
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission
-
-    // Dispatch Redux action with form data
-    dispatch(createEventType(name));
-
-    // Reset form state
-    setName("");
-
-    router.push('/dashboard/types')
+  const onSubmit = (data) => {
+    // dispatch(createEventType(name));
+    // router.push('/dashboard/types')
   };
 
   return (
     <Layout> 
         <DashboardLayout> 
           
-        <form action='' method='post' onSubmit={handleSubmit}>
+        <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
               
             <div className="form-group mb-4">
                   <label htmlFor="type_name" className='form-label'> Type Name </label>
-                  <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => {
-                    setName(e.target.value)
-                  }}  />
+                  <input {...register('type_name', { required: true })} type="text" id="type_name" className="form-control" />
             </div>
 
             <div className="form-group">
-                <button className="btn btn-primary"> Submit </button>
+                <button disabled={!isValid} className="btn btn-primary"> Submit </button>
             </div>
 
         </form>

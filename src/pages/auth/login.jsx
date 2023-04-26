@@ -30,7 +30,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login({ email: input.email, password: input.password }));
-    router.push('/');
+    // router.push('/');
   }
 
   return (
@@ -72,23 +72,23 @@ const Login = () => {
 
       <form action='' method='post' onSubmit={handleSubmit}>
 
-        <div className="form-group">
-          <label htmlFor=""> Email Address </label>
+        <div className="form-group mb-4">
+          <label htmlFor="email" className='form-label'> Email Address </label>
           <input 
             type="text" 
             name="email" 
-            id="" 
-            className="form-control mb-4" 
+            id="email" 
+            className="form-control" 
             onChange={handleChange} 
             value={input.email} 
             placeholder='Enter Email Address'
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor=""> Password </label>
-          <input type="text" name="password" id="" 
-            className="form-control mb-4" 
+        <div className="form-group mb-4">
+          <label htmlFor="password" className='form-label'> Password </label>
+          <input type="text" name="password" id="password" 
+            className="form-control" 
             onChange={handleChange} 
             value={input.password}
             placeholder='Enter password'

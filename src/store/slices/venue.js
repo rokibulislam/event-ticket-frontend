@@ -2,49 +2,69 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '@/services/httpService'
 
 export const getVenues = createAsyncThunk('event/getVenues', async () => {
-    let response = await httpService.get('venue');
-
-    return response.data;
+    try {
+        let response = await httpService.get('venue');
+        
+        return response.data;    
+    } catch (error) {
+        return error.message 
+    }
 })
 
 export const getVenue = createAsyncThunk('event/getEvent', async (id) => {
-    let response  = await httpService.get(`venue/${id}`);
-
-    return response.data;
+    try {
+        let response  = await httpService.get(`venue/${id}`);
+        return response.data;
+    } catch (error) {
+        return error.message
+    }
 })
 
-export const createVenue = createAsyncThunk('event/createVenue', async ({ name, nickname, city, country, state, postcode }) => {
-    let response = await httpService.post('venue', {
-        name: name, 
-        nickname: nickname, 
-        city: city, 
-        country: country, 
-        state: state, 
-        postcode: postcode
-    });
-    
-    return response;
+export const createVenue = createAsyncThunk('event/createVenue', async ({ name, nickname, city, country, state, postcode }, thunkAPI ) => {
+    try {
+        let response = await httpService.post('venue', {
+            name: name, 
+            nickname: nickname, 
+            city: city, 
+            country: country, 
+            state: state, 
+            postcode: postcode
+        });
+        
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data) 
+    }
 })
 
-export const updateVenue = createAsyncThunk('event/updateVenue', async (data) => {
-    let response = await httpService.put(`venue/${data.id}`, {
-        ...data
-    });
-    
-    return response;
+export const updateVenue = createAsyncThunk('event/updateVenue', async (data, thunkAPI) => {
+    try {
+        let response = await httpService.put(`venue/${data.id}`, {
+            ...data
+        });
+        
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)    
+    }
 })
 
 export const deleteVenue = createAsyncThunk('event/deleteVenue', async (id) => {
-    let response = httpService.delete(`venue/${id}`);
-    
-    return id;
+    try {
+        let response = httpService.delete(`venue/${id}`);
+        return id;   
+    } catch (error) {
+        return error.message
+    }
 })
 
 const venueSlice = createSlice({
     name: "venue",
     initialState: {
         items: [],
-        item: {}
+        item: {},
+        status: "idle",
+        error: ""
     },
 
     reducers: {

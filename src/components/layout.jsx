@@ -17,9 +17,10 @@ const Layout = ( { children }) => {
 
     const handleLogout = (e) => {
         e.preventDefault();
-        dispatch(logout());
-        auth.logout();
-        router.push('/auth/login');
+        console.log('handle logout');
+        // dispatch(logout());
+        // auth.logout();
+        // router.push('/auth/login');
     }
 
     let menuitems = [];
@@ -113,7 +114,7 @@ const Layout = ( { children }) => {
                                         }}
                                         mode="horizontal"
                                         onClick={ (item) => {
-                                            if(item.key=="logut") {
+                                            if(item.key=="logout") {
                                                 handleLogout();
                                             } else{
                                                 router.push(item.key);

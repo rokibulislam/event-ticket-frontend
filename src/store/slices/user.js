@@ -2,44 +2,67 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '../../services/httpService'
 
 export const getUsers = createAsyncThunk('user/getUsers', async () => {
-    let response  = await httpService.get('users');
-    
-    return response.data;
+    try {
+        let response  = await httpService.get('users');
+        return response.data;  
+    } catch (error) {
+        return error.message
+    }
 })
 
 export const getUser = createAsyncThunk('user/getUser', async (id) => {
-    let response  = await httpService.get(`users/${id}`);
+    try {
+        let response  = await httpService.get(`users/${id}`);
     
-    return response.data;
+        return response.data;  
+    } catch (error) {
+        return error.message
+    }
 })
 
-export const createUser = createAsyncThunk('user/createUser', async (input) => {
-    let response  = await httpService.post('users', {
-        ...input
-    });
+export const createUser = createAsyncThunk('user/createUser', async (input, thunkAPI) => {
+    try {
+        let response  = await httpService.post('users', {
+            ...input
+        });
+    
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)
+    }
 
-    return response;
 })
 
-export const updateUser = createAsyncThunk('user/updateUser', async (id, newData) => {
-    let response  = await httpService.put(`users/${id}`, newData);
+export const updateUser = createAsyncThunk('user/updateUser', async ( { id, newData } , thunkAPI) => {
+    try {
+        let response  = await httpService.put(`users/${id}`, newData);
 
-    return response;
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data) 
+    }
+
 })
 
 export const deleteUser = createAsyncThunk('user/deleteUser', async (id) => {
-    let response  = await httpService.delete(`users/${id}`);
+    try {
+        let response  = await httpService.delete(`users/${id}`);
+        return id;   
+    } catch (error) {
+        return error.message 
+    }
 
-    return id; 
 })
 
 
 
 const eventSlice = createSlice({
-    name: "event",
+    name: "user",
     initialState: {
         items: [],
-        item: {}
+        item: {},
+        status: "idle",
+        error: ""
     },
 
     reducers: {

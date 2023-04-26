@@ -9,6 +9,7 @@ import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
 import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
 
+import { useForm } from "react-hook-form";
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -19,16 +20,7 @@ const EventCreate = () => {
   const eventcategories =  useSelector( state => state.eventcategory.items );
   const venues =  useSelector( state => state.venue.items );
 
-
-  const [ input, setInput ] = useState ({
-    'event_name': '',
-    'event_description': '',
-    'event_type': '',
-    'event_category': '',
-    'event_venue': '',
-  })
-
-  const [image, setImage] = useState(null);
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm();
 
   useEffect( () => {
     dispatch(getEventCategories());
@@ -36,35 +28,8 @@ const EventCreate = () => {
     dispatch(getVenues());
   }, [dispatch])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const onSubmit = data => {
 
-    setInput({
-      ...input,
-      [name]: value
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // const formData = new FormData()
-    // formData.append('name', input.event_name)
-    // formData.append('description', input.event_description)
-    // formData.append('image', image)
-    // formData.append('type_id', input.event_type)
-    // formData.append('category_id', input.event_category)
-    // formData.append('venue_id', input.event_venue)
-    // formData.append( 'chart', chart)
-
-    dispatch(createEvent({
-      name: input.event_name,
-      description: input.event_description,
-      type_id: input.event_type,
-      category_id: input.event_category,
-      venue_id: input.event_venue
-    }));
-
-    // router.push('/dashboard/events')
   }
 
   return (
@@ -72,15 +37,15 @@ const EventCreate = () => {
       <DashboardLayout>
         <h2> Events Create  </h2> 
 
-      <form action='' method='post' onSubmit={handleSubmit}>
+      <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mb-4">
           <label htmlFor="event_name" className='form-label'> Event Name </label>
-          <input type="text" name="event_name" id="" className="form-control " onChange={handleChange}  />
+          <input {...register('event_name', { required: true })} type="text" id="" className="form-control" />
         </div>
 
         <div className="form-group mb-4">
           <label htmlFor="event_type" className='form-label'> Event Type </label>
-          <select className="form-control mb-4" name="event_type" id="event_type" onChange={handleChange} >
+          <select {...register('event_type', { required: true })}  className="form-control" id="event_type">
             {
               eventtypes.length > 0  ? (
                 eventtypes.map( ( item, i ) =>{
@@ -97,7 +62,7 @@ const EventCreate = () => {
 
         <div className="form-group mb-4">
           <label htmlFor="event_category" className='form-label'> Event Category </label>
-          <select className="form-control mb-4" name="event_category" id="" onChange={handleChange} >
+          <select {...register('event_category', { required: true })} className="form-control" id="event_category">
           {
               eventcategories.length > 0  ? (
                 eventcategories.map( ( item, i ) =>{
@@ -114,7 +79,7 @@ const EventCreate = () => {
 
         <div className="form-group mb-4">
           <label htmlFor="event_venue" className='form-label'> Event Venue </label>
-          <select className="form-control mb-4" name="event_venue" id="event_venue" onChange={handleChange} >
+          <select {...register('event_category', { required: true })} className="form-control" id="event_venue">
             { 
               venues.length > 0  ? (
                 venues.map( ( item, i ) =>{
@@ -131,36 +96,11 @@ const EventCreate = () => {
 
         <div className="form-group mb-4">
           <label htmlFor="event_description" className='form-label'> About Your Event </label>
-          <textarea name="event_description" id="event_description" className="form-control mb-4" onChange={handleChange}> 
-           </textarea>
+          <textarea {...register('event_description', { required: true })} id="event_description" className="form-control"> </textarea>
         </div>
-      
-        {/* <div className="form-group">
-          <label htmlFor="image">Image:</label>
-          <input type="file" id="image" onChange={(e) => setImage(e.target.files[0])} />
-        </div> */}
-
-      {/* <div className="form-group" style={{ 'height': '500px' }}> */}
-        {/* <SeatsioDesigner
-          secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
-          region="NA"
-          onChartCreated={chart => {
-            console.log('created chart', chart)
-          }}
-          onChartUpdated={chart =>{
-            setChart(chart);
-            console.log('updated chart', chart)
-          }}
-        /> */}
-      {/* </div> */}
-
-
-        <h2> Now let's set up the tickets </h2>
-
-
 
         <div className="form-group">
-          <button className="btn btn-primary"> Submit </button>
+          <button disabled={!isValid} className="btn btn-primary"> Submit </button>
         </div>
       </form>
 

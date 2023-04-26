@@ -5,21 +5,15 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createEventCategory } from '@/store/slices/eventcategory';
 import { useRouter } from "next/router"
+import { useForm } from "react-hook-form";
 
 const CategoryCreate = () => {
   const dispatch = useDispatch();
   let router = useRouter();
-  const [ name, setName ] = useState ('')
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission
-
-    // Dispatch Redux action with form data
+  const onSubmit = (data) => {
     dispatch(createEventCategory(name));
-
-    // Reset form state
-    setName("");
-
     router.push('/dashboard/category')
   };
 
@@ -30,13 +24,11 @@ const CategoryCreate = () => {
               
               <div className="form-group mb-4">
                 <label htmlFor="type_name" className='form-label'> Category Name </label>
-                <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => {
-                  setName(e.target.value)
-                }}  />
+                <input {...register('type_name', { required: true })} type="text" id="type_name" className="form-control" />
               </div>
   
               <div className="form-group">
-                  <button className="btn btn-primary"> Submit </button>
+                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
               </div>
   
           </form> 

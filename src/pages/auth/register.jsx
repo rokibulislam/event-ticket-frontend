@@ -38,24 +38,24 @@ const Register = () => {
       <div className='col-md-4 offset-md-4'>
         <form action='' method='post' onSubmit={handleSubmit}>
 
-          <div className='form-group'>
-            <label htmlFor=""> Username </label>
-            <input type="text" name="username" id="" className="form-control mb-4" onChange={handleChange} value={input.title}/>
+          <div className='form-group mb-4'>
+            <label htmlFor="username" className='form-label'> Username </label>
+            <input type="text" name="username" id="username" className="form-control" onChange={handleChange} value={input.title}/>
+          </div>
+
+          <div className='form-group mb-4'>
+            <label htmlFor="email" className='form-label'> Email Address </label>
+            <input type="text" name="email" id="email" className="form-control" onChange={handleChange} value={input.email} />
+          </div>
+
+          <div className='form-group mb-4'>
+            <label htmlFor="password" className='form-label'> Password </label>
+            <input type="text" name="password" id="password" className="form-control" onChange={handleChange} value={input.password}/>
           </div>
 
           <div className='form-group'>
-            <label htmlFor=""> Email Address </label>
-            <input type="text" name="email" id="" className="form-control mb-4" onChange={handleChange} value={input.email} />
-          </div>
-
-          <div className='form-group'>
-            <label htmlFor=""> Password </label>
-            <input type="text" name="password" id="" className="form-control mb-4" onChange={handleChange} value={input.password}/>
-          </div>
-
-          <div className='form-group'>
-            <label htmlFor=""> Confirm Password </label>
-            <input type="text" name="confirm_password" id="" className="form-control mb-4" onChange={handleChange} value={input.confirm_password}/>
+            <label htmlFor="confirm_password" className='form-label'> Confirm Password </label>
+            <input type="text" name="confirm_password" id="confirm_password" className="form-control mb-4" onChange={handleChange} value={input.confirm_password}/>
           </div>
 
           <div className="form-group">

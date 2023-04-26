@@ -2,45 +2,63 @@ import httpService from '@/services/httpService'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getEventCategories = createAsyncThunk('event/getEventCategories', async () => {
-    let response = await httpService.get('eventcategory');
-
-    return response.data
+    try {
+        let response = await httpService.get('eventcategory');
+        return response.data   
+    } catch (error) {
+        return error.message
+    }
 })
 
 
 export const getEventCategory = createAsyncThunk('event/getEventCategory', async (id) => {
-    let response = await httpService.get(`eventcategory/${id}`);
-
-    return response.data
+    try {
+        let response = await httpService.get(`eventcategory/${id}`);
+        return response.data   
+    } catch (error) {
+        return error.message
+    }
 })
 
-export const createEventCategory = createAsyncThunk('event/createEventCategory', async (name) => {
-    let response = await httpService.post('eventcategory', {
-        name: name
-    })
-
-    return response;
+export const createEventCategory = createAsyncThunk('event/createEventCategory', async (name, thunkAPI) => {
+    try {
+        let response = await httpService.post('eventcategory', {
+            name: name
+        })
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)
+    }
 })
 
-export const updateEventCategory = createAsyncThunk('event/updateEventCategory', async ( { id, name }) => {
-    let response = await httpService.put(`eventcategory/${id}`, {
-        name: name
-    })
-
-    return response;
+export const updateEventCategory = createAsyncThunk('event/updateEventCategory', async ( { id, name }, thunkAPI) => {
+    try {
+        let response = await httpService.put(`eventcategory/${id}`, {
+            name: name
+        })
+    
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)
+    }
 })
 
 export const deleteEventCategory = createAsyncThunk('event/deleteEventCategory', async (id) => {
-    let response = await httpService.delete(`eventcategory/${id}`)
-
-    return id;
+    try {
+        let response = await httpService.delete(`eventcategory/${id}`)
+        return id;   
+    } catch (error) {
+        return error.message
+    }
 })
 
 const eventcategorySlice = createSlice({
     name: "eventcategory",
     initialState: {
         items: [],
-        item: {}
+        item: {},
+        status: "idle",
+        error: ""
     },
     reducers: {
 

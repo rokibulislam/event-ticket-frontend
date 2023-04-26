@@ -10,7 +10,9 @@ const Types = () => {
 
     const dispatch = useDispatch();
 
-    const types =  useSelector( state => state.eventtype.items );
+    const types  =  useSelector( state => state.eventtype.items );
+    const status =  useSelector( state => state.eventtype.status );
+    const error  =  useSelector( state => state.eventtype.error );
   
     useEffect( () => {
       dispatch(getEventTypes())

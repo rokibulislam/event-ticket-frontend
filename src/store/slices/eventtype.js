@@ -2,43 +2,60 @@ import httpService from '@/services/httpService'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getEventTypes = createAsyncThunk('event/getEventTypes', async () => {
-   let response = await httpService.get('eventtypes');
-
-   return response.data;
+    try {
+        let response = await httpService.get('eventtypes');
+        return response.data;   
+    } catch (error) {
+        return error.message
+    }
 })
 
 export const getEventType = createAsyncThunk('event/getEventType', async (id) => {
-    let response = await httpService.get(`eventtypes/${id}`);
- 
-    return response.data;
+    try {
+        let response = await httpService.get(`eventtypes/${id}`);
+        return response.data;   
+    } catch (error) {
+        return error.message
+    }
  })
 
-export const createEventType = createAsyncThunk('event/createEventType', async (name) => {
-    let response = await httpService.post('eventtypes', {
-        name: name 
-    })
-
-    return response;
+export const createEventType = createAsyncThunk('event/createEventType', async (name, thunkAPI) => {
+    try {
+        let response = await httpService.post('eventtypes', {
+            name: name 
+        })
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)
+    }
 })
 
-export const updateEventType = createAsyncThunk('event/updateEventType', async ( { id, name } ) => {
-    let response = await httpService.put(`eventtypes/${id}`, {
-        name: name
-    })
-
-    return response;
+export const updateEventType = createAsyncThunk('event/updateEventType', async ( { id, name }, thunkAPI ) => {
+    try {
+        let response = await httpService.put(`eventtypes/${id}`, {
+            name: name
+        })
+        return response;   
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)
+    }
 })
 
 export const deleteEventType = createAsyncThunk('event/deleteEventCategory', async (id) => {
-    let response = await httpService.delete(`eventtypes/${id}`)
-
-    return id;
+    try {
+        let response = await httpService.delete(`eventtypes/${id}`)
+        return id;   
+    } catch (error) {
+        return error.message
+    }
 })
 
 const eventtypeSlice = createSlice({
     name: "eventtype",
     initialState: {
-        items: []
+        items: [],
+        status: "idle",
+        error: ""
     },
 
     reducers: {

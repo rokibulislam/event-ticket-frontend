@@ -10,6 +10,8 @@ const Venue = () => {
   const dispatch = useDispatch();
 
   const venues =  useSelector( state => state.venue.items );
+  const status =  useSelector( state => state.venue.status );
+  const error  =  useSelector( state => state.venue.error );
   
   useEffect( () => {
     dispatch(getVenues())
