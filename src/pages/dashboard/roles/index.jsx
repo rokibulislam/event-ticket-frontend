@@ -28,11 +28,6 @@ const Roles = () => {
           key: 'name',
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
-        },
-        {
           title: 'Action',
           key: 'action',
           render: (_, item) => (
@@ -47,7 +42,7 @@ const Roles = () => {
         <Layout>
             <DashboardLayout>
                 <h2> Roles </h2>
-                {/* <Table columns={columns} dataSource={roles}/> */}
+                <Table columns={columns} dataSource={roles}/>
             </DashboardLayout>
         </Layout>
     )

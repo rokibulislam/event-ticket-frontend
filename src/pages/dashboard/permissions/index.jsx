@@ -30,7 +30,7 @@ const Permissions = () => {
           key: 'action',
           render: (_, item) => (
             <Space size="middle">
-              <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
+              {/* <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button> */}
             </Space>
           ),
         },
