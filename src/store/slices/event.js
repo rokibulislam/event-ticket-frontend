@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '../../services/httpService'
-
+import axios from 'axios'
 
 export const getEvents = createAsyncThunk('event/getEvents', async () => {
     try {
@@ -23,17 +23,11 @@ export const getEvent = createAsyncThunk('event/getEvent', async (id) => {
     return response.data;
 })
 
-export const createEvent = createAsyncThunk('event/createEvent', async ( { name , description, type_id,  category_id, venue_id }, thunkAPI ) => {
+export const createEvent = createAsyncThunk('event/createEvent', async ( formData, thunkAPI ) => {
     try {
-        let response  = await httpService.post('events', {
-            name: name,
-            description: description,
-            type_id: type_id,
-            category_id: category_id,
-            venue_id: venue_id
-            // chart: chart
-        });
-        console.log(response);
+        let response = await httpService.post('events', formData, {
+            headers: { 'content-type': 'multipart/form-data' }
+        })
         return response;   
     } catch (error) {
         console.log(error);

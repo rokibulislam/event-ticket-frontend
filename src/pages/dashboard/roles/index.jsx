@@ -32,7 +32,8 @@ const Roles = () => {
           key: 'action',
           render: (_, item) => (
             <Space size="middle">
-              {/* <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button> */}
+              <Link href={`/dashboard/roles/${item.id}/edit`}> Edit </Link> 
+              <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
             </Space>
           ),
         },
@@ -42,6 +43,7 @@ const Roles = () => {
         <Layout>
             <DashboardLayout>
                 <h2> Roles </h2>
+                <Link href="/dashboard/roles/create" className='btn btn-primary'> Create Role </Link>
                 <Table columns={columns} dataSource={roles}/>
             </DashboardLayout>
         </Layout>

@@ -47,22 +47,16 @@ const EventCreate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // const formData = new FormData()
-    // formData.append('name', input.event_name)
-    // formData.append('description', input.event_description)
-    // formData.append('image', image)
-    // formData.append('type_id', input.event_type)
-    // formData.append('category_id', input.event_category)
-    // formData.append('venue_id', input.event_venue)
-    // formData.append( 'chart', chart)
 
-    dispatch(createEvent({
-      name: input.event_name,
-      description: input.event_description,
-      type_id: input.event_type,
-      category_id: input.event_category,
-      venue_id: input.event_venue
-    }));
+    const formData = new FormData()
+    formData.append('name', input.event_name)
+    formData.append('description', input.event_description)
+    formData.append('image', image)
+    formData.append('type_id', input.event_type)
+    formData.append('category_id', input.event_category)
+    formData.append('venue_id', input.event_venue)
+    
+    dispatch(createEvent(formData));
 
     // router.push('/dashboard/events')
   }
@@ -135,10 +129,10 @@ const EventCreate = () => {
            </textarea>
         </div>
       
-        {/* <div className="form-group">
+        <div className="form-group">
           <label htmlFor="image">Image:</label>
           <input type="file" id="image" onChange={(e) => setImage(e.target.files[0])} />
-        </div> */}
+        </div>
 
       {/* <div className="form-group" style={{ 'height': '500px' }}> */}
         {/* <SeatsioDesigner
@@ -151,14 +145,23 @@ const EventCreate = () => {
             setChart(chart);
             console.log('updated chart', chart)
           }}
+          pricing= {[
+            {"category": "test category", 'price': 30},
+        ]}
         /> */}
+
+{/* <SeatsioSeatingChart
+    workspaceKey="00fd1424-8967-4ca5-b11a-dd652496b73a"
+    event="smallTheatreEvent"
+    pricing={[
+        {'category': 1, 'price': 30},
+        {'category': 2, 'price': 40},
+        {'category': 3, 'price': 50}
+    ]}
+    priceFormatter={price => '$' + price}
+    region="NA"
+/> */}
       {/* </div> */}
-
-
-        <h2> Now let's set up the tickets </h2>
-
-
-
         <div className="form-group">
           <button className="btn btn-primary"> Submit </button>
         </div>

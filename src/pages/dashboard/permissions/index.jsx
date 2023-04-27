@@ -30,7 +30,7 @@ const Permissions = () => {
           key: 'action',
           render: (_, item) => (
             <Space size="middle">
-              {/* <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button> */}
+              <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
             </Space>
           ),
         },
@@ -40,6 +40,7 @@ const Permissions = () => {
         <Layout>
             <DashboardLayout>
                 <h2> Permissions </h2>
+                <Link href="/dashboard/permissions/create" className='btn btn-primary'> Create Permissions </Link>
                 <Table columns={columns} dataSource={premissions}/>
             </DashboardLayout>
         </Layout>

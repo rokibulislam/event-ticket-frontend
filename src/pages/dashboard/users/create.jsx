@@ -5,6 +5,7 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createUser } from '@/store/slices/user'
 import { useRouter } from 'next/router';
+import { getRoles } from '@/store/slices/role';
 
 const UserCreate = () => {
   
@@ -15,7 +16,15 @@ const UserCreate = () => {
     name: '',
     email: '',
     password: '',
+    role: ''
   })
+
+  const roles =  useSelector( state => state.role.items );
+
+  useEffect(() => {
+    dispatch( getRoles() );
+  }, [dispatch] )
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,6 +60,24 @@ const UserCreate = () => {
                   <label htmlFor=""> Password </label>
                   <input type="password" name="password" id="" value={input.password} className="form-control mb-4" onChange={handleChange}  />
             </div>
+
+
+            <div className="form-group mb-4">
+              <label htmlFor="role" className='form-label'> Role </label>
+              <select className="form-control mb-4" name="role" id="role" onChange={handleChange} >
+                { 
+                  roles.length > 0  ? (
+                    roles.map( ( item, i ) =>{
+                      return (
+                        <option value={item.name}>
+                          { item.name }
+                        </option>
+                      )
+                    })
+                  ) : ''
+                }
+              </select>
+            </div> 
 
             <div className="form-group">
                 <button className="btn btn-primary"> Submit </button>

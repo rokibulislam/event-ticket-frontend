@@ -20,10 +20,11 @@ export const getRole = createAsyncThunk('event/getRole', async (id) => {
     }
 })
 
-export const createRole = createAsyncThunk('event/createRole', async (name, thunkAPI) => {
+export const createRole = createAsyncThunk('event/createRole', async ( { name, permissions }, thunkAPI) => {
     try {
         let response = await httpService.post('roles', {
-            name: name
+            name: name,
+            permissions: permissions
         })
         return response;   
     } catch (error) {
@@ -31,10 +32,11 @@ export const createRole = createAsyncThunk('event/createRole', async (name, thun
     }
 })
 
-export const updateRole = createAsyncThunk('event/updateRole', async ( { id, name }, thunkAPI) => {
+export const updateRole = createAsyncThunk('event/updateRole', async ( { id, name, permissions }, thunkAPI) => {
     try {
         let response = await httpService.put(`roles/${id}`, {
-            name: name
+            name: name,
+            permissions: permissions
         })
     
         return response;   
