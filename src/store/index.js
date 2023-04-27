@@ -6,7 +6,9 @@ import venueReducer from './slices/venue'
 import eventReducer from './slices/event'
 import eventtypeReducer from './slices/eventtype'
 import eventcategoryReducer from './slices/eventcategory'
+import eventsubcategoryReducer from './slices/eventsubcategory'
 import userReducer from './slices/user'
+import tickettypeReducer from './slices/tickettype'
 
 export const store  = configureStore({
     reducer: {
@@ -15,7 +17,9 @@ export const store  = configureStore({
         event: eventReducer,
         eventtype: eventtypeReducer,
         eventcategory: eventcategoryReducer,
-        user: userReducer
+        eventsubcategory: eventsubcategoryReducer,
+        user: userReducer,
+        tickettype: tickettypeReducer
     }
 })
 

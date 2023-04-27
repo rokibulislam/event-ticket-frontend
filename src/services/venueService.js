@@ -3,22 +3,22 @@ class VenueService {
 
     }
 
-    get() {
+    get(id) {
         
     }
 
-    create() {
+    create(data) {
 
     }
 
-    update() {
+    update(id, data) {
 
     }
 
-    delete() {
+    delete(id) {
 
     }
 }
 
 
-export default VenueService;
+export default new VenueService();

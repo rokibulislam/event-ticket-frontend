@@ -37,10 +37,17 @@ export const createVenue = createAsyncThunk('event/createVenue', async ({ name, 
     }
 })
 
-export const updateVenue = createAsyncThunk('event/updateVenue', async (data, thunkAPI) => {
+export const updateVenue = createAsyncThunk('event/updateVenue', async ({ id, input }, thunkAPI) => {
+    console.log(id);
+    console.log(input);
     try {
-        let response = await httpService.put(`venue/${data.id}`, {
-            ...data
+        let response = await httpService.put(`venue/${id}`, {
+            'name' : input.name,
+            'nickname' : input.nickname,
+            'city': input.city,
+            'country': input.country,
+            'state': input.state,
+            'postcode': input.postcode
         });
         
         return response;   

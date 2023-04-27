@@ -9,21 +9,18 @@ const EditVenue = () => {
   const router = useRouter()
   const { id } = router.query
   const dispatch = useDispatch();
-  const [ input, setInput ] = useState({
-      'name' : '',
-      'nickname' : '',
-      'city': '',
-      'country': '',
-      'state': '',
-      'postcode': ''
-  })
-
-
   const venue =  useSelector( state => state.venue.item );
+  const [ input, setInput ] = useState({
+    'name' : venue.name,
+    'nickname' : venue.nickname,
+    'city': venue.city,
+    'country': venue.country,
+    'state': venue.state,
+    'postcode': venue.postcode
+  })
 
   useEffect( () => {
     dispatch(getVenue(id))
-    setInput({...venue})
   },[dispatch, router])
 
   const handleChange = (e) => {
@@ -37,8 +34,10 @@ const EditVenue = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateVenue(input))
-    router.push('/dashboard/venue')
+    console.log(id);
+    console.log(input);
+    dispatch(updateVenue({id, input}))
+    // router.push('/dashboard/venue')
   }
 
   return (
@@ -46,8 +45,6 @@ const EditVenue = () => {
         <DashboardLayout>
           
           <form action='' method='post' onSubmit={handleSubmit}>   
-
-              <input type="hidden" name="id" value={venue.id} />
           
               <div className="form-group">
                   <label htmlFor=""> Venue Name </label>

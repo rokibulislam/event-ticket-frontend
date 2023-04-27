@@ -4,21 +4,21 @@ class UserService {
 
     }
 
-    get() {
+    get(id) {
         
     }
 
-    create() {
+    create(data) {
 
     }
 
-    update() {
+    update(id, data) {
 
     }
 
-    delete() {
+    delete(id) {
 
     }
 }
 
-export default UserService;
+export default new UserService();

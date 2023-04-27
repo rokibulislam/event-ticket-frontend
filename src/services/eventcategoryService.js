@@ -4,21 +4,21 @@ class EventCategoryService {
 
     }
 
-    get() {
+    get(id) {
         
     }
 
-    create() {
+    create(data) {
 
     }
 
-    update() {
+    update(id, data) {
 
     }
 
-    delete() {
+    delete(id) {
 
     }
 }
 
-export default EventCategoryService;
+export default new EventCategoryService();

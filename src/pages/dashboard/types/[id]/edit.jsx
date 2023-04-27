@@ -7,34 +7,25 @@ import { getEventType,updateEventType } from '@/store/slices/eventtype'
 
 const EditType = () => {
     const router = useRouter()
-    const { id: routerId } = router.query
+    const { id } = router.query
     const dispatch = useDispatch();
-  
     const type =  useSelector( state => state.eventtype.item );
-  
-    const [ name, setName ] = useState ('')
-
-    const [ id, setId ] = useState (null)
+    const [ name, setName ] = useState (type.name)
 
     useEffect( () => {
-      dispatch(getEventType(routerId))
-      setName(type?.name)
-      setId(type?.id)
+      dispatch(getEventType(id))
     },[dispatch, router])
     
     const handleSubmit = (e) => {
       e.preventDefault();
       dispatch(updateEventType({ id, name }))
-
-      router.push('/dashboard/types')
+      // router.push('/dashboard/types')
     }
 
     return (
       <Layout>
           <DashboardLayout>
           <form action='' method='post' onSubmit={handleSubmit}>
-
-              <input type="hidden" name="id" value={id} />
               
               <div className="form-group">
                     <label htmlFor=""> Type Name </label>

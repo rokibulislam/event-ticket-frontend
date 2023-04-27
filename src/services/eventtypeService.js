@@ -4,21 +4,21 @@ class EventTypeService {
 
     }
 
-    get() {
+    get(id) {
         
     }
 
-    create() {
+    create(data) {
 
     }
 
-    update() {
+    update(id, data) {
 
     }
 
-    delete() {
+    delete(id) {
 
     }
 }
 
-export default EventTypeService;
+export default new EventTypeService();

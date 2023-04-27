@@ -42,12 +42,20 @@ const DashboardLayout = ( { children }) => {
                 key: '/dashboard/category'
               },
               {
+                label: 'SubCategory',
+                key: '/dashboard/subcategory'
+              },
+              {
                 label: 'Type',
                 key: '/dashboard/types'
               },
               {
                 label: 'Times & Tickets',
                 key: '/dashboard/tickets'
+              },
+              {
+                label: 'Ticket Type',
+                key: '/dashboard/tickettype'
               },
               {
                 label: 'Orders',
