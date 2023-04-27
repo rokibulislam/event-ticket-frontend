@@ -30,6 +30,14 @@ const DashboardLayout = ( { children }) => {
                 key: '/dashboard/users'
               },
               {
+                label: 'Roles',
+                key: '/dashboard/roles'
+              },
+              {
+                label: 'Permissions',
+                key: '/dashboard/permissions'
+              },
+              {
                 label: 'Events',
                 key: '/dashboard/events'
               },

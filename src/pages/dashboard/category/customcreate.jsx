@@ -13,18 +13,18 @@ const CategoryCreate = () => {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm();
 
   const onSubmit = (data) => {
-    dispatch(createEventCategory(name));
+    dispatch(createEventCategory(data.name));
     router.push('/dashboard/category')
   };
 
   return (
     <Layout> 
       <DashboardLayout>        
-          <form action='' method='post' onSubmit={handleSubmit}>
+          <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
               
               <div className="form-group mb-4">
-                <label htmlFor="type_name" className='form-label'> Category Name </label>
-                <input {...register('type_name', { required: true })} type="text" id="type_name" className="form-control" />
+                <label htmlFor="name" className='form-label'> Category Name </label>
+                <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
               </div>
   
               <div className="form-group">

@@ -10,6 +10,9 @@ import eventsubcategoryReducer from './slices/eventsubcategory'
 import userReducer from './slices/user'
 import tickettypeReducer from './slices/tickettype'
 
+import roleReducer from './slices/role'
+import permissionReducer from './slices/permission'
+
 export const store  = configureStore({
     reducer: {
         auth: authReducer,
@@ -19,7 +22,9 @@ export const store  = configureStore({
         eventcategory: eventcategoryReducer,
         eventsubcategory: eventsubcategoryReducer,
         user: userReducer,
-        tickettype: tickettypeReducer
+        tickettype: tickettypeReducer,
+        role:roleReducer,   
+        premission: permissionReducer
     }
 })
 

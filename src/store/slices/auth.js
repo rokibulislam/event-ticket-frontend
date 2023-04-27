@@ -20,7 +20,7 @@ export const login = createAsyncThunk('users/login', async ({  email, password  
 export const register = createAsyncThunk('users/register', async ({ username, email, password  }, thunkAPI) => {
     try {
         let response  = await httpService.post('/auth/register/', {
-            username: username,
+            name: username,
             email: email,
             password: password
         });

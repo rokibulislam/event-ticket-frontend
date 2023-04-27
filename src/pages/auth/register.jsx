@@ -29,7 +29,7 @@ const Register = () => {
     e.preventDefault();
     console.log('check submit');
     dispatch(register({ username: input.username,  email: input.email, password: input.password }));
-    router.push('/auth/login')
+    // router.push('/auth/login')
   }
 
   return (

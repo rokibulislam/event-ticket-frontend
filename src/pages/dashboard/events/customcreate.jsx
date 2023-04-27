@@ -29,7 +29,16 @@ const EventCreate = () => {
   }, [dispatch])
 
   const onSubmit = data => {
+    console.log(data);
+    dispatch(createEvent({
+      name: data.event_name,
+      description: data.event_description,
+      type_id: data.event_type,
+      category_id: data.event_category,
+      venue_id: data.event_venue
+    }));
 
+    // router.push('/dashboard/events')
   }
 
   return (
@@ -79,7 +88,7 @@ const EventCreate = () => {
 
         <div className="form-group mb-4">
           <label htmlFor="event_venue" className='form-label'> Event Venue </label>
-          <select {...register('event_category', { required: true })} className="form-control" id="event_venue">
+          <select {...register('event_venue', { required: true })} className="form-control" id="event_venue">
             { 
               venues.length > 0  ? (
                 venues.map( ( item, i ) =>{

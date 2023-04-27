@@ -14,8 +14,8 @@ const TypesCreate = () => {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm();
 
   const onSubmit = (data) => {
-    // dispatch(createEventType(name));
-    // router.push('/dashboard/types')
+    dispatch(createEventType(data.name));
+    router.push('/dashboard/types')
   };
 
   return (
@@ -25,8 +25,8 @@ const TypesCreate = () => {
         <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
               
             <div className="form-group mb-4">
-                  <label htmlFor="type_name" className='form-label'> Type Name </label>
-                  <input {...register('type_name', { required: true })} type="text" id="type_name" className="form-control" />
+                  <label htmlFor="name" className='form-label'> Type Name </label>
+                  <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
             </div>
 
             <div className="form-group">

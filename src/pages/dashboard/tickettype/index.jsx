@@ -24,10 +24,6 @@ const TicketType = () => {
     dispatch(deleteTicketType(id));
   }
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-  }
-
   const columns = [
     {
       title: 'Name',

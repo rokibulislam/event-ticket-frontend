@@ -28,14 +28,15 @@ export const createEvent = createAsyncThunk('event/createEvent', async ( { name 
         let response  = await httpService.post('events', {
             name: name,
             description: description,
-            type_id: input.event_type,
-            category_id: input.event_category,
-            venue_id: input.event_venue
+            type_id: type_id,
+            category_id: category_id,
+            venue_id: venue_id
             // chart: chart
         });
-        
+        console.log(response);
         return response;   
     } catch (error) {
+        console.log(error);
         return thunkAPI.rejectWithValue(error.response.data)
     }
 })
