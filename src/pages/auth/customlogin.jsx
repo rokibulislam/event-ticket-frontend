@@ -4,14 +4,20 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/slices/auth'
 import Link from 'next/link';
-
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType } from 'yup'; 
+
+let validationSchema = object({
+  email: string().required().email().label("Email"),
+  password: string().required().min(4).label("Password")
+});
 
 const Login = () => {
   const dispatch = useDispatch()
   const router = useRouter();
   const auth =  useSelector( state => state.auth )
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm();
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
 
   const onSubmit = data =>{
     dispatch(login(data));
@@ -27,25 +33,24 @@ const Login = () => {
                 <div className="form-group mb-4">
                     <label htmlFor="email" className='form-label'> Email Address </label>
                     <input 
-                        {...register('email', { required: true })}
+                        {...register('email')}
                         type="text" 
                         id="email" 
                         className="form-control" 
                         placeholder='Enter Email Address'
                     />
                 </div>
-                <p> { errors.type?.name == 'required' && <p> The email field is required </p>  }</p>
                 <div className="form-group mb-4">
                     <label htmlFor="password" className='form-label'> Password </label>
                     <input 
-                        {...register('password', { required: true } )}
+                        {...register('password')}
                         type="text"
                         id="password" 
                         className="form-control" 
                         placeholder='Enter password'
                     />
                 </div>
-
+                <p> {errors.password} </p>
                 <button disabled={!isValid} type='submit' className="btn btn-primary btn-lg btn-block"> Login </button>
             </form>
 

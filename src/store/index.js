@@ -12,6 +12,7 @@ import tickettypeReducer from './slices/tickettype'
 
 import roleReducer from './slices/role'
 import permissionReducer from './slices/permission'
+import couponReducer from './slices/coupon'
 
 export const store  = configureStore({
     reducer: {
@@ -24,7 +25,8 @@ export const store  = configureStore({
         user: userReducer,
         tickettype: tickettypeReducer,
         role:roleReducer,   
-        premission: permissionReducer
+        premission: permissionReducer,
+        coupon: couponReducer
     }
 })
 

@@ -134,8 +134,8 @@ const EventCreate = () => {
           <input type="file" id="image" onChange={(e) => setImage(e.target.files[0])} />
         </div>
 
-      {/* <div className="form-group" style={{ 'height': '500px' }}> */}
-        {/* <SeatsioDesigner
+      <div className="form-group" style={{ 'height': '500px' }}> 
+        <SeatsioDesigner
           secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
           region="NA"
           onChartCreated={chart => {
@@ -148,7 +148,7 @@ const EventCreate = () => {
           pricing= {[
             {"category": "test category", 'price': 30},
         ]}
-        /> */}
+        />
 
 {/* <SeatsioSeatingChart
     workspaceKey="00fd1424-8967-4ca5-b11a-dd652496b73a"
@@ -161,7 +161,7 @@ const EventCreate = () => {
     priceFormatter={price => '$' + price}
     region="NA"
 /> */}
-      {/* </div> */}
+      </div>
         <div className="form-group">
           <button className="btn btn-primary"> Submit </button>
         </div>

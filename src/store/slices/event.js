@@ -61,6 +61,7 @@ const eventSlice = createSlice({
         items: [],
         item: {},
         status: "idle",
+        loading : false,
         error: ""
     },
 
@@ -82,15 +83,20 @@ const eventSlice = createSlice({
         },
 
         [getEvent.pending]: (state, action) => {
-
+            state.loading = true;
+            state.error = null;
         },
 
         [getEvent.fulfilled]: (state, action) => {
+            state.loading = false;
+            state.error = null;
             state.item = action.payload;
         },
 
         [getEvent.rejected]: (state, action) => {
-
+            state.loading = false;
+            state.item = null;
+            state.error = action.payload.error ? action.payload.error : 'Failed to register';
         },
 
         [createEvent.pending]: (state, action) => {

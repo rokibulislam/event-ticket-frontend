@@ -76,6 +76,10 @@ const DashboardLayout = ( { children }) => {
               {
                 label: 'Reports',
                 key: '/dashboard/reports'
+              },
+              {
+                label: 'Coupons',
+                key: '/dashboard/coupons'
               }
             ]}
           />

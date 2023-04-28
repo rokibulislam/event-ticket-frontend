@@ -1,7 +1,12 @@
 import Layout from '@/components/layout'
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType } from 'yup'; 
 
+let validationSchema = object({
+    email: string().required().email().label("Email"),
+});
 
 const CustomForgetPassword = () => {
 
@@ -11,7 +16,7 @@ const CustomForgetPassword = () => {
         e.preventDefault();
     }
 
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm();
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
 
   return (
     <Layout>

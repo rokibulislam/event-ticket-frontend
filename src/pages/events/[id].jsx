@@ -5,17 +5,22 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 const EventDetails = () => {
-  
   let dispatch = useDispatch();
-  
   let router = useRouter();
   const { id } = router.query
-  
-  const event =  useSelector( state => state.event.item );
 
   useEffect( () => {
     dispatch(getEvent(id));
   }, [dispatch])
+  
+  const event =  useSelector( state => state.event.item );
+  const loading =  useSelector( state => state.event.loading );
+
+  if( loading ) {
+    return "Loading";
+  }
+
+  console.log(id);
 
   return (
     <Layout>

@@ -6,6 +6,8 @@ const inter = Inter({ subsets: ['latin'] })
 import Layout  from '@/components/layout'
 import { Card, Col, Row, Space } from 'antd';
 
+import EventsList from '@/components/EventsList'
+
 export default function Home() {
   return (
     <>
@@ -16,47 +18,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-      <Layout>
-        <h2> Home Solution</h2>
-
-        <Row gutter={16}>
-          <Col span={8}>
-            <Card title="Card title" bordered={false}>
-              Card content
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title="Card title" bordered={false}>
-              Card content
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title="Card title" bordered={false}>
-              Card content
-            </Card>
-          </Col>
-        </Row>
-
-        <Space />
-        
-        <Row gutter={16}>
-          <Col span={8}>
-            <Card title="Card title" bordered={false}>
-              Card content
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title="Card title" bordered={false}>
-              Card content
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card title="Card title" bordered={false}>
-              Card content
-            </Card>
-          </Col>
-        </Row>
-      </Layout>
+        <Layout>
+          <h2> Recent Event List </h2>
+          <EventsList />
+        </Layout>
       </main>
     </>
   )
