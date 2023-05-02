@@ -4,24 +4,27 @@ import { useRouter } from 'next/router'
 import Layout from '@/components/layout'
 import DashboardLayout from '@/components/DashboardLayout'
 import { getEventCategory, updateEventCategory } from '@/store/slices/eventcategory'
+import { protectRoute } from '@/components/protectRoute'
 
 const EditCategory = () => {
     const router = useRouter()
-    const { id : routerId } = router.query
+    const { id } = router.query
     const dispatch = useDispatch();
-  
-    const category =  useSelector( state => state.eventcategory.item );
-    const [ name, setName ] = useState (category.name)
+    const [ name, setName ] = useState('')
+    const categories =  useSelector( state => state.eventcategory.items );
+
   
     useEffect( () => {
-      dispatch(getEventCategory(routerId))
-    },[dispatch, router])
+      if( id !== 'undefined' ) {
+        const category  = categories.find( item => item.id == id );
+        setName(category.name);
+        // dispatch(getEventCategory(routerId))
+      }
+    },[dispatch, id])
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log(routerId);
-      console.log(name);
-      dispatch(updateEventCategory({ id: routerId, name }))
+      dispatch(updateEventCategory({ id, name }))
 
       router.push('/dashboard/category')
     } 
@@ -48,4 +51,4 @@ const EditCategory = () => {
     )
 }
 
-export default EditCategory
+export default protectRoute(EditCategory)

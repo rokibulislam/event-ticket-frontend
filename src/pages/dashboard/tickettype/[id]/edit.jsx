@@ -4,24 +4,28 @@ import { useRouter } from 'next/router'
 import Layout from '@/components/layout'
 import DashboardLayout from '@/components/DashboardLayout'
 import { getTicketType, updateTicketType } from '@/store/slices/tickettype'
+import { protectRoute } from '@/components/protectRoute'
 
 const EditTicketType = () => {
   const router = useRouter()
   const { id } = router.query
   const dispatch = useDispatch();
 
-  const tickettype =  useSelector( state => state.tickettype.item );
-  const [ name, setName ] = useState (tickettype.name)
+  const tickettypes =  useSelector( state => state.tickettype.items );
+  const [ name, setName ] = useState ('')
 
   useEffect( () => {
-    dispatch(getTicketType(id))
-  },[dispatch, router])
+    if( id !== 'undefined' ) {
+      const type  = tickettypes.find( item => item.id == id );
+      setName(type.name);
+    }
+    // dispatch(getTicketType(id))
+  },[dispatch, id])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(updateTicketType({ id, name }))
-
-    // router.push('/dashboard/tickettype')
+    router.push('/dashboard/tickettype')
   } 
 
   return (
@@ -49,4 +53,4 @@ const EditTicketType = () => {
   )
 }
 
-export default EditTicketType
+export default protectRoute(EditTicketType)

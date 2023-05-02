@@ -5,6 +5,7 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout';
 import { getVenues, deleteVenue } from '../../../store/slices/venue'
 import { Table, Space } from 'antd';
+import { protectRoute } from '@/components/protectRoute';
 
 const Venue = () => {
   const dispatch = useDispatch();
@@ -110,4 +111,4 @@ const Venue = () => {
   )
 }
 
-export default Venue
+export default protectRoute(Venue)

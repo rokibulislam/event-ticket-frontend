@@ -5,29 +5,35 @@ import Layout from '@/components/layout'
 import DashboardLayout from '@/components/DashboardLayout'
 import { getSubEventCategory, updateSubEventCategory } from '@/store/slices/eventsubcategory'
 import { getEventCategories } from '@/store/slices/eventcategory';
+import { Select } from 'antd'
+import { protectRoute } from '@/components/protectRoute'
 
 const EditSubCategory = () => {
     const router = useRouter()
-    const { id : routerId } = router.query
+    const { id } = router.query
     const dispatch = useDispatch();
   
     const eventcategories =  useSelector( state => state.eventcategory.items );
-    const eventsubcategory =  useSelector( state => state.eventsubcategory.item );
+    const eventsubcategories =  useSelector( state => state.eventsubcategory.items );
 
     const [ name, setName ] = useState ('')
-
-    const [ id, setId ] = useState (null)
+    const [ category, setCategory] = useState('');
   
     useEffect( () => {
-      dispatch(getSubEventCategory(routerId))
-      dispatch(getEventCategories());
-      setName(eventsubcategory.name)
-      setId(eventsubcategory.id)
-    },[dispatch, router])
+      if( id !== 'undefined' ) {
+        dispatch(getEventCategories());
+        const eventsubcategory  = eventsubcategories.find( item => item.id == id );
+        console.log(eventsubcategory);
+        console.log(eventsubcategories)
+        setName(eventsubcategory.name);
+        setCategory(eventsubcategory.category.id);
+        // dispatch(getSubEventCategory(id))
+      }
+    },[dispatch, id])
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      dispatch(updateSubEventCategory({ id, name }))
+      dispatch(updateSubEventCategory({ id, name, category_id: category }))
 
       router.push('/dashboard/subcategory')
     } 
@@ -42,11 +48,9 @@ const EditSubCategory = () => {
             
             <form action='' method='post' onSubmit={handleSubmit}>
 
-              <input type="hidden" name="id" value={id} />
-
               <div className="form-group">
                 <label htmlFor=""> SubCategory Name </label>
-                <input type="text" name="type_name" id="" value={eventsubcategory.name} className="form-control mb-4" onChange={ (e) => {
+                <input type="text" name="type_name" id="" value={name} className="form-control mb-4" onChange={ (e) => {
                       setName(e.target.value)
                     }}  />
               </div>
@@ -54,7 +58,17 @@ const EditSubCategory = () => {
 
               <div className="form-group mb-4">
                     <label htmlFor="event_category" className='form-label'> Event Category </label>
-                    <select className="form-control mb-4" name="event_category" id="" onChange={handleChange} >
+                    <Select
+                      style={{ width: 120 }}
+                      onChange={ (value ) => setCategory(value)}
+                      options={
+                        eventcategories.map( ( item, i ) =>{
+                          return { value: item.id, label: item.name }
+                        })
+                      }
+                      value={category}
+                    />
+                    {/* <select className="form-control mb-4" name="event_category" id="" onChange={handleChange} >
                     {
                         eventcategories.length > 0  ? (
                             eventcategories.map( ( item, i ) =>{
@@ -66,7 +80,7 @@ const EditSubCategory = () => {
                             })
                         ) : ''
                         }
-                    </select>
+                    </select> */}
                 </div>
   
               <div className="form-group">
@@ -80,4 +94,4 @@ const EditSubCategory = () => {
     )
 }
 
-export default EditSubCategory
+export default protectRoute(EditSubCategory)

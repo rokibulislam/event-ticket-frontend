@@ -1,5 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { createWrapper } from 'next-redux-wrapper'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 import authReducer from './slices/auth'
 import venueReducer from './slices/venue'
@@ -14,22 +16,37 @@ import roleReducer from './slices/role'
 import permissionReducer from './slices/permission'
 import couponReducer from './slices/coupon'
 
+import countryReducer from './slices/countries'
+
+const persistConfig = {
+    key: 'auth',
+    storage,
+}
+
+const rootReducer = combineReducers({
+    auth: authReducer,
+    venue: venueReducer,
+    event: eventReducer,
+    eventtype: eventtypeReducer,
+    eventcategory: eventcategoryReducer,
+    eventsubcategory: eventsubcategoryReducer,
+    user: userReducer,
+    tickettype: tickettypeReducer,
+    role:roleReducer,   
+    premission: permissionReducer,
+    coupon: couponReducer,
+    country: countryReducer
+});
+
+  
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 export const store  = configureStore({
-    reducer: {
-        auth: authReducer,
-        venue: venueReducer,
-        event: eventReducer,
-        eventtype: eventtypeReducer,
-        eventcategory: eventcategoryReducer,
-        eventsubcategory: eventsubcategoryReducer,
-        user: userReducer,
-        tickettype: tickettypeReducer,
-        role:roleReducer,   
-        premission: permissionReducer,
-        coupon: couponReducer
-    }
+    reducer: persistedReducer
 })
 
 const makeStore = () => store;
+
+export const persistor = persistStore(store)
 
 export const wrapper = createWrapper(makeStore);

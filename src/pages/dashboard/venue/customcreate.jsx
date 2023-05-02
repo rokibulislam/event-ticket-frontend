@@ -5,6 +5,7 @@ import Layout from '@/components/layout'
 import { createVenue } from '../../../store/slices/venue'
 import DashboardLayout from '@/components/DashboardLayout'
 import { useForm } from "react-hook-form";
+import { protectRoute } from '@/components/protectRoute'
 
 const VenueCreate = () => {
     let dispatch = useDispatch();
@@ -60,4 +61,4 @@ const VenueCreate = () => {
     )
 }
 
-export default VenueCreate
+export default protectRoute(VenueCreate)

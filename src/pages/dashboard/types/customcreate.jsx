@@ -6,6 +6,7 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createEventType } from '@/store/slices/eventtype'
 import { useForm } from "react-hook-form";
+import { protectRoute } from '@/components/protectRoute';
 
 const TypesCreate = () => {
   const dispatch = useDispatch();
@@ -40,4 +41,4 @@ const TypesCreate = () => {
   )
 }
 
-export default TypesCreate
+export default protectRoute(TypesCreate)

@@ -2,15 +2,18 @@ import React from 'react'
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form";
-
-
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType } from 'yup'; 
 import { createTicketType } from '@/store/slices/tickettype';
+import { protectRoute } from '@/components/protectRoute';
 
-createTicketType
+let validationSchema = object({
+  name: string().required().label("name"),
+});
 
-const CustomCreate = () => {
+const CreateTicketType = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { register, handleSubmit, formState: { errors, isValid } } = useForm();
@@ -23,7 +26,7 @@ const CustomCreate = () => {
   return (
     <Layout>
         <DashboardLayout>
-            <h2> CustomCreate </h2>
+            <h2> Custom Ticket Type Create </h2>
             <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
               
               <div className="form-group mb-4">
@@ -41,4 +44,4 @@ const CustomCreate = () => {
   )
 }
 
-export default CustomCreate
+export default protectRoute(CreateTicketType)

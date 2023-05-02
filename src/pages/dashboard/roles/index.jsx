@@ -4,9 +4,9 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { getUsers, deleteUser } from '@/store/slices/user'
-
 import { Table, Space } from 'antd'
 import { getRoles, deleteRole } from '@/store/slices/role';
+import { protectRoute } from '@/components/protectRoute';
 
 const Roles = () => {
     const dispatch = useDispatch();
@@ -44,10 +44,11 @@ const Roles = () => {
             <DashboardLayout>
                 <h2> Roles </h2>
                 <Link href="/dashboard/roles/create" className='btn btn-primary'> Create Role </Link>
+                <Link href="/dashboard/roles/customcreate" className='btn btn-primary'> Custom Create Role </Link>
                 <Table columns={columns} dataSource={roles}/>
             </DashboardLayout>
         </Layout>
     )
 }
 
-export default Roles
+export default protectRoute(Roles)

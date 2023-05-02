@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '../../services/httpService'
+import axios from 'axios';
 
 export const getCoupons = createAsyncThunk('event/getCoupons', async () => {
     try {
         let response  = await httpService.get('coupons');
         return response.data;  
     } catch (error) {
+        console.log(error);
         return error.message
     }
 })
@@ -34,9 +36,12 @@ export const createCoupon = createAsyncThunk('event/createCoupon', async ({ code
 
 })
 
-export const updateCoupon = createAsyncThunk('event/updateCoupon', async ( { id, newData } , thunkAPI) => {
+export const updateCoupon = createAsyncThunk('event/updateCoupon', async ( { id, code, amount } , thunkAPI) => {
     try {
-        let response  = await httpService.put(`coupons/${id}`, newData);
+        let response  = await httpService.put(`coupons/${id}`, {
+            code: code,
+            discount_amount: amount
+        });
 
         return response;   
     } catch (error) {

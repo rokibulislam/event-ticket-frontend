@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import Layout from '@/components/layout'
 import DashboardLayout from '@/components/DashboardLayout'
 import { getVenue, updateVenue } from '@/store/slices/venue'
+import { protectRoute } from '@/components/protectRoute'
+
 
 const EditVenue = () => {
   const router = useRouter()
@@ -87,4 +89,4 @@ const EditVenue = () => {
   )
 }
 
-export default EditVenue
+export default protectRoute(EditVenue)

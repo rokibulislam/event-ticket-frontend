@@ -9,17 +9,20 @@ const EditType = () => {
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
-    const type =  useSelector( state => state.eventtype.item );
-    const [ name, setName ] = useState (type.name)
+    const types =  useSelector( state => state.eventtype.items );
+    const [ name, setName ] = useState ('')
 
     useEffect( () => {
-      dispatch(getEventType(id))
-    },[dispatch, router])
+      if( id !== 'undefined' ) {
+        const type  = types.find( item => item.id == id );
+        setName(type.name);
+      }
+    },[dispatch, id])
     
     const handleSubmit = (e) => {
       e.preventDefault();
       dispatch(updateEventType({ id, name }))
-      // router.push('/dashboard/types')
+      router.push('/dashboard/types')
     }
 
     return (

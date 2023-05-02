@@ -44,9 +44,9 @@ class CustomhttpService {
             config => {
                 const accessToken = localStorage.getItem('auth_token')
                 if (accessToken) {
-                    config.headers['access-token'] = accessToken
+                    config.headers['Authorization'] = 'Bearer ' + accessToken
                 } else {
-                    config.headers['access-token'] = ''
+                    config.headers['Authorization'] = ''
                 }
                 return config;
             },

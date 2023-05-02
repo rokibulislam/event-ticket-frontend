@@ -8,10 +8,10 @@ import { useRouter } from "next/router"
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
+import { protectRoute } from '@/components/protectRoute';
 
 let validationSchema = object({
-  email: string().required().email().label("Email"),
-  password: string().required().min(4).label("Password")
+  name: string().required().label("Name")
 });
 
 const CategoryCreate = () => {
@@ -44,4 +44,4 @@ const CategoryCreate = () => {
   )
 }
 
-export default CategoryCreate
+export default protectRoute(CategoryCreate)

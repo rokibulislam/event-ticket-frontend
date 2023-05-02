@@ -1,6 +1,8 @@
 import Layout from '@/components/layout'
 import React from 'react'
 import DashboardLayout from '@/components/DashboardLayout';
+import { protectRoute } from '@/components/protectRoute';
+
 
 const OrderDetails = () => {
   return (
@@ -12,4 +14,4 @@ const OrderDetails = () => {
   )
 }
 
-export default OrderDetails
+export default protectRoute(OrderDetails)

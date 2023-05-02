@@ -36,6 +36,8 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         user: null,
+        // roles: [],
+        // permissions: [],
         loading: false,
         error: null
     },
@@ -75,6 +77,8 @@ const authSlice = createSlice({
         [login.fulfilled]: (state, action) => {
             state.loading = false;
             state.user = action.payload.user;
+            // state.roles = action.payload.roles;
+            // state.permissions = action.payload.permissions;
             state.error = "login successfully";
         },
         [login.rejected]: (state, action) => {

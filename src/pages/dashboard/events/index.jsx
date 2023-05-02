@@ -4,8 +4,8 @@ import { useDispatch, useSelector  } from 'react-redux'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout';
 import { getEvents, deleteEvent } from '@/store/slices/event';
-
 import { Table, Space } from 'antd'
+import { protectRoute } from '@/components/protectRoute';
 
 const Events = () => {
 
@@ -55,6 +55,7 @@ const Events = () => {
       <DashboardLayout>
         <h2> Events List  </h2> 
         <Link href="/dashboard/events/create" className="btn btn-primary"> Create Events </Link>
+        <Link href="/dashboard/events/customcreate" className="btn btn-primary"> Custom Create Events </Link>
         <Table columns={columns} dataSource={events}/>
         {/* <table className='table'>
           <thead>
@@ -87,4 +88,4 @@ const Events = () => {
   )
 }
 
-export default Events
+export default protectRoute(Events)

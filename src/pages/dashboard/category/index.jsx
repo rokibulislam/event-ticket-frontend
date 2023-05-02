@@ -5,6 +5,7 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { getEventCategories, deleteEventCategory } from '@/store/slices/eventcategory'
 import { Table, Space } from 'antd';
+import { protectRoute } from '@/components/protectRoute';
 
 const Category = () => {
 
@@ -35,6 +36,7 @@ const Category = () => {
         render: (_, item) => (
           <Space size="middle">
             <Link href={`/dashboard/category/${item.id}/edit`}> Edit </Link> 
+            <Link href={`/dashboard/category/${item.id}/customedit`}> Custom Edit </Link> 
             <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
           </Space>
         ),
@@ -47,6 +49,7 @@ const Category = () => {
         <DashboardLayout>
         <h2> Category List  </h2> 
         <Link href="/dashboard/category/create" className='btn btn-primary'> Create Category </Link>
+        <Link href="/dashboard/category/customcreate" className='btn btn-primary'> Create Custom Category </Link>
         <Table columns={columns} dataSource={eventcategories}/>
 
         {/* <table className='table'>
@@ -80,4 +83,4 @@ const Category = () => {
   )
 }
 
-export default Category
+export default protectRoute(Category)

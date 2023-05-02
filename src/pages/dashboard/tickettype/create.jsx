@@ -5,6 +5,7 @@ import { useDispatch, useSelector  } from 'react-redux'
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import { createTicketType } from '@/store/slices/tickettype';
+import { protectRoute } from '@/components/protectRoute';
 
 const CreateTicketType = () => {
   const dispatch = useDispatch();
@@ -40,4 +41,4 @@ const CreateTicketType = () => {
   )
 }
 
-export default CreateTicketType
+export default protectRoute(CreateTicketType)

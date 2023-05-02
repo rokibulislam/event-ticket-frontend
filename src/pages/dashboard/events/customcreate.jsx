@@ -8,8 +8,8 @@ import { getEventCategories } from '@/store/slices/eventcategory'
 import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
 import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
-
 import { useForm } from "react-hook-form";
+import { protectRoute } from '@/components/protectRoute';
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -118,4 +118,4 @@ const EventCreate = () => {
   )
 }
 
-export default EventCreate
+export default protectRoute(EventCreate)

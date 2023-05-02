@@ -1,6 +1,7 @@
 import Layout from '@/components/layout'
 import React from 'react'
 import DashboardLayout from '@/components/DashboardLayout';
+import { protectRoute } from '@/components/protectRoute';
 
 const Attendae = () => {
   return (
@@ -12,4 +13,4 @@ const Attendae = () => {
   )
 }
 
-export default Attendae
+export default protectRoute(Attendae)

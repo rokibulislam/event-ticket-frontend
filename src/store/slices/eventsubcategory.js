@@ -1,6 +1,7 @@
 import httpService from '@/services/httpService'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
+
 export const getSubEventCategories = createAsyncThunk('event/getSubEventCategories', async () => {
     try {
         let response = await httpService.get('subeventcategory');
@@ -20,10 +21,11 @@ export const getSubEventCategory = createAsyncThunk('event/getSubEventCategory',
     }
 })
 
-export const createSubEventCategory = createAsyncThunk('event/createSubEventCategory', async (name, thunkAPI) => {
+export const createSubEventCategory = createAsyncThunk('event/createSubEventCategory', async ({ name, category_id }, thunkAPI) => {
     try {
         let response = await httpService.post('subeventcategory', {
-            name: name
+            name: name,
+            category_id: category_id
         })
         return response;   
     } catch (error) {
@@ -31,10 +33,11 @@ export const createSubEventCategory = createAsyncThunk('event/createSubEventCate
     }
 })
 
-export const updateSubEventCategory = createAsyncThunk('event/updateSubEventCategory', async ( { id, name }, thunkAPI) => {
+export const updateSubEventCategory = createAsyncThunk('event/updateSubEventCategory', async ( { id, name, category_id }, thunkAPI) => {
     try {
         let response = await httpService.put(`subeventcategory/${id}`, {
-            name: name
+            name: name,
+            category_id: category_id
         })
     
         return response;   

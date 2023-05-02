@@ -1,5 +1,6 @@
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
+import { protectRoute } from '@/components/protectRoute'
 import React from 'react'
 
 const DashboardReports = () => {
@@ -12,4 +13,4 @@ const DashboardReports = () => {
   )
 }
 
-export default DashboardReports
+export default protectRoute(DashboardReports)

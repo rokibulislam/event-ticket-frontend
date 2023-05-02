@@ -4,24 +4,47 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { getRole, updateRole } from '@/store/slices/role'
+import { getPermissions } from '@/store/slices/permission'
+import { protectRoute } from '@/components/protectRoute'
 
 
 const EditRole = () => {
     const router = useRouter()
     const { id  } = router.query
     const dispatch = useDispatch();
-  
-    const role =  useSelector( state => state.role.item );
-    const [ name, setName ] = useState (role.name)
-    const [ permissions, setPermissions ] = useState (role.permissions)
-  
+    const [ name, setName ] = useState ('')
+    const permissions =  useSelector( state => state.premission.items );
+    const roles =  useSelector( state => state.role.items );
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
     useEffect( () => {
-      dispatch(getRole(id))
-    },[dispatch, router])
+        if( id !== undefined ) {
+            const role  = roles.find( item => item.id == id );
+            setName(role.name);
+            // setPermissions(role.permissions);
+            // dispatch(getRole(id))
+            dispatch(getPermissions())
+        }
+    },[dispatch, id])
+
+
+    const handleOptionSelect = (event) => {
+        const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+        setSelectedOptions(selectedOptions);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        dispatch(updateRole( { 
+            id: id,
+            name: name,
+            permissions: selectedOptions
+        }));
+
+        router.push('/dashboard/roles');
     } 
+    
 
     return (
         <Layout>
@@ -36,6 +59,15 @@ const EditRole = () => {
                         <input type="text" name="type_name" id="" value={name} className="form-control mb-4" onChange={ (e) => { setName(e.target.value) }}  />
                     </div>
 
+                    <div className="form-group mb-4">
+                        <label htmlFor="permissions" className='form-label'> Permissions </label>
+                        <select className="form-control mb-4" name="permissions" id="permissions" onChange={handleOptionSelect} multiple>
+                            { permissions.length > 0  ? (
+                                permissions.map( ( item ) =>{ return ( <option value={item.name}>{ item.name }</option>) })
+                            ) : ''}
+                        </select>
+                    </div> 
+
                     <div className="form-group">
                         <button className="btn btn-primary"> Update </button>
                     </div>
@@ -47,4 +79,4 @@ const EditRole = () => {
     )
 }
 
-export default EditRole
+export default protectRoute(EditRole)

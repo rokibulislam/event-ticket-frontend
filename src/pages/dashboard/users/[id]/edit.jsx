@@ -5,6 +5,8 @@ import Layout from '@/components/layout'
 import DashboardLayout from '@/components/DashboardLayout'
 import { getUser, createUser } from '@/store/slices/user'
 import { getRoles } from '@/store/slices/role'
+import { protectRoute } from '@/components/protectRoute'
+
 
 const EditUser = () => {
     const router = useRouter()
@@ -92,4 +94,4 @@ const EditUser = () => {
     )
 }
 
-export default EditUser
+export default protectRoute(EditUser)

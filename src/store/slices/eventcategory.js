@@ -52,10 +52,20 @@ export const deleteEventCategory = createAsyncThunk('event/deleteEventCategory',
     }
 })
 
+export const getSubCategoriesByCategory = createAsyncThunk('event/getSubEventCategories', async (id) => {
+    try {
+        let response = await httpService.get(`eventcategory/${id}/subcatgories`);
+        return response.data   
+    } catch (error) {
+        return error.message
+    }
+})
+
 const eventcategorySlice = createSlice({
     name: "eventcategory",
     initialState: {
         items: [],
+        subcategory: [],
         item: {},
         status: "idle",
         error: ""
@@ -65,6 +75,18 @@ const eventcategorySlice = createSlice({
     },
 
     extraReducers: {
+        [getSubCategoriesByCategory.pending]: (state, action) => {
+
+        },
+
+        [getSubCategoriesByCategory.fulfilled]: (state, action) => {
+            state.subcategory = action.payload
+        },
+
+        [getSubCategoriesByCategory.rejected]: (state, action) => {
+
+        },
+
         [getEventCategories.pending]: (state, action) => {
 
         },

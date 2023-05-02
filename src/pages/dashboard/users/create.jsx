@@ -6,6 +6,7 @@ import Layout from '@/components/layout'
 import { createUser } from '@/store/slices/user'
 import { useRouter } from 'next/router';
 import { getRoles } from '@/store/slices/role';
+import { protectRoute } from '@/components/protectRoute';
 
 const UserCreate = () => {
   
@@ -90,4 +91,4 @@ const UserCreate = () => {
   )
 }
 
-export default UserCreate
+export default protectRoute(UserCreate)

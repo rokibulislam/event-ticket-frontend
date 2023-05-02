@@ -7,8 +7,8 @@ import { getEvent, updateEvent } from '@/store/slices/event';
 import { getEventCategories } from '@/store/slices/eventcategory'
 import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
-
 import { useForm } from "react-hook-form";
+import { protectRoute } from '@/components/protectRoute';
 
 
 const EditEvents = () => {
@@ -126,4 +126,4 @@ const EditEvents = () => {
   )
 }
 
-export default EditEvents
+export default protectRoute(EditEvents)

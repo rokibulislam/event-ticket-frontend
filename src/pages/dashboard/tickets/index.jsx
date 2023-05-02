@@ -1,6 +1,7 @@
 import Layout from '@/components/layout'
 import React from 'react'
 import DashboardLayout from '@/components/DashboardLayout';
+import { protectRoute } from '@/components/protectRoute';
 
 const Tickets = () => {
   return (
@@ -12,4 +13,4 @@ const Tickets = () => {
   )
 }
 
-export default Tickets
+export default protectRoute(Tickets)

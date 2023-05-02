@@ -1,26 +1,33 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSelector, useDispatch  } from 'react-redux';
 import { logout } from  '../store/slices/auth'
-import auth from '../services/authService'
+import auth, { getCurrentUser } from '../services/authService'
 import { Menu } from 'antd';
 
 import { Layout as AntLayout, Header, Space, Row, Col, Container } from 'antd'
 
-const Layout = ( { children }) => {
 
+const Layout = ( { children }) => {
+    // const [user, setUser] = useState(null)
+    // console.log(user);
     let user = useSelector( state => state.auth.user );
     let router = useRouter();
 
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        // let user = getCurrentUser();
+        // setUser(user);
+    }, [])
+
     const handleLogout = (e) => {
         e.preventDefault();
         console.log('handle logout');
-        // dispatch(logout());
-        // auth.logout();
-        // router.push('/auth/login');
+        dispatch(logout());
+        auth.logout();
+        router.push('/auth/login');
     }
 
     let menuitems = [];
@@ -113,9 +120,10 @@ const Layout = ( { children }) => {
                                             background: "none"
                                         }}
                                         mode="horizontal"
-                                        onClick={ (item) => {
-                                            if(item.key=="logout") {
-                                                handleLogout();
+                                        onClick={ (item ) => {
+                                            // item.domEvent.preventDefault();
+                                            if(item.key=="/logout") {
+                                                handleLogout(item.domEvent);
                                             } else{
                                                 router.push(item.key);
                                             }

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons'
 import { Card, Space, Statistic, Typography } from 'antd'
+import { protectRoute } from '@/components/protectRoute';
 
 const Dashboard = () => {
   return (
@@ -34,4 +35,4 @@ function DashboardCard({icon, title, value}) {
   )
 }
 
-export default Dashboard
+export default protectRoute(Dashboard)

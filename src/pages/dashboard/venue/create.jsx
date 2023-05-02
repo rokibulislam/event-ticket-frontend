@@ -4,10 +4,18 @@ import { useRouter } from "next/router"
 import Layout from '@/components/layout'
 import { createVenue } from '../../../store/slices/venue'
 import DashboardLayout from '@/components/DashboardLayout'
+import { Select } from 'antd'
+import { getCountries, getStates } from '@/store/slices/countries'
+import { protectRoute } from '@/components/protectRoute'
 
 const VenueCreate = () => {
     let dispatch = useDispatch();
     let router = useRouter();
+    const countries = useSelector( state => state.country.countries)
+    const states = useSelector( state => state.country.states)
+    const [countryId, setCountryId] = useState('')
+    const [stateId, setStateId] = useState('')
+
     const [ input, setInput ] = useState({
         'name' : '',
         'nickname' : '',
@@ -33,13 +41,25 @@ const VenueCreate = () => {
           name: input.name, 
           nickname: input.nickname,
           city: input.city,
+          country: countryId,
+          state: stateId,
           country: input.country,
           state: input.state,
           postcode: input.postcode
         }));
     
-        router.push('/dashboard/venue')
+        // router.push('/dashboard/venue')
     }
+
+    useEffect(() => {
+        dispatch(getCountries());
+    }, [dispatch])
+    
+    useEffect(() => {
+        if( countryId !== '') {
+            dispatch(getStates(countryId));
+        }
+    }, [dispatch, countryId])
 
     return (
         <Layout>
@@ -64,11 +84,25 @@ const VenueCreate = () => {
 
             <div className="form-group mb-4">
                 <label htmlFor="country" className='form-label'> Country </label>
+                {/* <Select
+                    style={{ width: 120 }}
+                    onChange={ (value ) => setCountryId(value)}
+                    options={ countries.length > 0 ? countries.map( item => {
+                        return { value: item.id,label: item.name }
+                    }) : [] }
+                /> */}
                 <input type="text" name="country" id="country" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
             <div className="form-group mb-4">
                 <label htmlFor="state" className='form-label'> State </label>
+                {/* <Select
+                    style={{ width: 120 }}
+                    onChange={ (value ) => setStateId(value)}
+                    options={ states.length > 0 ? states.map( item => {
+                        return { value: item.id, label: item.name }
+                    }) : [] }
+                /> */}
                 <input type="text" name="state" id="state" className="form-control mb-4" onChange={handleChange}  />
             </div>
 
@@ -88,4 +122,4 @@ const VenueCreate = () => {
     )
 }
 
-export default VenueCreate
+export default protectRoute(VenueCreate)

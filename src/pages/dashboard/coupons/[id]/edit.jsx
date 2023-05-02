@@ -5,22 +5,28 @@ import { useDispatch, useSelector  } from 'react-redux'
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import { updateCoupon, getCoupon } from '@/store/slices/coupon';
+import { protectRoute } from '@/components/protectRoute';
 
 const EditCoupon = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id  } = router.query
-  const coupon =  useSelector( state => state.coupon.item );
-  const [ code, setCode ] = useState (coupon.code)
-  const [ amount, setAmount ] = useState (coupon.discount_amount)
+  const coupons =  useSelector( state => state.coupon.items );
+  const [ code, setCode ] = useState ('')
+  const [ amount, setAmount ] = useState ('')
 
   useEffect( () => {
-    dispatch(getCoupon(id))
-  },[dispatch, router])
+    if( id !== 'undefined' ) {
+      let coupon  = coupons.find( item => item.id == id );
+      setCode(coupon.code);
+      setAmount(coupon.discount_amount);
+    }
+    // dispatch(getCoupon(id))
+  },[dispatch, id])
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    dispatch(updateCoupon({code,amount}));
+    dispatch(updateCoupon({ id, code,amount}));
     setCode("");
     setAmount("");
     router.push('/dashboard/coupons')
@@ -56,4 +62,4 @@ const EditCoupon = () => {
   )
 }
 
-export default EditCoupon
+export default protectRoute(EditCoupon)

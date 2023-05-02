@@ -2,22 +2,23 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { getPermissions } from '@/store/slices/permission'
 import { createRole } from '@/store/slices/role'
-
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
+import { protectRoute } from '@/components/protectRoute';
 
 const CreateRole = () => {
     const dispatch = useDispatch();
     let router = useRouter();
     const [ name, setName ] = useState ('')
+    const [selectedOptions, setSelectedOptions] = useState([]);
     const permissions =  useSelector( state => state.premission.items );
 
     useEffect( () => {
         dispatch(getPermissions())
     },[dispatch])
 
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    
 
     const handleOptionSelect = (event) => {
       const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
@@ -44,8 +45,8 @@ const CreateRole = () => {
                     </div>
 
                     <div className="form-group mb-4">
-                        <label htmlFor="event_venue" className='form-label'> Event Venue </label>
-                        <select className="form-control mb-4" name="event_venue" id="event_venue" onChange={handleOptionSelect} multiple>
+                        <label htmlFor="permissions" className='form-label'> Permissions </label>
+                        <select className="form-control mb-4" name="permissions" id="permissions" onChange={handleOptionSelect} multiple>
                             { 
                             permissions.length > 0  ? (
                                 permissions.map( ( item ) =>{
@@ -70,4 +71,4 @@ const CreateRole = () => {
     )
 }
 
-export default CreateRole
+export default protectRoute(CreateRole)

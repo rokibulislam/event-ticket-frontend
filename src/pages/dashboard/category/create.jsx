@@ -5,6 +5,7 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createEventCategory } from '@/store/slices/eventcategory';
 import { useRouter } from "next/router"
+import { protectRoute } from '@/components/protectRoute';
 
 const CategoryCreate = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const CategoryCreate = () => {
               </div>
   
               <div className="form-group">
-                  <button className="btn btn-primary"> Submit </button>
+                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
               </div>
   
           </form> 
@@ -40,4 +41,4 @@ const CategoryCreate = () => {
   )
 }
 
-export default CategoryCreate
+export default protectRoute(CategoryCreate)

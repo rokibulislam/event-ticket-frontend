@@ -4,6 +4,7 @@ import { createPermission } from '@/store/slices/permission'
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
+import { protectRoute } from '@/components/protectRoute';
 
 const CreatePermission = () => {
     const dispatch = useDispatch();
@@ -37,4 +38,4 @@ const CreatePermission = () => {
     )
 }
 
-export default CreatePermission
+export default protectRoute(CreatePermission)
