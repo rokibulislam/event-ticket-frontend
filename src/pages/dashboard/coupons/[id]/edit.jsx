@@ -12,8 +12,15 @@ const EditCoupon = () => {
   const router = useRouter();
   const { id  } = router.query
   const coupons =  useSelector( state => state.coupon.items );
+
+  //state
   const [ code, setCode ] = useState ('')
   const [ amount, setAmount ] = useState ('')
+  const [ description, setDescription ] = useState ('')
+  const [ usagelimit, setUsagelimit ] = useState ('')
+  const [ usagelimitperuser, setUsagelimitperuser ] = useState ('')
+  const [ minimumamount, setMinimumamount ] = useState ('')
+  const [ discounttype, setDiscounttype ] = useState ('')
 
   useEffect( () => {
     if( id !== 'undefined' ) {
@@ -46,10 +53,51 @@ const EditCoupon = () => {
               </div>
 
               <div className="form-group mb-4">
-                <label htmlFor="amount" className='form-label'> Discount Amount </label>
-                <input type="text" name="amount" id="" value={amount} className="form-control" onChange={ (e) => {
-                  setAmount(e.target.value)
-                }}  />
+                <label htmlFor="description" className='form-label'> Coupon Description </label>
+                <textarea name="description" id="description" className="form-control mb-4" onChange={ (e) => { setDescription(e.target.value) }}> </textarea>
+              </div>
+
+              <div className="form-group mb-4">
+                  <label htmlFor="discount_type" className='form-label'> Discount Type </label>
+                  <select className='form-control' name="discount_type" id="discount_type" onChange={ (e) => {
+                      setDiscounttype(e.target.value)
+                  }}>
+                    <option value=""></option>
+                    <option value="percent"> Percentage discount </option>
+                    <option value="fixed_product"> Fixed product discount </option>
+                  </select>
+              </div>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group mb-4">
+                      <label htmlFor="amount" className='form-label'> Discount Amount </label>
+                      <input type="text" name="amount" id="" value={amount} className="form-control" onChange={ (e) => { setAmount(e.target.value) }}  />
+                    </div>
+                  </div>
+
+                  <div className="col-md-6">
+                      <div className="form-group mb-4">
+                        <label htmlFor="usage_limit" className='form-label'> Usage Limit </label>
+                        <input type='text' name="usage_limit" id="usage_limit" className="form-control mb-4" onChange={ (e) => { setUsagelimit(e.target.value) }} />
+                      </div>
+                  </div>
+                </div>
+
+
+              <div className="row">
+                  <div className="col-md-6">
+                    <div className="form-group mb-4">
+                      <label htmlFor="usage_limit" className='form-label'> Usage Limit Per User </label>
+                      <input type='text' name="usage_limit" id="usage_limit" className="form-control mb-4" onChange={ (e) => { setUsagelimitperuser(e.target.value) }} />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="form-group mb-4">
+                      <label htmlFor="usage_limit" className='form-label'> Minimum Amount </label>
+                      <input type='text' name="usage_limit" id="usage_limit" className="form-control mb-4" onChange={ (e) => { setMinimumamount(e.target.value) }} />
+                    </div>
+                  </div>
               </div>
 
               <div className="form-group">

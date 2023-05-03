@@ -10,6 +10,7 @@ import { getVenues } from '@/store/slices/venue';
 import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
 import { useForm } from "react-hook-form";
 import { protectRoute } from '@/components/protectRoute';
+import { Select } from 'antd';
 
 const EventCreate = () => {
   let dispatch = useDispatch();

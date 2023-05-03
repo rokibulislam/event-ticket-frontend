@@ -15,7 +15,7 @@ import { protectRoute } from '@/components/protectRoute';
 
 let validationSchema = object({
     name: string().required().label("Name"),
-    event_category: string().required().label("event_category"),
+    event_category: string().required().label("category"),
 });
 
   
@@ -33,10 +33,10 @@ const SubCategoryCreate = () => {
   
   const onSubmit = (data) => {
     console.log(data);
-    // dispatch(createSubEventCategory({
-    //   name: inpname,
-    //   category_id: input.event_category
-    // }));
+    dispatch(createSubEventCategory({
+      name: name,
+      category_id: category
+    }));
     // router.push('/dashboard/category')
   };
 

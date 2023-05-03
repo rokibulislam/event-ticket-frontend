@@ -28,7 +28,7 @@ export const createEvent = createAsyncThunk('event/createEvent', async ( formDat
         let response = await httpService.post('events', formData, {
             headers: { 'content-type': 'multipart/form-data' }
         })
-        return response;   
+        return response.data;   
     } catch (error) {
         console.log(error);
         return thunkAPI.rejectWithValue(error.response.data)
@@ -62,7 +62,8 @@ const eventSlice = createSlice({
         item: {},
         status: "idle",
         loading : false,
-        error: ""
+        error: "",
+        chartkey: null,
     },
 
     reducers: {
@@ -94,9 +95,10 @@ const eventSlice = createSlice({
         },
 
         [getEvent.rejected]: (state, action) => {
+            console.log(action.payload);
             state.loading = false;
             state.item = null;
-            state.error = action.payload.error ? action.payload.error : 'Failed to register';
+            // state.error = action.payload.error ? action.payload.error : 'Failed to register';
         },
 
         [createEvent.pending]: (state, action) => {
@@ -104,7 +106,8 @@ const eventSlice = createSlice({
         },
 
         [createEvent.fulfilled]: (state, action) => {
-            state.items.push(action.payload)
+            state.items.push(action.payload.event)
+            state.chartkey = action.payload.data.key;
         },
 
         [createEvent.rejected]: (state, action) => {

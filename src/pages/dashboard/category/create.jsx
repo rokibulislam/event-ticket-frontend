@@ -32,7 +32,7 @@ const CategoryCreate = () => {
               </div>
   
               <div className="form-group">
-                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
+                  <button className="btn btn-primary"> Submit </button>
               </div>
   
           </form> 

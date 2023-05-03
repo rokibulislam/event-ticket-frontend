@@ -11,34 +11,39 @@ const EditVenue = () => {
   const router = useRouter()
   const { id } = router.query
   const dispatch = useDispatch();
-  const venue =  useSelector( state => state.venue.item );
-  const [ input, setInput ] = useState({
-    'name' : venue.name,
-    'nickname' : venue.nickname,
-    'city': venue.city,
-    'country': venue.country,
-    'state': venue.state,
-    'postcode': venue.postcode
-  })
+  const venues =  useSelector( state => state.venue.items );
+
+  //state
+  const [name, setName] = useState('')
+  const [nickname, setNickname] = useState('')
+  const [city, setCity] = useState('')
+  const [country, setCountry] = useState('')
+  const [state, setState] = useState('')
+  const [postcode, setPostcode] = useState('')
 
   useEffect( () => {
-    dispatch(getVenue(id))
-  },[dispatch, router])
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setInput({
-      ...input,
-      [name]: value
-    })
-  }
+    if( id !== 'undefined') {
+      const venue  = venues.find( item => item.id == id );
+      setName(venue.name)
+      setNickname(venue.nickname)
+      setCity(venue.city)
+      setCountry(venue.country)
+      setState(venue.state)
+      setPostcode(venue.postcode)
+    }
+  },[dispatch, id])
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(id);
-    console.log(input);
-    dispatch(updateVenue({id, input}))
+    dispatch(updateVenue({
+      id: id,
+      name: name,
+      nickname: nickname,
+      city: city,
+      country: country,
+      state: state,
+      postcode: postcode
+    }))
     // router.push('/dashboard/venue')
   }
 
@@ -50,32 +55,32 @@ const EditVenue = () => {
           
               <div className="form-group">
                   <label htmlFor=""> Venue Name </label>
-                  <input type="text" name="name" id="" className="form-control mb-4" onChange={handleChange} value={input.name} />
+                  <input type="text" name="name" id="" className="form-control mb-4" onChange={ (e) => setName(e.target.value)} value={name} />
               </div>
 
               <div className="form-group">
-                <label htmlFor=""> input Nickname </label>
-                <input type="text" name="nickname" id="" className="form-control mb-4" onChange={handleChange}  value={input.nickname} />
+                <label htmlFor=""> Nickname </label>
+                <input type="text" name="nickname" id="" className="form-control mb-4" onChange={ (e) => setNickname(e.target.value) }  value={nickname} />
               </div>
 
               <div className="form-group">
                   <label htmlFor=""> PostCode </label>
-                  <input type="text" name="postcode" id="" className="form-control mb-4" onChange={handleChange} value={input.postcode} />
+                  <input type="text" name="postcode" id="" className="form-control mb-4" onChange={ (e) => setPostcode(e.target.value)} value={postcode} />
               </div>
 
               <div className="form-group">
                   <label htmlFor=""> Country </label>
-                  <input type="text" name="country" id="" className="form-control mb-4" onChange={handleChange} value={input.country}  />
+                  <input type="text" name="country" id="" className="form-control mb-4" onChange={ (e) => setCountry(e.target.value) } value={country}  />
               </div>
 
               <div className="form-group">
                   <label htmlFor=""> State </label>
-                  <input type="text" name="state" id="" className="form-control mb-4" onChange={handleChange}  value={input.state} />
+                  <input type="text" name="state" id="" className="form-control mb-4" onChange={ (e) => setState(e.target.value) }  value={state} />
               </div>
 
               <div className="form-group">
                   <label htmlFor=""> City </label>
-                  <input type="text" name="city" id="" className="form-control mb-4" onChange={handleChange}  value={input.city} />
+                  <input type="text" name="city" id="" className="form-control mb-4" onChange={(e) => setCity(e.target.value)}  value={city} />
               </div>
 
               <div className="form-group">

@@ -14,30 +14,41 @@ import VenueRepeatField from '@/components/VenueRepeatField'
 import TicketRepeatField from '@/components/TicketField';
 import { protectRoute } from '@/components/protectRoute';
 // import { getSubEventCategories, getSubEventCategory } from '@/store/slices/eventsubcategory';
+import { Select } from 'antd';
+import CustomTicketRepeatField from '@/components/TicketField/custom';
+import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 
 const EventCreate = () => {
   let dispatch = useDispatch();
   let router = useRouter();
-  const [ chart, setChart ] = useState(null)
-  const [ reserve, setReserve ] = useState(null)
-
+  
+  //reudx store
   const eventtypes =  useSelector( state => state.eventtype.items );
   const eventcategories =  useSelector( state => state.eventcategory.items );
   const eventsubcategories =  useSelector( state => state.eventcategory.subcategory );
   const venues =  useSelector( state => state.venue.items );
   const tickettypes =  useSelector( state => state.tickettype.items );
 
+  const chartkey =  useSelector( state => state.event.chartkey );
+
+  // state 
   const [category, setCategory] = useState('')
-
-  const [ input, setInput ] = useState ({
-    'event_name': '',
-    'event_description': '',
-    'event_type': '',
-    // 'event_category': '',
-    'event_venue': '',
-  })
-
+  const [subcategory, setSubcategory] = useState('')
+  const [type, setType] = useState('')
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [venue, setVenue] = useState('')
+  const [startdate, setStartdate] = useState('')
+  const [enddate, setEnddate] = useState('')
+  const [starttime, setStarttime] = useState('')
+  const [endtime, setEndtime] = useState('')
   const [image, setImage] = useState(null);
+  const [ chart, setChart ] = useState(null)
+  const [ reserve, setReserve ] = useState(null)
+
+  const [tickets, setTickets] = useState([{ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: ''  }]);
+  const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
+
 
   useEffect( () => {
     dispatch(getEventCategories());
@@ -54,36 +65,45 @@ const EventCreate = () => {
     }
   }, [category])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setInput({
-      ...input,
-      [name]: value
-    })
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
+   console.log(tickets);
     const formData = new FormData()
-    formData.append('name', input.event_name)
-    formData.append('description', input.event_description)
-    formData.append('image', image)
-    formData.append('type_id', input.event_type)
-    formData.append('category_id', input.event_category)
-    formData.append('venue_id', input.event_venue)
-    
-    dispatch(createEvent(formData));
+    formData.append('name', name)
+    formData.append('description', description)
+    formData.append('image', image.originFileObj)
+    formData.append('type_id', type)
+    formData.append('category_id', category)
+    formData.append('venue_id', venue)
+    formData.append('startdate', startdate)
+    formData.append('enddate', enddate)
+    formData.append('starttime', starttime)
+    formData.append('endtime', endtime)
+    formData.append('tickets', JSON.stringify(tickets))
+    formData.append('venuecategory', JSON.stringify(venuecategory) )
+    formData.append('reserve', reserve)
 
+    dispatch(createEvent(formData));
     // router.push('/dashboard/events')
   }
 
+  function handleTicketeChange(i, event) {
+    const values = [...tickets];
+    values[i][event.target.name] = event.target.value;
+    console.log(values);
+    setTickets(values);
+  }
 
-  const onRevisiedChange = (e) => {
-    e.preventDefault();
-    setReserve(e.target.value)
-    // console.log('radio checked', e.target.value);
+  function handleTicketAddField() {
+    const values = [...tickets];
+    values.push({ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: '' });
+    setTickets(values);
+  }
+
+  function handleTicketRemoveField(i) {
+    const values = [...tickets];
+    values.splice(i, 1);
+    setTickets(values);
   }
 
   return (
@@ -92,104 +112,74 @@ const EventCreate = () => {
         <h2> Events Create  </h2> 
 
       <form action='' method='post' onSubmit={handleSubmit}>
-        <div className="form-group mb-4">
-          <label htmlFor="event_name" className='form-label'> Event Name </label>
-          <input type="text" name="event_name" id="" className="form-control " onChange={handleChange}  />
+        
+        <div className='row'>
+          <div className="col-md-6">
+            <div className="form-group mb-4">
+              <label htmlFor="name" className='form-label'> Event Name </label>
+              <input type="text" name="name" id="name" className="form-control " onChange={ (e) => setName(e.target.value) }  />
+            </div>
+          </div>
         </div>
 
         <div className='row'>
             
-            <div className="col">
+            <div className="col-md-4">
               <div className="form-group mb-4">
-                <label htmlFor="event_type" className='form-label'> Event Type </label>
-                <select className="form-control mb-4" name="event_type" id="event_type" onChange={handleChange}>
-                  <option value=""> Select Type </option>
-                  {
-                    eventtypes.length > 0  ? (
-                      eventtypes.map( ( item, i ) =>{
-                        return (
-                          <option value={item.id} key={item.id}>
-                            { item.name }
-                          </option>
-                        )
-                      })
-                    ) : ''
-                  }
-                </select>
+                <label htmlFor="type" className='form-label'> Event Type </label><br/>
+                <Select
+                  style={{ width: 320 }}
+                  onChange={ (value ) => setType(value)}
+                  options={ eventtypes.length > 0 ? eventtypes.map( item => {
+                    return { value: item.id,label: item.name }
+                  }) : [] }
+                /> 
               </div>
             </div>
           
-          <div className="col">
+            <div className="col-md-4">
+                <div className="form-group mb-4">
+                  <label htmlFor="category" className='form-label'> Event Category </label> <br/>
+                  <Select
+                    style={{ width: 320 }}
+                    onChange={ (value ) => setCategory(value)}
+                    options={ eventcategories.length > 0 ? eventcategories.map( item => {
+                      return { value: item.id,label: item.name }
+                    }) : [] }
+                  /> 
+                </div>
+            </div>
 
-            <div className="form-group mb-4">
-              <label htmlFor="event_category" className='form-label'> Event Category </label>
-              <select className="form-control mb-4" name="event_category" id="" onChange={ (e) => setCategory(e.target.value)} >
-                <option value=""> Select Category </option>
-              {
-                  eventcategories.length > 0  ? (
-                    eventcategories.map( ( item, i ) =>{
-                      return (
-                        <option value={item.id} key={item.id}>
-                          { item.name }
-                        </option>
-                      )
-                    })
-                  ) : ''
-                }
-              </select>
+            <div className="col-md-4">
+              <div className="form-group mb-4"> 
+                  <label htmlFor="subcategory" className='form-label'> Event SubCategory </label> <br/>
+                  <Select
+                    style={{ width: 320 }}
+                    onChange={ (value ) => setSubcategory(value)}
+                    options={ eventsubcategories.length > 0 ? eventsubcategories.map( item => {
+                      return { value: item.id,label: item.name }
+                    }) : [] }
+                  /> 
+              </div>
+            </div>
             
+            <div className="col">
+             <div className="form-group mb-4">
+                <label htmlFor="event_venue" className='form-label'> Event Venue </label> <br/>
+                <Select
+                    style={{ width: 320 }}
+                    onChange={ (value ) => setVenue(value)}
+                    options={ venues.length > 0 ? venues.map( item => {
+                      return { value: item.id,label: item.name }
+                    }) : [] }
+                  /> 
+              </div> 
             </div>
-          
-          </div>
-
-          <div className="col">
-            <div className="form-group mb-4"> 
-                <label htmlFor="event_subcategory" className='form-label'> Event SubCategory </label>
-                <select className="form-control mb-4" name="event_subcategory" id="event_subcategory">
-                  <option value=""> Select SubCategory </option>
-                  {
-                  eventsubcategories.length > 0  ? (
-                    eventsubcategories.map( ( item, i ) =>{
-                      return (
-                        <option value={item.id} key={item.id}>
-                          { item.name }
-                        </option>
-                      )
-                    })
-                  ) : ''
-                }
-                </select>
-            </div>
-          </div>
-        
-
-        <div className="col">
-
-          {/* <div className="form-group mb-4">
-            <label htmlFor="event_venue" className='form-label'> Event Venue </label>
-            <select className="form-control mb-4" name="event_venue" id="event_venue" onChange={handleChange} >
-              { 
-                venues.length > 0  ? (
-                  venues.map( ( item, i ) =>{
-                    return (
-                      <option value={item.id}>
-                        { item.name }
-                      </option>
-                    )
-                  })
-                ) : ''
-              }
-            </select>
-          </div>  */}
-
-        </div>
-      
       </div>
       
-
         <div className="form-group mb-4">
-          <label htmlFor="event_description" className='form-label'> About Your Event </label>
-          <textarea name="event_description" id="event_description" className="form-control mb-4" onChange={handleChange}> 
+          <label htmlFor="description" className='form-label'> About Your Event </label>
+          <textarea name="description" id="description" className="form-control mb-4" onChange={(e) => setDescription(e.target.value)}> 
            </textarea>
         </div>
       
@@ -218,70 +208,88 @@ const EventCreate = () => {
           <div className="col">
             <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> Start Date </label>
-              <DatePicker className="form-control"/>
+              <DatePicker className="form-control" onChange={ (date, dateString) => { setStartdate( dateString)  } }/>
             </div>
           </div>
 
           <div className="col">
             <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> End Date </label>
-              <DatePicker className="form-control"/>
+              <DatePicker className="form-control" onChange={ (date, dateString) => { setEnddate( dateString)  } }/>
             </div>
           </div>
 
           <div className="col">
             <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> Start Time </label>
-              <TimePicker className="form-control" mode='time'/>
+              <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => { setStarttime( timeString)  } }/>
             </div>
           </div>
 
           <div className="col">
             <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> End Time </label>
-              <TimePicker className="form-control" mode='time'/>
+              <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => { setEndtime( timeString)  } }/>
             </div>
           </div>
         </div>
 
         <div className='form-group mb-4'>
           <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
-          <Radio.Group onChange={onRevisiedChange} className='form-control'>
+          <Radio.Group onChange={ (e) => setReserve(e.target.value)} className='form-control'>
             <Radio value={1}>Yes</Radio>
             <Radio value={0}>No</Radio>
           </Radio.Group>
+
         </div>
 
-        <h2> Tickets </h2>
-        <TicketRepeatField />
+        {
+          reserve == 0 ? ( 
+            <>
+          <h2> Tickets </h2>
+          <CustomTicketRepeatField 
+            fields={tickets} 
+            setFields={setTickets} 
+            handleTicketeChange={handleTicketeChange} 
+            handleTicketAddField={handleTicketAddField} 
+            handleTicketRemoveField={handleTicketRemoveField} 
+          />
+        </>
+
+          ) : '' }
         {
           reserve == 1 ? (
             <>
               <h2> Venue </h2>
-              <VenueRepeatField />
+              <CustomVenueRepeatField fields={venuecategory} setFields={setVenuecategory}/>
             </>
           ) : ''
         }
 
 
-      {/* <div className="form-group" style={{ 'height': '500px' }}> 
-        <SeatsioDesigner
-          secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
-          region="NA"
-          onChartCreated={chart => {
-            console.log('created chart', chart)
-          }}
-          onChartUpdated={chart =>{
-            setChart(chart);
-            console.log('updated chart', chart)
-          }}
-          pricing= {[
-            {"category": "test category", 'price': 30},
-        ]}
-        />
-
-      </div> */}
-
+      {
+        chartkey != null ? (
+        <div className="form-group" style={{ 'height': '500px' }}> 
+          <SeatsioDesigner
+            secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
+            chartKey={chartkey}
+            region="NA"
+            onChartCreated={chart => {
+              console.log('created chart', chart)
+            }}
+            onChartUpdated={chart =>{
+              setChart(chart);
+              console.log('updated chart', chart)
+            }}
+            pricing= {[
+              {"category": "test category", 'price': 30},
+          ]}
+          />
+        </div>
+        ) : ''
+      }
+ 
+      <br/>
         <div className="form-group">
           <button className="btn btn-primary"> Submit </button>
         </div>

@@ -12,9 +12,9 @@ const DashboardLayout = ( { children }) => {
   const router = useRouter();
 
   const user = useSelector( state => state.auth.user );
-  let roles = user?.roles;
-  let role = roles.find( item =>  item.name == 'Vendor' );
-  console.log(role);
+  // let roles = user?.roles;
+  // let role = roles.find( item =>  item.name == 'Vendor' );
+  // console.log(role);
 
   let Adminitems = [
     {
@@ -83,9 +83,9 @@ const DashboardLayout = ( { children }) => {
     }
   ];
 
-  if( role?.name == 'Adminstrator' ) {
+  // if( role?.name == 'Adminstrator' ) {
     items = [...items, ...Adminitems ]
-  } 
+  // } 
 
 
   return (

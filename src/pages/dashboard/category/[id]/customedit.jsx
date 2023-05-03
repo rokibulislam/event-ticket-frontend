@@ -11,8 +11,7 @@ import { object, string, number, date, InferType } from 'yup';
 import { protectRoute } from '@/components/protectRoute';
 
 let validationSchema = object({
-  email: string().required().email().label("Email"),
-  password: string().required().min(4).label("Password")
+  name: string().required().label("Name")
 });
 
 const EditCategory = () => {
@@ -30,7 +29,10 @@ const EditCategory = () => {
   },[dispatch, id])
 
   const onSubmit = (data) => {
-    // dispatch(updateEventCategory(data.name));
+    dispatch(updateEventCategory({
+      id: id,
+      name: data.name
+    }));
     // router.push('/dashboard/category')
   };
 
@@ -41,7 +43,7 @@ const EditCategory = () => {
               
               <div className="form-group mb-4">
                 <label htmlFor="name" className='form-label'> Category Name </label>
-                <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
+                <input {...register('name')} type="text" id="name" className="form-control" />
               </div>
   
               <div className="form-group">

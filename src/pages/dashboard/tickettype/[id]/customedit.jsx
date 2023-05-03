@@ -17,7 +17,7 @@ const CustomTicketType = () => {
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm();
+    const { register, handleSubmit, formState: { errors, isValid } } =  useForm({resolver: yupResolver(validationSchema)});
 
     const tickettypes =  useSelector( state => state.tickettype.items );
     const [ name, setName ] = useState ('')

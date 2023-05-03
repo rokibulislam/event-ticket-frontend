@@ -34,10 +34,10 @@ const CreateRole = () => {
     
     const onSubmit = (data) => {
         console.log(data);
-        // dispatch(createRole( { 
-        //     name: name,
-        //     permissions: selectedOptions
-        // }));
+        dispatch(createRole( { 
+            name: data.name,
+            permissions: selectedOptions
+        }));
     };
 
   return (

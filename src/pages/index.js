@@ -29,7 +29,7 @@ export default function Home() {
       <main>
         <Layout>
           <h2> Recent Event List </h2>
-          <EventsList />
+          {/* <EventsList /> */}
           {/* <SeatsioSeatingChart
       workspaceKey="17fedfa1-98ac-4e40-9f2a-ac501975a59b"
       pricing={[

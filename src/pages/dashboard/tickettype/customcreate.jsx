@@ -16,7 +16,7 @@ let validationSchema = object({
 const CreateTicketType = () => {
     const dispatch = useDispatch();
     const router = useRouter();
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm();
+    const { register, handleSubmit, formState: { errors, isValid } } =  useForm({resolver: yupResolver(validationSchema)});
 
     const onSubmit = (data) => {
         dispatch(createTicketType(data.name));

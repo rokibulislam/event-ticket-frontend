@@ -31,7 +31,7 @@ const CategoryCreate = () => {
               
               <div className="form-group mb-4">
                 <label htmlFor="name" className='form-label'> Category Name </label>
-                <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
+                <input {...register('name')} type="text" id="name" className="form-control" />
               </div>
   
               <div className="form-group">

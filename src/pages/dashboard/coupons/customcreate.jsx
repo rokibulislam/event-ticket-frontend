@@ -44,7 +44,7 @@ const CreateCoupon = () => {
                     
                     <div className="form-group mb-4">
                         <label htmlFor="discount_type" className='form-label'> Discount Type </label>
-                        <select className='form-control' name="discount_type" id="discount_type">
+                        <select {...register('discount_type')} className='form-control' id="discount_type">
                             <option value=""></option>
                             <option value="percent"> Percentage discount </option>
                             <option value="fixed_product"> Fixed product discount </option>
@@ -81,7 +81,7 @@ const CreateCoupon = () => {
                         <div className="col-md-6">
                             <div className="form-group mb-4">
                                 <label htmlFor="minimum_amount" className='form-label'> Minimum Amount </label>
-                                <input type='text' name="minimum_amount" id="minimum_amount" className="form-control mb-4" />
+                                <input {...register('minimum_amount')} type='text' id="minimum_amount" className="form-control mb-4" />
                             </div>
                         </div>
                     </div>
