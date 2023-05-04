@@ -63,7 +63,7 @@ const EditRole = () => {
                         <label htmlFor="permissions" className='form-label'> Permissions </label>
                         <select className="form-control mb-4" name="permissions" id="permissions" onChange={handleOptionSelect} multiple>
                             { permissions.length > 0  ? (
-                                permissions.map( ( item ) =>{ return ( <option value={item.name}>{ item.name }</option>) })
+                                permissions.map( ( item ) =>{ return ( <option key={item.id} value={item.name}>{ item.name }</option>) })
                             ) : ''}
                         </select>
                     </div> 

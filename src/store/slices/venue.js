@@ -11,7 +11,7 @@ export const getVenues = createAsyncThunk('event/getVenues', async () => {
     }
 })
 
-export const getVenue = createAsyncThunk('event/getEvent', async (id) => {
+export const getVenue = createAsyncThunk('event/getVenue', async (id) => {
     try {
         let response  = await httpService.get(`venue/${id}`);
         return response.data;

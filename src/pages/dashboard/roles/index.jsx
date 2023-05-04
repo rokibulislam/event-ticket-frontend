@@ -44,7 +44,7 @@ const Roles = () => {
             <DashboardLayout>
                 <h2> Roles </h2>
                 <Link href="/dashboard/roles/create" className='btn btn-primary'> Create Role </Link>
-                <Link href="/dashboard/roles/customcreate" className='btn btn-primary'> Custom Create Role </Link>
+                {/* <Link href="/dashboard/roles/customcreate" className='btn btn-primary'> Custom Create Role </Link> */}
                 <Table columns={columns} dataSource={roles}/>
             </DashboardLayout>
         </Layout>

@@ -51,7 +51,7 @@ function TicketRepeatField() {
             <td>         
                 { tickettypes.length > 0 ? (
                     <select className='form-control' name='ticket_type' onChange={ (e) => handleChange(i,e)}>
-                        { tickettypes.map( item => <option value={item.id}> { item.name  } </option>) }
+                        { tickettypes.map( item => <option value={item.id} key={item.id}> { item.name  } </option>) }
                     </select>
                 ) : ''}
             </td>

@@ -1,4 +1,4 @@
-class EventCategoryService {
+/*class EventCategoryService {
 
     getAll() {
 
@@ -21,4 +21,4 @@ class EventCategoryService {
     }
 }
 
-export default new EventCategoryService();
+export default new EventCategoryService();*/

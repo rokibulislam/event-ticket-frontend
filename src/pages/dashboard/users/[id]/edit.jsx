@@ -73,7 +73,7 @@ const EditUser = () => {
                     roles.length > 0  ? (
                       roles.map( ( item, i ) =>{
                         return (
-                          <option value={item.name}>
+                          <option value={item.name} key={item.id}>
                             { item.name }
                           </option>
                         )

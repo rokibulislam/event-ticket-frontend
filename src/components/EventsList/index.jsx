@@ -19,7 +19,7 @@ const EventsList = (props) => {
         <Row gutter={16}>
           { events.map( item => {
             return ( 
-              <Col span={8}>
+              <Col span={8} key={item.id}>
                 <Card title={item.name} bordered={false}>
                   {item.description}
                   <Link href={`/events/${item.id}`} className='btn btn-primary'> Read More </Link>

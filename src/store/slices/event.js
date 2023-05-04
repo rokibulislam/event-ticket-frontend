@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '../../services/httpService'
-import axios from 'axios'
 
-export const getEvents = createAsyncThunk('event/getEvents', async () => {
+export const getEventsbyuser = createAsyncThunk('event/getEventsbyuser', async () => {
     try {
-        let response  = await httpService.get('events');
+        let response  = await httpService.get('eventsbyuser');
         return response.data;
     } catch (error) {
         return error.message
@@ -13,14 +12,37 @@ export const getEvents = createAsyncThunk('event/getEvents', async () => {
     return response.data;
 })
 
-export const getEvent = createAsyncThunk('event/getEvent', async (id) => {
+export const createSeatsEvent = createAsyncThunk('event/createSeatsEvent', async ({ name, chartkey}) => {
     try {
-        let response  = await httpService.get(`events/${id}`);
+        let response  = await httpService.post('createSeatsEvents', {
+            name,
+            chartkey
+        });
+        return response.data;
     } catch (error) {
         return error.message
     }
     
     return response.data;
+})
+
+
+export const getEvents = createAsyncThunk('event/getEvents', async () => {
+    try {
+        let response  = await httpService.get('events');
+        return response.data;
+    } catch (error) {
+        return error.message
+    }
+})
+
+export const getEvent = createAsyncThunk('event/getEvent', async (id) => {
+    try {
+        let response  = await httpService.get(`events/${id}`);
+        return response.data
+    } catch (error) {
+        return error.message
+    }
 })
 
 export const createEvent = createAsyncThunk('event/createEvent', async ( formData, thunkAPI ) => {
@@ -30,7 +52,6 @@ export const createEvent = createAsyncThunk('event/createEvent', async ( formDat
         })
         return response.data;   
     } catch (error) {
-        console.log(error);
         return thunkAPI.rejectWithValue(error.response.data)
     }
 })
@@ -71,6 +92,18 @@ const eventSlice = createSlice({
     },
 
     extraReducers: {
+        [getEventsbyuser.pending]: (state, action) => {
+
+        },
+
+        [getEventsbyuser.fulfilled]: (state, action) => {
+            state.items = action.payload;
+        },
+
+        [getEventsbyuser.rejected]: (state, action) => {
+
+        },
+
         [getEvents.pending]: (state, action) => {
 
         },
@@ -89,6 +122,7 @@ const eventSlice = createSlice({
         },
 
         [getEvent.fulfilled]: (state, action) => {
+            console.log(action.payload);
             state.loading = false;
             state.error = null;
             state.item = action.payload;

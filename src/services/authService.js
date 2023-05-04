@@ -24,7 +24,7 @@ export default {
     getJwt,
 };
 
-
+/*
 
 class CustomhttpService {
     
@@ -89,3 +89,4 @@ class CustomAuthService extends CustomhttpService {
         } 
     }
 }
+*/

@@ -1,4 +1,4 @@
-class UserService {
+/*class UserService {
 
     getAll() {
 
@@ -21,4 +21,4 @@ class UserService {
     }
 }
 
-export default new UserService();
+export default new UserService(); */

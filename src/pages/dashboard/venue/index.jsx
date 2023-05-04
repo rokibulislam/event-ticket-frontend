@@ -55,7 +55,14 @@ const Venue = () => {
       render: (_, item) => (
         <Space size="middle">
           <Link href={`/dashboard/venue/${item.id}/edit`}> Edit </Link> 
-          <Link href={`/dashboard/venue/${item.id}/customedit`}> Custom Edit </Link> 
+          {
+            item.events.length > 0 ? (
+              <>
+                <Link href={`/dashboard/venue-seatchart/${item.id}`}> Edit Seat </Link> 
+              </>
+            ) : ''
+          }
+          {/* <Link href={`/dashboard/venue/${item.id}/customedit`}> Custom Edit </Link>  */}
           <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
         </Space>
       ),
@@ -67,7 +74,7 @@ const Venue = () => {
       <DashboardLayout>
         <h2> Venue List  </h2> 
         <Link href="/dashboard/venue/create" className='btn btn-primary'> Create Venue </Link>
-        <Link href="/dashboard/venue/customcreate" className='btn btn-primary'> Custom Create Venue </Link>
+        {/* <Link href="/dashboard/venue/customcreate" className='btn btn-primary'> Custom Create Venue </Link> */}
 
         <Table columns={columns} dataSource={venues}/>
 

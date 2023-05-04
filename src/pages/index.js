@@ -10,6 +10,7 @@ import EventsList from '@/components/EventsList'
 
 
 import { SeatsioSeatingChart } from "@seatsio/seatsio-react";
+import CustomnestedVenueRepeatField from '@/components/VenueRepeatField/customnested'
 
 export const { format: formatPrice } = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -17,7 +18,10 @@ export const { format: formatPrice } = new Intl.NumberFormat("pt-BR", {
 });
 
 
+
 export default function Home() {
+  console.log('mojaloss');
+  console.log(process.env.API_URL);
   return (
     <>
       <Head>
@@ -29,7 +33,8 @@ export default function Home() {
       <main>
         <Layout>
           <h2> Recent Event List </h2>
-          {/* <EventsList /> */}
+          {/* <CustomnestedVenueRepeatField /> */}
+          {/* <EventsList />/ */}
           {/* <SeatsioSeatingChart
       workspaceKey="17fedfa1-98ac-4e40-9f2a-ac501975a59b"
       pricing={[

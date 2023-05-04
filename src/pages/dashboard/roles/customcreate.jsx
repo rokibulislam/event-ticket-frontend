@@ -57,7 +57,7 @@ const CreateRole = () => {
                     permissions.length > 0  ? (
                         permissions.map( ( item ) =>{
                         return (
-                            <option value={item.name}>
+                            <option key={item.id} value={item.name}>
                             { item.name }
                             </option>
                         )

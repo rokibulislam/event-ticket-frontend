@@ -38,7 +38,7 @@ const TicketType = () => {
       render: (_, item) => (
         <Space size="middle">
           <Link href={`/dashboard/tickettype/${item.id}/edit`}> Edit </Link> 
-          <Link href={`/dashboard/tickettype/${item.id}/customedit`}> Custom Edit </Link> 
+          {/* <Link href={`/dashboard/tickettype/${item.id}/customedit`}> Custom Edit </Link>  */}
           <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
         </Space>
       ),
@@ -49,7 +49,7 @@ const TicketType = () => {
         <DashboardLayout>
             <h2> TicketType  </h2>
             <Link href="/dashboard/tickettype/create" className="btn btn-primary"> Create Ticket Type </Link>
-            <Link href="/dashboard/tickettype/customcreate" className="btn btn-primary"> Create Custom Ticket Type </Link>
+            {/* <Link href="/dashboard/tickettype/customcreate" className="btn btn-primary"> Create Custom Ticket Type </Link> */}
             <Table columns={columns} dataSource={tickettypes}/>
         </DashboardLayout>
     </Layout>

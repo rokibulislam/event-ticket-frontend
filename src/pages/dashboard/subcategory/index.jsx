@@ -39,7 +39,7 @@ const SubCategory = () => {
       render: (_, item) => (
         <Space size="middle">
           <Link href={`/dashboard/subcategory/${item.id}/edit`}> Edit </Link> 
-          <Link href={`/dashboard/subcategory/${item.id}/customedit`}> Custom Edit </Link> 
+          {/* <Link href={`/dashboard/subcategory/${item.id}/customedit`}> Custom Edit </Link>  */}
           <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
         </Space>
       ),
@@ -51,7 +51,7 @@ const SubCategory = () => {
       <DashboardLayout>
         <h2> SubCategory List </h2>
         <Link href="/dashboard/subcategory/create" className='btn btn-primary'> Create SubCategory </Link>
-        <Link href="/dashboard/subcategory/customcreate" className='btn btn-primary'> Custom Create SubCategory </Link>
+        {/* <Link href="/dashboard/subcategory/customcreate" className='btn btn-primary'> Custom Create SubCategory </Link> */}
         <Table columns={columns} dataSource={eventsubcategories}/>
       </DashboardLayout>
     </Layout>

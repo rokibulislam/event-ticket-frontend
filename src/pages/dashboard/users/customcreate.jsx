@@ -63,7 +63,7 @@ const UserCreate = () => {
                   roles.length > 0  ? (
                     roles.map( ( item, i ) =>{
                       return (
-                        <option value={item.name}>
+                        <option key={item.id} value={item.name}>
                           { item.name }
                         </option>
                       )

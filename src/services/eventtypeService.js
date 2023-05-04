@@ -1,4 +1,4 @@
-class EventTypeService {
+/*class EventTypeService {
 
     getAll() {
 
@@ -21,4 +21,4 @@ class EventTypeService {
     }
 }
 
-export default new EventTypeService();
+export default new EventTypeService(); */

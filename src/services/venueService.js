@@ -1,3 +1,4 @@
+/*
 class VenueService {
     getAll() {
 
@@ -21,4 +22,4 @@ class VenueService {
 }
 
 
-export default new VenueService();
+export default new VenueService();*/

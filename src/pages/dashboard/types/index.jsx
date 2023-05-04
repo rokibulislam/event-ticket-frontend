@@ -37,7 +37,7 @@ const Types = () => {
         render: (_, item) => (
           <Space size="middle">
             <Link href={`/dashboard/types/${item.id}/edit`}> Edit </Link> 
-            <Link href={`/dashboard/types/${item.id}/customedit`}> Custom Edit </Link> 
+            {/* <Link href={`/dashboard/types/${item.id}/customedit`}> Custom Edit </Link>  */}
             <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
           </Space>
         ),
@@ -49,7 +49,7 @@ const Types = () => {
         <DashboardLayout>
         <h2> Type List  </h2> 
         <Link href="/dashboard/types/create" className='btn btn-primary'> Create Type </Link>
-        <Link href="/dashboard/types/customcreate" className='btn btn-primary'> Create Custom Type </Link>
+        {/* <Link href="/dashboard/types/customcreate" className='btn btn-primary'> Create Custom Type </Link> */}
         <Table columns={columns} dataSource={types}/>
         {/* <table className='table'>
           <thead>

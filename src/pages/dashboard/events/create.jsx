@@ -3,20 +3,20 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from "next/router"
 import DashboardLayout from '@/components/DashboardLayout';
-import { createEvent } from '@/store/slices/event'
+import { createEvent, createSeatsEvent } from '@/store/slices/event'
 import { getEventCategories, getSubCategoriesByCategory } from '@/store/slices/eventcategory'
 import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
 import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
-import { DatePicker, TimePicker, Radio, Upload, Button } from 'antd';
+import { DatePicker, TimePicker, Radio, Upload, Button, Select } from 'antd';
 import { getTicketTypes } from '@/store/slices/tickettype';
 import VenueRepeatField from '@/components/VenueRepeatField'
 import TicketRepeatField from '@/components/TicketField';
 import { protectRoute } from '@/components/protectRoute';
 // import { getSubEventCategories, getSubEventCategory } from '@/store/slices/eventsubcategory';
-import { Select } from 'antd';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
+
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -32,11 +32,11 @@ const EventCreate = () => {
   const chartkey =  useSelector( state => state.event.chartkey );
 
   // state 
-  const [category, setCategory] = useState('')
-  const [subcategory, setSubcategory] = useState('')
-  const [type, setType] = useState('')
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const [type, setType] = useState('')
+  const [category, setCategory] = useState('')
+  const [subcategory, setSubcategory] = useState('')
   const [venue, setVenue] = useState('')
   const [startdate, setStartdate] = useState('')
   const [enddate, setEnddate] = useState('')
@@ -106,6 +106,15 @@ const EventCreate = () => {
     setTickets(values);
   }
 
+  const handleCreateEvent = (e) => {
+    e.preventDefault();
+    console.log('handle create event');
+    dispatch( createSeatsEvent({
+      name: name,
+      chartkey: chartkey
+    }))
+  }
+
   return (
     <Layout> 
       <DashboardLayout>
@@ -123,7 +132,6 @@ const EventCreate = () => {
         </div>
 
         <div className='row'>
-            
             <div className="col-md-4">
               <div className="form-group mb-4">
                 <label htmlFor="type" className='form-label'> Event Type </label><br/>
@@ -163,7 +171,7 @@ const EventCreate = () => {
               </div>
             </div>
             
-            <div className="col">
+            <div className="col-md-4">
              <div className="form-group mb-4">
                 <label htmlFor="event_venue" className='form-label'> Event Venue </label> <br/>
                 <Select
@@ -197,12 +205,6 @@ const EventCreate = () => {
               </Upload.Dragger>
 
         </div>
-
-        {/* <div className="form-group mb-4">
-          <label htmlFor="image">Event Image:</label>
-          <input type="file" id="image" onChange={(e) => setImage(e.target.files[0])} />
-        </div> */}
-
   
         <div className='row'>
           <div className="col">
@@ -240,7 +242,6 @@ const EventCreate = () => {
             <Radio value={1}>Yes</Radio>
             <Radio value={0}>No</Radio>
           </Radio.Group>
-
         </div>
 
         {
@@ -266,9 +267,8 @@ const EventCreate = () => {
           ) : ''
         }
 
-
       {
-        chartkey != null ? (
+        chartkey !== null ? (
         <div className="form-group" style={{ 'height': '500px' }}> 
           <SeatsioDesigner
             secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
@@ -290,9 +290,18 @@ const EventCreate = () => {
       }
  
       <br/>
-        <div className="form-group">
-          <button className="btn btn-primary"> Submit </button>
-        </div>
+
+        {  chartkey !== null ? (
+          <div className="form-group">
+            <button className="btn btn-primary" onClick={handleCreateEvent}> Create Event </button>
+          </div>
+        ) : (
+          <>
+            <div className="form-group">
+              <button className="btn btn-primary"> Submit </button>
+            </div>
+          </>
+        ) }
       </form>
 
       </DashboardLayout>

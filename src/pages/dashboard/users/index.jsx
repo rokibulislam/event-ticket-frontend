@@ -53,7 +53,7 @@ const Users = () => {
         <DashboardLayout>
         <h2> User List  </h2> 
         <Link href="/dashboard/users/create" className='btn btn-primary'> Create User </Link>
-        <Link href="/dashboard/users/customcreate" className='btn btn-primary'> Custom Create User </Link>
+        {/* <Link href="/dashboard/users/customcreate" className='btn btn-primary'> Custom Create User </Link> */}
         <Table columns={columns} dataSource={users}/>
         {/* <table className='table'>
           <thead>

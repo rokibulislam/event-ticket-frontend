@@ -42,7 +42,7 @@ const Permissions = () => {
             <DashboardLayout>
                 <h2> Permissions </h2>
                 <Link href="/dashboard/permissions/create" className='btn btn-primary'> Create Permissions </Link>
-                <Link href="/dashboard/permissions/customcreate" className='btn btn-primary'> Custom Create Permissions </Link>
+                {/* <Link href="/dashboard/permissions/customcreate" className='btn btn-primary'> Custom Create Permissions </Link> */}
                 <Table columns={columns} dataSource={premissions}/>
             </DashboardLayout>
         </Layout>
