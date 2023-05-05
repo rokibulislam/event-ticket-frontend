@@ -271,7 +271,7 @@ const EventCreate = () => {
         chartkey !== null ? (
         <div className="form-group" style={{ 'height': '500px' }}> 
           <SeatsioDesigner
-            secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
+            secretKey={process.env.Seatio_Secret}
             chartKey={chartkey}
             region="NA"
             onChartCreated={chart => {

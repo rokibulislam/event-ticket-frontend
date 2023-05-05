@@ -47,7 +47,7 @@ const EventDetails = () => {
         { chartkry !== null ? (
           <div className="form-group" style={{ 'height': '500px' }}> 
               <SeatsioSeatingChart
-                  workspaceKey="17fedfa1-98ac-4e40-9f2a-ac501975a59b"
+                  workspaceKey={process.env.Seatio_Public}
                   event={name}
                   region="na"
                   onRenderStarted={ createdChart => { 
