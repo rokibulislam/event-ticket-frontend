@@ -17,6 +17,7 @@ const EventDetails = () => {
   const [category, setCategory] = useState('')
   const [venues, setVenues] = useState({});
   const [chartkry, setChartkey ] = useState('')
+  const [seatcategory, setSeatcategory ] = useState([])
 
   useEffect( () => {
     if( id !== undefined ) {
@@ -29,10 +30,31 @@ const EventDetails = () => {
       let pivot = p.venues[0];
       setChartkey(pivot.pivot.seatsid);
       setVenues(p.venues[0]);
+      // Seat(p.seatcategory);
+      setSeatcategory(p.seatcategory)
       // dispatch(getEvent(id));
     }
   }, [dispatch, id])
 
+    const subprice = (item) => {
+      return item.subprices.map( subprice => ( { 'ticketType': subprice.name, 'price': subprice.price } ) )
+    }
+
+    const Seat = (items) => {
+      let response = [];
+      if( items.length > 0 ) {
+        response =  items.map( item => {
+          return item.hassubprice ? { category: item.id , 'ticketTypes': subprice(item) } : { 'category': item.id, price: item.price  }
+        })
+      }
+
+      return response;
+    }
+
+    let priceing = [];
+    if( seatcategory.length > 0 ) {
+      priceing = Seat(seatcategory);
+    }
   return (
     <Layout>
       <div>
@@ -43,13 +65,14 @@ const EventDetails = () => {
         <p> Category: {category} </p>
         <p> Venue: {venues.name} </p>
         <p> Chart: {chartkry} </p>
-        
-        { chartkry !== null ? (
+
+        { chartkry !== null && priceing.length > 0 && (
           <div className="form-group" style={{ 'height': '500px' }}> 
               <SeatsioSeatingChart
                   workspaceKey={process.env.Seatio_Public}
                   event={name}
                   region="na"
+                  pricing={priceing}
                   onRenderStarted={ createdChart => { 
                     // console.log(createdChart);
                   }}
@@ -67,10 +90,10 @@ const EventDetails = () => {
                   }}
                 />
           </div>
-        ) : '' }
+        ) }
       </div>
     </Layout>
   )
 }
 
-export default EventDetails
+export default EventDetails;

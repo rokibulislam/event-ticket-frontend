@@ -16,7 +16,7 @@ import { protectRoute } from '@/components/protectRoute';
 // import { getSubEventCategories, getSubEventCategory } from '@/store/slices/eventsubcategory';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
-
+import CustomnestedVenueRepeatField from '@/components/VenueRepeatField/customnested'
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -48,12 +48,22 @@ const EventCreate = () => {
 
   const [tickets, setTickets] = useState([{ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: ''  }]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
-
+  const [venuenestedcategory, setNestedvenuecategory] = useState([
+    { 
+      name: '',
+      price: '',
+      fee: '',
+      showSubPrice: false,
+      subprices: [
+        { name: '', price: '', fee: '' }
+      ]
+    },
+]);
 
   useEffect( () => {
     dispatch(getEventCategories());
     dispatch(getEventTypes());
-    // dispatch(getVenues());
+    dispatch(getVenues());
     dispatch(getTicketTypes());
   }, [dispatch])
 
@@ -80,7 +90,8 @@ const EventCreate = () => {
     formData.append('starttime', starttime)
     formData.append('endtime', endtime)
     formData.append('tickets', JSON.stringify(tickets))
-    formData.append('venuecategory', JSON.stringify(venuecategory) )
+    // formData.append('venuecategory', JSON.stringify(venuecategory) )
+    formData.append('venuecategory', JSON.stringify(venuenestedcategory) )
     formData.append('reserve', reserve)
 
     dispatch(createEvent(formData));
@@ -262,7 +273,8 @@ const EventCreate = () => {
           reserve == 1 ? (
             <>
               <h2> Venue </h2>
-              <CustomVenueRepeatField fields={venuecategory} setFields={setVenuecategory}/>
+              {/* <CustomVenueRepeatField fields={venuecategory} setFields={setVenuecategory}/> */}
+              <CustomnestedVenueRepeatField fields={venuenestedcategory} setFields={setNestedvenuecategory} />
             </>
           ) : ''
         }
