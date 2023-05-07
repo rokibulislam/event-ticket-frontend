@@ -57,10 +57,7 @@ export const deleteCoupon = createAsyncThunk('event/deleteCoupon', async (id) =>
     } catch (error) {
         return error.message 
     }
-
 })
-
-
 
 const eventSlice = createSlice({
     name: "coupon",

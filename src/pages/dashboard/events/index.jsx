@@ -64,6 +64,10 @@ const Events = () => {
       render: (_, item) => (
         <Space size="middle">
           <Link href={`/dashboard/events/${item.id}/edit`}> Edit </Link> 
+          <Link href={`/dashboard/events/${item.id}/times`}> Event Times </Link> 
+          <Link href={`/dashboard/events/${item.id}/orders`}> Event Orders </Link> 
+          <Link href={`/dashboard/events/${item.id}/attendae`}> Event Attendae </Link> 
+          <Link href={`/dashboard/events/${item.id}/manager`}> Event Manager </Link> 
           {/* <Link href={`/dashboard/events/${item.id}/customedit`}> CustomEdit </Link>  */}
           <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
         </Space>

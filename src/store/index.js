@@ -11,12 +11,12 @@ import eventcategoryReducer from './slices/eventcategory'
 import eventsubcategoryReducer from './slices/eventsubcategory'
 import userReducer from './slices/user'
 import tickettypeReducer from './slices/tickettype'
-
 import roleReducer from './slices/role'
 import permissionReducer from './slices/permission'
 import couponReducer from './slices/coupon'
-
 import countryReducer from './slices/countries'
+import eventtimeReducer from './slices/eventtime'
+import cartReducer from './slices/cart';
 
 const persistConfig = {
     key: 'auth',
@@ -35,7 +35,9 @@ const rootReducer = combineReducers({
     role:roleReducer,   
     premission: permissionReducer,
     coupon: couponReducer,
-    country: countryReducer
+    country: countryReducer,
+    cart: cartReducer,
+    eventtimeReducer: eventtimeReducer
 });
 
   

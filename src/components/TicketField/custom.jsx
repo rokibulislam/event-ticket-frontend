@@ -1,6 +1,8 @@
 import { getTicketTypes } from '@/store/slices/tickettype';
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Switch } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 function CustomTicketRepeatField({ fields, setFields, handleTicketeChange, handleTicketAddField, handleTicketRemoveField }) {
     let dispatch = useDispatch();
@@ -24,6 +26,7 @@ function CustomTicketRepeatField({ fields, setFields, handleTicketeChange, handl
             </thead>
             <tbody>
         {fields.map((field, i) => (
+        <>
           <tr key={i}>
             <td>         
                 { tickettypes.length > 0 ? (
@@ -66,15 +69,38 @@ function CustomTicketRepeatField({ fields, setFields, handleTicketeChange, handl
             />
           </td>
           <td>
+            <Switch  onChange={ (e) => {
+              console.log('switching');
+              console.log(e);
+            } } />
+
+          </td>
+          <td>
             {fields.length > 1 && (
-              <button className='btn btn-danger' type="button" onClick={() => handleTicketRemoveField(i)}>
-                Remove
-              </button>
+              <CloseOutlined onClick={() => handleTicketRemoveField(i)} />
             )}
           </td>
 
           </tr>
+
+          <tr>
+              <td> 
+                <label htmlFor=""> Ticket Description </label>
+                <input
+                  type="text"
+                  name={`ticket_name`}
+                  value={field[i]?.price}
+                  className='form-control'
+                  onChange={(e) => handleTicketeChange(i, e)}
+                  placeholder='Enter Ticket Name'
+                />
+              </td>
+          </tr>
+        </>
         ))}
+
+        
+
       </tbody>
     </table>
         <button className='btn btn-primary' type="button" onClick={handleTicketAddField}>

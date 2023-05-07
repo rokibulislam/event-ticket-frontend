@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SeatsioSeatingChart } from "@seatsio/seatsio-react";
+import Cart from '@/components/Cart'
+import { addCartItem, removeCartItem } from '@/store/slices/cart'
 
 const EventDetails = () => {
   let dispatch = useDispatch();
@@ -18,6 +20,7 @@ const EventDetails = () => {
   const [venues, setVenues] = useState({});
   const [chartkry, setChartkey ] = useState('')
   const [seatcategory, setSeatcategory ] = useState([])
+
 
   useEffect( () => {
     if( id !== undefined ) {
@@ -55,9 +58,41 @@ const EventDetails = () => {
     if( seatcategory.length > 0 ) {
       priceing = Seat(seatcategory);
     }
+    const handleSelection = ( object, selectedTicketType ) => {
+      console.log(selectedTicketType);
+      if( selectedTicketType === undefined ) {
+        console.log(object)
+        dispatch(addCartItem({
+          id: object.id,
+          price: object.pricing.price
+        }))
+      } else {
+
+        dispatch(addCartItem({
+          id: object.id,
+          price: selectedTicketType.price,
+          type: selectedTicketType.ticketType
+        }))
+      }
+      console.log(object);
+      console.log(selectedTicketType);
+    }
+
+    const handleDeSelection = ( object, deselectedTicketType ) => {
+      console.log(object);
+      console.log(deselectedTicketType);
+      dispatch(removeCartItem({
+        id: object.id,
+        price: deselectedTicketType.price,
+        type: deselectedTicketType.ticketType
+      }))
+    }
+
   return (
     <Layout>
-      <div>
+
+    <div style={{ display: 'flex' }}> 
+      <div className='info'>
         <h2> {name} </h2>
         <p> {description}  </p>
         <p> Username: {username} </p>
@@ -65,6 +100,11 @@ const EventDetails = () => {
         <p> Category: {category} </p>
         <p> Venue: {venues.name} </p>
         <p> Chart: {chartkry} </p>
+      </div>
+      <div>
+          <Cart />
+      </div>
+    </div>
 
         { chartkry !== null && priceing.length > 0 && (
           <div className="form-group" style={{ 'height': '500px' }}> 
@@ -79,11 +119,12 @@ const EventDetails = () => {
                   onChartRendered={chart => {
                     console.log(chart.selectedObjects);
                   }}
-                  onObjectSelected={function(object, selectedTicketType){
-                    console.log(object);
-                  }}
-                  onObjectDeselected={function(object, deselectedTicketType){
-                    console.log(object);
+                  onObjectSelected={handleSelection}
+                  onObjectDeselected={handleDeSelection}
+                  onHoldSucceeded={function(objects, ticketTypes){
+                    console.log('hold');
+                    console.log(objects);
+                    console.log(ticketTypes);
                   }}
                   onObjectStatusChanged={function(object){
                     console.log(object);
@@ -91,7 +132,6 @@ const EventDetails = () => {
                 />
           </div>
         ) }
-      </div>
     </Layout>
   )
 }

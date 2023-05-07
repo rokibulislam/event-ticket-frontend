@@ -12,6 +12,7 @@ import { DatePicker, TimePicker, Radio, Upload, Button, Select } from 'antd';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
+import dayjs from 'dayjs';
 
 const EditEvents = () => {
   const router = useRouter()
@@ -45,6 +46,8 @@ const EditEvents = () => {
   const [ reserve, setReserve ] = useState(null)
   const [ chartkey, setChartkey ] = useState( null);
 
+  console.log(dayjs(startdate));
+
   useEffect( () => {
     dispatch(getEventCategories());
     dispatch(getEventTypes());
@@ -65,9 +68,18 @@ const EditEvents = () => {
       setName(event.name)
       setDescription(event.description);
       setCategory(event.category.id);
+      setSubcategory(event.subcategory_id)
       setType(event.type.id);
-      let pivot = event.venues[0];
-      setChartkey(pivot.pivot.seatsid);
+      setReserve(event.reserve);
+      let event_details =  event.event_details;
+      setStartdate( event_details.startdate )
+      setEnddate(event_details.enddate);
+      setStartdate(event.starttime)
+      setEndtime(event.endtime)
+      if( reserve == 1 ) {
+        let pivot = event.venues[0];
+        setChartkey(pivot.pivot.seatsid);
+      }
     }
   },[dispatch, id])
 
@@ -147,7 +159,7 @@ const EditEvents = () => {
                 options={ eventcategories.length > 0 ? eventcategories.map( item => {
                   return { value: item.id,label: item.name }
                 }) : [] }
-                value={type}
+                value={category}
                 /> 
             </div>
           </div>
@@ -208,35 +220,35 @@ const EditEvents = () => {
               <div className="col">
                 <div className='form-group mb-4'>
                   <label htmlFor='' className='form-label'> Start Date </label>
-                  <DatePicker className="form-control" onChange={ (date, dateString) => { setStartdate( dateString)  } }/>
+                  <DatePicker defaultValue={dayjs(startdate)} className="form-control" onChange={ (date, dateString) => { setStartdate( dateString)  } }/>
                 </div>
               </div>
 
               <div className="col">
                 <div className='form-group mb-4'>
                   <label htmlFor='' className='form-label'> End Date </label>
-                  <DatePicker className="form-control" onChange={ (date, dateString) => { setEnddate( dateString)  } }/>
+                  <DatePicker defaultValue={dayjs(enddate)} className="form-control" onChange={ (date, dateString) => { setEnddate( dateString)  } }/>
                 </div>
               </div>
 
               <div className="col">
                 <div className='form-group mb-4'>
                   <label htmlFor='' className='form-label'> Start Time </label>
-                  <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => { setStarttime( timeString)  } }/>
+                  <TimePicker defaultValue={dayjs(starttime)} className="form-control" mode='time' onChange={ (time, timeString) => { setStarttime( timeString)  } }/>
                 </div>
               </div>
 
               <div className="col">
                 <div className='form-group mb-4'>
                   <label htmlFor='' className='form-label'> End Time </label>
-                  <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => { setEndtime( timeString)  } }/>
+                  <TimePicker  defaultValue={dayjs(endtime)} className="form-control" mode='time' onChange={ (time, timeString) => { setEndtime( timeString)  } }/>
                 </div>
               </div>
           </div>
 
           <div className='form-group mb-4'>
             <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
-            <Radio.Group onChange={ (e) => setReserve(e.target.value)} className='form-control'>
+            <Radio.Group onChange={ (e) => setReserve(e.target.value)} className='form-control' defaultValue={reserve} value={reserve}>
               <Radio value={1}>Yes</Radio>
               <Radio value={0}>No</Radio>
             </Radio.Group>
@@ -264,27 +276,16 @@ const EditEvents = () => {
             ) : ''
           }
 
-      {
-        chartkey !== null ? (
+      {/* {
+        chartkey !== null && reserve == 1 && (
         <div className="form-group" style={{ 'height': '500px' }}> 
           <SeatsioDesigner
             secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
             chartKey={chartkey}
             region="NA"
-            onChartCreated={chart => {
-              console.log('created chart', chart)
-            }}
-            onChartUpdated={chart =>{
-              setChart(chart);
-              console.log('updated chart', chart)
-            }}
-            pricing= {[
-              {"category": "test category", 'price': 30},
-          ]}
           />
         </div>
-        ) : ''
-      }
+      )} */}
 
           <div className="form-group">
               <button className="btn btn-primary"> Submit </button>

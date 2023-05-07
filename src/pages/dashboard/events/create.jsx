@@ -46,7 +46,13 @@ const EventCreate = () => {
   const [ chart, setChart ] = useState(null)
   const [ reserve, setReserve ] = useState(null)
 
-  const [tickets, setTickets] = useState([{ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: ''  }]);
+  const [tickets, setTickets] = useState([{
+     ticket_type: '', 
+     ticket_name: '', 
+     ticket_price: '', 
+     ticket_qty: '',  
+     showSettings: false
+  }]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
   const [venuenestedcategory, setNestedvenuecategory] = useState([
     { 
@@ -84,6 +90,7 @@ const EventCreate = () => {
     formData.append('image', image.originFileObj)
     formData.append('type_id', type)
     formData.append('category_id', category)
+    formData.append('subcategory_id', subcategory)
     formData.append('venue_id', venue)
     formData.append('startdate', startdate)
     formData.append('enddate', enddate)
@@ -101,7 +108,6 @@ const EventCreate = () => {
   function handleTicketeChange(i, event) {
     const values = [...tickets];
     values[i][event.target.name] = event.target.value;
-    console.log(values);
     setTickets(values);
   }
 
@@ -279,7 +285,7 @@ const EventCreate = () => {
           ) : ''
         }
 
-      {
+      {/* {
         chartkey !== null ? (
         <div className="form-group" style={{ 'height': '500px' }}> 
           <SeatsioDesigner
@@ -299,11 +305,19 @@ const EventCreate = () => {
           />
         </div>
         ) : ''
-      }
+      } */}
  
       <br/>
 
-        {  chartkey !== null ? (
+      {/* <div className="form-group">
+        <button className="btn btn-primary" onClick={handleCreateEvent}> Create Event </button>
+      </div> */}
+
+      <div className="form-group">
+        <button className="btn btn-primary"> Submit </button>
+      </div>
+
+        {/* {  chartkey !== null ? (
           <div className="form-group">
             <button className="btn btn-primary" onClick={handleCreateEvent}> Create Event </button>
           </div>
@@ -313,7 +327,7 @@ const EventCreate = () => {
               <button className="btn btn-primary"> Submit </button>
             </div>
           </>
-        ) }
+        ) } */}
       </form>
 
       </DashboardLayout>
