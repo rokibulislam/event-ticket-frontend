@@ -20,7 +20,8 @@ const EventDetails = () => {
   const [venues, setVenues] = useState({});
   const [chartkry, setChartkey ] = useState('')
   const [seatcategory, setSeatcategory ] = useState([])
-
+  const [ reserve, setReserve ] = useState(null)
+  const [ image, setImage ] = useState('');
 
   useEffect( () => {
     if( id !== undefined ) {
@@ -30,11 +31,14 @@ const EventDetails = () => {
       setUsername(p.user.name)
       setType(p.type.name)
       setCategory(p.category.name)
+      setImage(p.image);
       let pivot = p.venues[0];
-      setChartkey(pivot.pivot.seatsid);
+      if( reserve == 1) {
+        setChartkey(pivot.pivot.seatsid);
+        setSeatcategory(p.seatcategory)
+      }
       setVenues(p.venues[0]);
       // Seat(p.seatcategory);
-      setSeatcategory(p.seatcategory)
       // dispatch(getEvent(id));
     }
   }, [dispatch, id])
@@ -90,18 +94,20 @@ const EventDetails = () => {
 
   return (
     <Layout>
+    
+    { image !=null  && ( <img src={image} alt="avatar" style={{ width: '100%', height: '300px' }} /> ) } 
 
-    <div style={{ display: 'flex' }}> 
-      <div className='info'>
+    <div className='container' style={{ display: 'flex', justifyContent: 'space-between' }}> 
+      <div className='info' style={{ flex: 1}}>
         <h2> {name} </h2>
         <p> {description}  </p>
         <p> Username: {username} </p>
         <p> Type: {type} </p>
         <p> Category: {category} </p>
-        <p> Venue: {venues.name} </p>
-        <p> Chart: {chartkry} </p>
+        {/* <p> Venue: {venues.name} </p> */}
+        {/* <p> Chart: {chartkry} </p> */}
       </div>
-      <div>
+      <div className='' style={{ flex: 1}}>
           <Cart />
       </div>
     </div>

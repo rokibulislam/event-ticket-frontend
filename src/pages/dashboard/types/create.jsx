@@ -5,31 +5,24 @@ import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createEventType } from '@/store/slices/eventtype'
+import { useForm } from "react-hook-form";
 import { protectRoute } from '@/components/protectRoute';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType } from 'yup'; 
+
+let validationSchema = object({
+  name: string().required('Type is Required').label("name"),
+});
 
 const TypesCreate = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [ name, setName ] = useState ('')
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
 
-    setInput({
-      ...input,
-      [name]: value
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission
-
-    // Dispatch Redux action with form data
-    dispatch(createEventType(name));
-
-    // Reset form state
-    setName("");
-
+  const onSubmit = (data) => {
+    // console.log(data);
+    dispatch(createEventType(data.name));
     router.push('/dashboard/types')
   };
 
@@ -37,17 +30,16 @@ const TypesCreate = () => {
     <Layout> 
         <DashboardLayout> 
           
-        <form action='' method='post' onSubmit={handleSubmit}>
+        <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
               
             <div className="form-group mb-4">
-                  <label htmlFor="type_name" className='form-label'> Type Name </label>
-                  <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => {
-                    setName(e.target.value)
-                  }}  />
+                  <label htmlFor="name" className='form-label'> Type Name </label>
+                  <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
+                  {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
             </div>
 
             <div className="form-group">
-                <button className="btn btn-primary"> Submit </button>
+                <button disabled={!isValid} className="btn btn-primary"> Submit </button>
             </div>
 
         </form>

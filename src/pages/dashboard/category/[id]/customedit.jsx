@@ -1,69 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector  } from 'react-redux'
-import Link from 'next/link'
-import DashboardLayout from '@/components/DashboardLayout'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
 import Layout from '@/components/layout'
-import { createEventCategory, updateEventCategory } from '@/store/slices/eventcategory';
-import { useRouter } from "next/router"
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
-import { protectRoute } from '@/components/protectRoute';
-
-let validationSchema = object({
-  name: string().required('Category Name is Required').label("Name")
-});
+import DashboardLayout from '@/components/DashboardLayout'
+import { getEventCategory, updateEventCategory } from '@/store/slices/eventcategory'
+import { protectRoute } from '@/components/protectRoute'
 
 const EditCategory = () => {
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
-    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const [ name, setName ] = useState('')
     const categories =  useSelector( state => state.eventcategory.items );
-    const [name, setName] = useState('')
 
+  
     useEffect( () => {
-        if( id !== 'undefined' ) {
-            const category  = categories.find( item => item.id == id );
-            setName(category?.name);
-            // dispatch(getEventCategory(routerId))
-        }
-  },[dispatch, id])
+      if( id !== 'undefined' ) {
+        const category  = categories.find( item => item.id == id );
+        setName(category.name);
+        // dispatch(getEventCategory(routerId))
+      }
+    },[dispatch, id])
 
-  useEffect(() => {
-    reset({
-      name: name
-    })
-  }, [name])
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      dispatch(updateEventCategory({ id, name }))
 
-  const onSubmit = (data) => {
-    console.log(data);
-    dispatch(updateEventCategory({
-      id: id,
-      name: data.name
-    }));
-    router.push('/dashboard/category')
-  };
+      router.push('/dashboard/category')
+    } 
+  
+    return (
+      <Layout>
+          <DashboardLayout>
+            
+            <form action='' method='post' onSubmit={handleSubmit}>
 
-  return (
-    <Layout> 
-      <DashboardLayout>        
-          <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-              
-              <div className="form-group mb-4">
-                <label htmlFor="name" className='form-label'> Category Name </label>
-                <input {...register('name')} type="text" id="name" className="form-control" />
-                {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
+              <div className="form-group">
+                <label htmlFor=""> Category Name </label>
+                <input type="text" name="type_name" id="" value={name} className="form-control mb-4" onChange={ (e) => { setName(e.target.value) }}  />
               </div>
   
               <div className="form-group">
-                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
+                  <button className="btn btn-primary"> Update </button>
               </div>
-  
-          </form> 
-      </DashboardLayout> 
-    </Layout>
-  )
+            
+            </form> 
+
+          </DashboardLayout>
+      </Layout>
+    )
 }
 
 export default protectRoute(EditCategory)

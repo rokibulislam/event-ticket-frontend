@@ -4,41 +4,32 @@ import { createPermission } from '@/store/slices/permission'
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
-
-
-let validationSchema = object({
-    name: string().required('Permission name is required').label("Name")
-});
 
 const CreatePermission = () => {
     const dispatch = useDispatch();
     let router = useRouter();
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
-
-    const onSubmit = (data) => {
-        console.log(data);
-        dispatch(createPermission(data.name));
-        router.push('/dashboard/permissions')
+    const [ name, setName ] = useState ('')
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      dispatch(createPermission(name));
+      router.push('/dashboard/permissions')
     };
 
     return (
         <Layout>  
             <DashboardLayout>
                 <h2>  Create Permission  </h2>
-                <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
+                <form action='' method='post' onSubmit={handleSubmit}>
             
                     <div className="form-group mb-4">
-                        <label htmlFor="name" className='form-label'> Permission Name </label>
-                        <input {...register('name')} type="text" id="name" className="form-control" />
-                        {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
+                        <label htmlFor="type_name" className='form-label'> Permission Name </label>
+                        <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => { setName(e.target.value) }}  />
                     </div>
 
                     <div className="form-group">
-                        <button disabled={!isValid} className="btn btn-primary" type='submit'> Submit </button>
+                        <button className="btn btn-primary" type='submit'> Submit </button>
                     </div>
 
                 </form> 

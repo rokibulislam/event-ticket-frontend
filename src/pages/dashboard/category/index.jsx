@@ -37,7 +37,7 @@ const Category = () => {
         render: (_, item) => (
           <Space size="middle">
             <Link href={`/dashboard/category/${item.id}/edit`}> <EditOutlined /> </Link> 
-            <Link href={`/dashboard/category/${item.id}/customedit`}> Custom Edit </Link> 
+            {/* <Link href={`/dashboard/category/${item.id}/customedit`}> Custom Edit </Link>  */}
             <CloseOutlined onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger' />
           </Space>
         ),
@@ -49,8 +49,8 @@ const Category = () => {
     <Layout>
         <DashboardLayout>
         <h2> Category List  </h2> 
-        <Link href="/dashboard/category/create" className='btn btn-primary'> Create Category </Link>
-        <Link href="/dashboard/category/customcreate" className='btn btn-primary'> Create Custom Category </Link>
+        <Link href="/dashboard/category/create" className='btn btn-create'> Create Category </Link>
+        {/* <Link href="/dashboard/category/customcreate" className='btn btn-primary'> Create Custom Category </Link> */}
         <Table columns={columns} dataSource={eventcategories}/>
         </DashboardLayout>
     </Layout>
