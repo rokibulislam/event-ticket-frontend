@@ -5,25 +5,25 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createUser } from '@/store/slices/user'
 import { useRouter } from 'next/router';
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
 import { getRoles } from '@/store/slices/role';
 import { protectRoute } from '@/components/protectRoute';
+import { Select } from 'antd'
 
 let validationSchema = object({
   name: string().required().label("name"),
   email: string().email().required().label("email"),
-  password: string().required().label("password")
+  password: string().required().label("password"),
+  role: number().required('role is requried').label("role"),
 });
 
 
 const UserCreate = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
-  const [ role, setRole ] = useState ('')
-
+  const { control, register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
   const roles =  useSelector( state => state.role.items );
 
   useEffect(() => {
@@ -44,21 +44,38 @@ const UserCreate = () => {
             <div className="form-group mb-4">
                   <label htmlFor="name" className='form-label'> User Name </label>
                   <input {...register('name', { required: true })} type="text" id="name" className="form-control"/>
+                  {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
             </div>
 
             <div className="form-group mb-4">
                   <label htmlFor="email" className='form-label'> Email </label>
                   <input {...register('email', { required: true })} type="text" id="name" className="form-control"/>
+                  {errors.email && <span style={{ color: 'red' }}> { errors.email?.message }  </span>}
             </div>
 
             <div className="form-group mb-4">
                   <label htmlFor="password" className='form-label'> Password </label>
                   <input {...register('password', { required: true })} type="password" id="password" className="form-control"/>
+                  {errors.password && <span style={{ color: 'red' }}> { errors.password?.message }  </span>}
             </div>
 
             <div className="form-group mb-4">
-              <label htmlFor="role" className='form-label'> Role </label>
-              <select {...register('role', { required: true })} className="form-control mb-4" id="role">
+              <label htmlFor="role" className='form-label'> Role </label> <br/>
+              <Controller
+                  control={control}
+                  name="role"
+                  render={({ field }) => (
+                    <Select
+                      style={{ width: 220 }}
+                      onChange={ (value ) => field.onChange(value) }
+                      options={
+                        roles.length > 0 && ( roles.map( ( item, i ) =>{
+                          return { value: item.id, label: item.name }
+                        })) } 
+                    />
+                  )}
+                />
+              {/* <select {...register('role', { required: true })} className="form-control mb-4" id="role">
                 { 
                   roles.length > 0  ? (
                     roles.map( ( item, i ) =>{
@@ -70,7 +87,7 @@ const UserCreate = () => {
                     })
                   ) : ''
                 }
-              </select>
+              </select> */}
             </div> 
 
             <div className="form-group">

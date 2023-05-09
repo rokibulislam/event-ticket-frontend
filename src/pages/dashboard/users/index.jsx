@@ -42,6 +42,7 @@ const Users = () => {
         render: (_, item) => (
           <Space size="middle">
             <Link href={`/dashboard/users/${item.id}/edit`}> <EditOutlined /> </Link> 
+            <Link href={`/dashboard/users/${item.id}/customedit`}> <EditOutlined /> </Link> 
             <CloseOutlined onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger' />
           </Space>
         ),
@@ -53,7 +54,7 @@ const Users = () => {
         <DashboardLayout>
         <h2> User List  </h2> 
         <Link href="/dashboard/users/create" className='btn btn-create'> Create User </Link>
-        {/* <Link href="/dashboard/users/customcreate" className='btn btn-primary'> Custom Create User </Link> */}
+        <Link href="/dashboard/users/customcreate" className='btn btn-primary'> Custom Create User </Link>
         <Table columns={columns} dataSource={users}/>
         </DashboardLayout>
     </Layout>
