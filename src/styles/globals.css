@@ -124,3 +124,22 @@ a {
 .dashcontent{ 
   flex-basis: 80%;
 }
+
+
+.btn-create, .btn-create:hover {
+  background: #0643f2;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+
+.header {
+  background: #0643f2;
+  color: #fff !important;
+  margin-bottom: 20px;
+}
+
+.ant-menu-item-selected {
+  background-color: #0643f2 !important;
+  color: #fff  !important;
+}

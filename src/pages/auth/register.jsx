@@ -1,65 +1,80 @@
 import Layout from '@/components/layout'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { register } from '../../store/slices/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { register as registerAction } from '../../store/slices/auth'
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType, ref as yupref } from 'yup'; 
+import { unwrapResult } from "@reduxjs/toolkit";
+
+let validationSchema = object({
+  username: string().required().min(3).label("username"),
+  email: string().required().email().label("email"),
+  password: string().min(4).required().label("Password"),
+  confirmPassword: string()
+    .oneOf([yupref('password'), null], 'Passwords must match') // added password confirmation validation
+    .required('Please confirm your password')
+});
 
 const Register = () => {
   const dispatch = useDispatch()
   const router = useRouter();
+  const auth =  useSelector( state => state.auth )
+  const { register, handleSubmit, formState: { errors, isValid }, setError } = useForm({resolver: yupResolver(validationSchema)});
 
-  const [ input, setInput ] = useState ({
-    username: '',
-    email: '',
-    password: '',
-    confirm_password: ''
-  })
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setInput({
-      ...input,
-      [name]: value
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('check submit');
-    dispatch(register({ username: input.username,  email: input.email, password: input.password }));
-    // router.push('/auth/login')
+  const onSubmit = async data =>{
+    try {
+      const resultAction = await dispatch(registerAction({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      }));
+      unwrapResult(resultAction);
+    } catch( error ) {
+      console.log(Object.keys(error));
+      Object.keys(error).forEach((fieldName) => {
+        setError(fieldName, {
+          type: "server",
+          message: error[fieldName]
+        });
+      });
+    }
   }
 
   return (
     <Layout>
       <h2 className='jumbotron text-center bg-primary square p-5 text-white'> Register </h2>
+      {/* { auth.error } */}
       <div className='col-md-4 offset-md-4'>
-        <form action='' method='post' onSubmit={handleSubmit}>
+        <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
 
           <div className='form-group mb-4'>
             <label htmlFor="username" className='form-label'> Username </label>
-            <input type="text" name="username" id="username" className="form-control" onChange={handleChange} value={input.title}/>
+            <input {...register('username')} type="text" id="username" className="form-control"/>
+            {errors.username && <p style={{ color: 'red'}}>{errors.username.message}</p>}
           </div>
 
           <div className='form-group mb-4'>
             <label htmlFor="email" className='form-label'> Email Address </label>
-            <input type="text" name="email" id="email" className="form-control" onChange={handleChange} value={input.email} />
+            <input {...register('email')} type="text" id="email" className="form-control" />
+            {errors.email && <p style={{ color: 'red'}}>{errors.email.message}</p>}
           </div>
 
           <div className='form-group mb-4'>
             <label htmlFor="password" className='form-label'> Password </label>
-            <input type="text" name="password" id="password" className="form-control" onChange={handleChange} value={input.password}/>
+            <input {...register('password')} type="text" name="password" id="password" className="form-control" />
+            {errors.password && <p style={{ color: 'red'}}>{errors.password.message}</p>}
           </div>
 
           <div className='form-group'>
-            <label htmlFor="confirm_password" className='form-label'> Confirm Password </label>
-            <input type="text" name="confirm_password" id="confirm_password" className="form-control mb-4" onChange={handleChange} value={input.confirm_password}/>
+            <label htmlFor="confirmPassword" className='form-label'> Confirm Password </label>
+            <input {...register('confirmPassword')} type="text" id="confirmPassword" className="form-control mb-4"/>
+            {errors.confirmPassword && <p style={{ color: 'red'}}>{errors.confirmPassword.message}</p>}
           </div>
 
           <div className="form-group">
-            <button className="btn btn-primary"> Register </button>
+            <button  disabled={!isValid} className="btn btn-primary" type='submit'> Register </button>
           </div>
         </form>
       </div>

@@ -1,6 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '@/services/httpService'
 
+export const getVenueByUser = createAsyncThunk('event/getVenueByUser', async () => {
+    try {
+        let response = await httpService.get('venue');
+        
+        return response.data;    
+    } catch (error) {
+        return error.message 
+    }
+})
+
 export const getVenues = createAsyncThunk('event/getVenues', async () => {
     try {
         let response = await httpService.get('venue');
@@ -77,6 +87,18 @@ const venueSlice = createSlice({
     },
 
     extraReducers: {
+        [getVenueByUser.pending]: (state, action) => {
+
+        },
+
+        [getVenueByUser.fulfilled]: (state, action) => {
+            state.items = action.payload;
+        },
+
+        [getVenueByUser.rejected]: (state, action) => {
+
+        },
+
         [getVenues.pending]: (state, action) => {
 
         },

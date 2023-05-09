@@ -4,13 +4,33 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Switch } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
-function CustomTicketRepeatField({ fields, setFields, handleTicketeChange, handleTicketAddField, handleTicketRemoveField }) {
+function CustomTicketRepeatField({ fields, setFields }) {
     let dispatch = useDispatch();
     const tickettypes =  useSelector( state => state.tickettype.items );
 
     useEffect( () => {
         dispatch(getTicketTypes());
     }, [dispatch])
+
+    function handleTicketeChange(i, event) {
+      const values = [...fields];
+      values[i][event.target.name] = event.target.value;
+      console.log(values);
+      setFields(values);
+    }
+  
+    function handleTicketAddField() {
+      const values = [...fields];
+      values.push({ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: '' });
+      setFields(values);
+    }
+  
+    function handleTicketRemoveField(i) {
+      const values = [...fields];
+      values.splice(i, 1);
+      setFields(values);
+    }
+  
         
     return (
     <>

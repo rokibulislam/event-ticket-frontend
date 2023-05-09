@@ -7,6 +7,7 @@ import { getEvents, deleteEvent, getEventsbyuser } from '@/store/slices/event';
 import { Table, Space } from 'antd'
 import { protectRoute } from '@/components/protectRoute';
 import { object } from 'yup';
+import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 
 const Events = () => {
 
@@ -63,13 +64,13 @@ const Events = () => {
       key: 'action',
       render: (_, item) => (
         <Space size="middle">
-          <Link href={`/dashboard/events/${item.id}/edit`}> Edit </Link> 
+          <Link href={`/dashboard/events/${item.id}/edit`}> <EditOutlined>  Edit </EditOutlined> </Link> 
           <Link href={`/dashboard/events/${item.id}/times`}> Event Times </Link> 
           <Link href={`/dashboard/events/${item.id}/orders`}> Event Orders </Link> 
           <Link href={`/dashboard/events/${item.id}/attendae`}> Event Attendae </Link> 
           <Link href={`/dashboard/events/${item.id}/manager`}> Event Manager </Link> 
-          {/* <Link href={`/dashboard/events/${item.id}/customedit`}> CustomEdit </Link>  */}
-          <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
+          <Link href={`/dashboard/events/${item.id}/customedit`}> CustomEdit </Link> 
+          <CloseOutlined onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'/> 
         </Space>
       ),
     },
@@ -80,7 +81,7 @@ const Events = () => {
       <DashboardLayout>
         <h2> Events List  </h2> 
         <Link href="/dashboard/events/create" className="btn btn-primary"> Create Events </Link>
-        {/* <Link href="/dashboard/events/customcreate" className="btn btn-primary"> Custom Create Events </Link> */}
+        <Link href="/dashboard/events/customcreate" className="btn btn-primary"> Custom Create Events </Link>
         <Table columns={columns} dataSource={events}/>
       </DashboardLayout>
     </Layout>

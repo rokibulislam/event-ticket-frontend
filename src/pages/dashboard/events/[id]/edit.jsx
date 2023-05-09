@@ -65,17 +65,17 @@ const EditEvents = () => {
     if( id !== 'undefined' ) {
       let event  = events.find( item => item.id == id );
       console.log(event);
-      setName(event.name)
-      setDescription(event.description);
-      setCategory(event.category.id);
-      setSubcategory(event.subcategory_id)
-      setType(event.type.id);
-      setReserve(event.reserve);
-      let event_details =  event.event_details;
-      setStartdate( event_details.startdate )
-      setEnddate(event_details.enddate);
-      setStartdate(event.starttime)
-      setEndtime(event.endtime)
+      setName(event?.name)
+      setDescription(event?.description);
+      setCategory(event?.category.id);
+      setSubcategory(event?.subcategory_id)
+      setType(event.type?.id);
+      setReserve(event?.reserve);
+      let event_details = event.event_details;
+      setStartdate( event_details?.startdate )
+      setEnddate(event_details?.enddate);
+      setStartdate(event?.starttime)
+      setEndtime(event?.endtime)
       if( reserve == 1 ) {
         let pivot = event.venues[0];
         setChartkey(pivot.pivot.seatsid);

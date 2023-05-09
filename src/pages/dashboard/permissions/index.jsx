@@ -6,6 +6,7 @@ import Layout from '@/components/layout'
 import { Table, Space } from 'antd'
 import { getPermissions, deletePermission } from '@/store/slices/permission';
 import { protectRoute } from '@/components/protectRoute';
+import { CloseOutlined } from '@ant-design/icons';
 
 const Permissions = () => {
     const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const Permissions = () => {
           key: 'action',
           render: (_, item) => (
             <Space size="middle">
-              <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
+              <CloseOutlined onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger' />
             </Space>
           ),
         },
@@ -42,7 +43,7 @@ const Permissions = () => {
             <DashboardLayout>
                 <h2> Permissions </h2>
                 <Link href="/dashboard/permissions/create" className='btn btn-primary'> Create Permissions </Link>
-                {/* <Link href="/dashboard/permissions/customcreate" className='btn btn-primary'> Custom Create Permissions </Link> */}
+                <Link href="/dashboard/permissions/customcreate" className='btn btn-primary'> Custom Create Permissions </Link>
                 <Table columns={columns} dataSource={premissions}/>
             </DashboardLayout>
         </Layout>

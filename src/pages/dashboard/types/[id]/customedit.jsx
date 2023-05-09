@@ -6,24 +6,43 @@ import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { getEventType,updateEventType } from '@/store/slices/eventtype'
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType } from 'yup'; 
+
+let validationSchema = object({
+  name: string().required('Type is Required').label("name"),
+});
 
 const EditType = () => {
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
     const types =  useSelector( state => state.eventtype.items );
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors, isValid } } =  useForm({resolver: yupResolver(validationSchema)});
+    const [name, setName] = useState('')
 
     useEffect( () => {
         if( id !== 'undefined' ) {
           const type  = types.find( item => item.id == id );
+          setName(type?.name);
         }
-      },[dispatch, id])
+    },[dispatch, id])
+
+
+    useEffect(() => {
+        reset({
+          name: name
+        })
+    }, [name])
+      
     
     const onSubmit = (data) => {
-        console.log(data);
-        // dispatch(updateEventType(data.name));
-        // router.push('/dashboard/types')
+      console.log(data);
+      dispatch(updateEventType({
+        id: id,
+        name: data.name
+      }));
+      router.push('/dashboard/types')
     };
 
   return (
@@ -33,6 +52,7 @@ const EditType = () => {
                 <div className="form-group mb-4">
                     <label htmlFor="name" className='form-label'> Type Name </label>
                     <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
+                    {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
                 </div>
                 
                 <div className="form-group">

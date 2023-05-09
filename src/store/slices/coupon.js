@@ -22,14 +22,20 @@ export const getCoupon = createAsyncThunk('event/getCoupon', async (id) => {
     }
 })
 
-export const createCoupon = createAsyncThunk('event/createCoupon', async ({ code, amount }, thunkAPI) => {
+export const createCoupon = createAsyncThunk('event/createCoupon', async ({ code, amount, discount_type, description, minimum_amount, usage_limit, usage_limit_per_user }, thunkAPI) => {
     try {
+        console.log('create coupon');
         let response  = await httpService.post('coupons', {
             code: code,
-            discount_amount: amount
+            discount_amount: amount,
+            // discount_type: discount_type,
+            // description: description,
+            // minimum_amount: minimum_amount,
+            // usage_limit: usage_limit,
+            // usage_limit_per_user: usage_limit_per_user
         });
-    
-        return response;   
+        console.log(response);
+        // return response;   
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data)
     }

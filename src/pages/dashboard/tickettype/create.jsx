@@ -1,42 +1,46 @@
+import React from 'react'
+import { useDispatch, useSelector  } from 'react-redux'
+import { useRouter } from "next/router"
+import { useForm } from "react-hook-form";
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector  } from 'react-redux'
-import Link from 'next/link'
-import { useRouter } from "next/router"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, number, date, InferType } from 'yup'; 
 import { createTicketType } from '@/store/slices/tickettype';
 import { protectRoute } from '@/components/protectRoute';
 
-const CreateTicketType = () => {
-  const dispatch = useDispatch();
-  let router = useRouter();
-  const [ name, setName ] = useState ('')
+let validationSchema = object({
+  name: string().required('Ticket Type is Required').label("name"),
+});
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-    dispatch(createTicketType(name));
-    setName("");
-    router.push('/dashboard/tickettype')
-  };
+const CreateTicketType = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const { register, handleSubmit, formState: { errors, isValid } } =  useForm({resolver: yupResolver(validationSchema)});
+
+    const onSubmit = (data) => {
+        dispatch(createTicketType(data.name));
+        router.push('/dashboard/tickettype')
+    };
 
   return (
     <Layout>
         <DashboardLayout>
-            <h2> CreateTicketType </h2>
-            <form action='' method='post' onSubmit={handleSubmit}>
-            
+            <h2> Custom Ticket Type Create </h2>
+            <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
+              
               <div className="form-group mb-4">
-                <label htmlFor="type_name" className='form-label'> Ticket Type Name </label>
-                <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => {
-                  setName(e.target.value)
-                }}  />
+                <label htmlFor="name" className='form-label'> Ticket Type Name </label>
+                <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
+                {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
               </div>
   
               <div className="form-group">
-                  <button className="btn btn-primary"> Submit </button>
+                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
               </div>
-            </form> 
-        </DashboardLayout>
+  
+          </form> 
+        </DashboardLayout> 
     </Layout>
   )
 }

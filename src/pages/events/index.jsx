@@ -19,7 +19,7 @@ const Events = () => {
 
   return (
     <Layout>
-      <div>
+      <div className='container'>
         <h2> Events </h2>
         <EventsList />
       </div>

@@ -56,13 +56,8 @@ const Venue = () => {
         <Space size="middle">
           <Link href={`/dashboard/venue/${item.id}/edit`}> Edit </Link> 
           {
-            item.events.length > 0 ? (
-              <>
-                <Link href={`/dashboard/venue-seatchart/${item.id}`}> Edit Seat </Link> 
-              </>
-            ) : ''
-          }
-          {/* <Link href={`/dashboard/venue/${item.id}/customedit`}> Custom Edit </Link>  */}
+            item?.events.length > 0 && ( <Link href={`/dashboard/venue-seatchart/${item.id}`}> Edit Seat </Link>)}
+          <Link href={`/dashboard/venue/${item.id}/customedit`}> Custom Edit </Link> 
           <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
         </Space>
       ),
@@ -74,47 +69,8 @@ const Venue = () => {
       <DashboardLayout>
         <h2> Venue List  </h2> 
         <Link href="/dashboard/venue/create" className='btn btn-primary'> Create Venue </Link>
-        {/* <Link href="/dashboard/venue/customcreate" className='btn btn-primary'> Custom Create Venue </Link> */}
-
+        <Link href="/dashboard/venue/customcreate" className='btn btn-primary'> Custom Create Venue </Link>
         <Table columns={columns} dataSource={venues}/>
-
-        {/* <table className='table'>
-          <thead>
-            <tr>
-              <th> Name </th>
-              <th> Nick Name </th>
-              <th> City </th>
-              <th> Action </th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-        { venues?.length > 0 ? (
-            <>
-                          {venues.map((item, i) => {
-                return (
-                  <tr key={item.id}>
-                    <td>
-                      {item.name}
-                    </td>
-                    <td>
-                      {item.nickname}
-                    </td>
-                    <td>
-                      {item.city}
-                    </td>
-                    <td> 
-                      <Link href={`/dashboard/venue/${item.id}/edit`}> Edit </Link>  | 
-                      <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </>
-        ) : '' }
-        </tbody>
-      </table> */}
-      
       </DashboardLayout>
     </Layout>
   )

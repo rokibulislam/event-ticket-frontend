@@ -15,20 +15,21 @@ const EventsList = (props) => {
   return (
     <div className='event'>
       
-      { events.length > 0 ? (
+      { events.length > 0 && (
         <Row gutter={16}>
           { events.map( item => {
             return ( 
-              <Col span={8} key={item.id}>
-                <Card title={item.name} bordered={false}>
-                  {item.description}
-                  <Link href={`/events/${item.id}`} className='btn btn-primary'> Read More </Link>
+              <Col span={7} key={item.id} offset={1} style={{ marginBottom: '30px'}}>
+                <Card bordered={false} cover={<img src={item.image} />}>
+                  <h3>  {item.name}  </h3>
+                  <p> {item.description} </p>
+                  <Link href={`/events/${item.id}`} className='btn btn-block btn-primary'> Read More </Link>
                 </Card>
               </Col>
             )})
           }
         </Row>
-      ): '' }
+      )}
     </div>
   )
 }

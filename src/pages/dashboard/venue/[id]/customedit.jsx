@@ -22,14 +22,39 @@ const EditVenue = () => {
   const { id } = router.query
   const dispatch = useDispatch();
   const venues =  useSelector( state => state.venue.items );
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+  const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+  
+  const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
 
   useEffect( () => {
     if( id !== 'undefined') {
       const venue  = venues.find( item => item.id == id );
+      setName(venue?.name);
+      setNickname(venue?.nickname);
+      setPostcode(venue?.postcode);
+      setCountry(venue?.country);
+      setState(venue?.state)
+      setCity(venue?.city);
      // dispatch(getVenue(id))
     }
   },[dispatch, id])
+
+  useEffect(() => {
+    reset({
+      name: name,
+      nickname: nickname,
+      postcode: postcode,
+      country: country,
+      state: state,
+      city: city
+    })
+  }, [name,nickname,postcode,country,city, state])
+  
 
   const onSubmit = (data) => {
     console.log(data);
@@ -42,34 +67,36 @@ const EditVenue = () => {
       state: data.state,
       postcode: data.postcode
     }))
-    // router.push('/dashboard/venue')
+    router.push('/dashboard/venue')
   }
 
   return (
     <Layout>
       <DashboardLayout>
         <h2> EditVenue </h2>
-
-          <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>   
-              
+        <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>    
               <div className="form-group mb-4">
                   <label htmlFor="name" className='form-label'> Venue Name </label>
                   <input {...register('name')} type="text" id="name" className="form-control"/>
+                  {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
               </div>
 
               <div className="form-group mb-4">
                   <label htmlFor="nickname" className='form-label'> Venue Nickname </label>
                   <input {...register('nickname')} type="text" id="nickname" className="form-control"/>
+                  {errors.nickname && <span style={{ color: 'red' }}> { errors.nickname?.message }  </span>}
               </div>
 
               <div className="form-group mb-4">
                   <label htmlFor="postcode" className='form-label'> PostCode </label>
                   <input {...register('postcode')} type="text" id="postcode" className="form-control"/>
+                  {errors.postcode && <span style={{ color: 'red' }}> { errors.postcode?.message }  </span>}
               </div>
 
               <div className="form-group mb-4">
                   <label htmlFor="country" className='form-label'> Country </label>
                   <input {...register('country', { required: true })}  type="text" name="country" id="country" className="form-control"/>
+                  {errors.country && <span style={{ color: 'red' }}> { errors.country?.message }  </span>}
               </div>
 
               <div className="form-group mb-4">
@@ -80,14 +107,13 @@ const EditVenue = () => {
               <div className="form-group mb-4">
                   <label htmlFor="city" className='form-label'> City </label>
                   <input {...register('city')}  type="text" name="city" id="city" className="form-control"/>
+                  {errors.city && <span style={{ color: 'red' }}> { errors.city?.message }  </span>}
               </div>
 
               <div className="form-group">
                   <button disabled={!isValid}  className="btn btn-primary"> Submit </button>
-              </div>
-          
-          </form>
-
+              </div>  
+        </form>
       </DashboardLayout>
     </Layout>
   )

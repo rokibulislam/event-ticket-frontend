@@ -24,7 +24,7 @@ export const register = createAsyncThunk('users/register', async ({ username, em
             email: email,
             password: password
         });
-
+        console.log(response);
         return response.data;
 
     } catch(error) {
@@ -67,7 +67,7 @@ const authSlice = createSlice({
        
         [register.rejected]: (state, action) => {
             state.loading = false;
-            state.error = action.payload.error ? action.payload.error : 'Failed to register';
+            state.error = action?.payload?.error ?? 'Failed to register';
         },
 
         [login.pending]: (state, action) => {

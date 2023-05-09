@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSelector, useDispatch  } from 'react-redux';
-import { logout } from  '../store/slices/auth'
-import auth, { getCurrentUser } from '../services/authService'
+import { logout } from  '../../store/slices/auth'
+import auth, { getCurrentUser } from '../../services/authService'
 import { Menu } from 'antd';
 
 import { Layout as AntLayout, Header, Space, Row, Col, Container } from 'antd'
+import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 
 
 const Layout = ( { children }) => {
@@ -60,19 +61,19 @@ const Layout = ( { children }) => {
   return (
     <>
         
-        <AntLayout>
+        <AntLayout className='header'>
             <div className="container">
-
                 <Row gutter={16}>
                 
                     <Col span={4}>
-                        <Link href="/" className='logo'> Simple Logo </Link>
+                        <Link href="/" style={{ textDecoration: 'none' }}> Simple Logo </Link>
                     </Col>
                     
                     <Col span={8}>
                         <Menu
                             style={{
-                                background: "none"
+                                background: "none",
+                                color: '#fff'
                             }}
                             mode="horizontal"
                             onClick={ (item) => {
@@ -81,7 +82,7 @@ const Layout = ( { children }) => {
                             items={[
                                 {
                                     label: 'Home',
-                                    key: '/'
+                                    key: '/',
                                 }, 
                                 {
                                     label: 'Events',
@@ -117,7 +118,8 @@ const Layout = ( { children }) => {
                             
                                     <Menu
                                         style={{
-                                            background: "none"
+                                            background: "none",
+                                            color: '#fff'
                                         }}
                                         mode="horizontal"
                                         onClick={ (item ) => {
@@ -193,7 +195,9 @@ const Layout = ( { children }) => {
         <Space />
         
         <div className='row'>
-            { children }
+            <div className="container">
+                { children }
+            </div>
         </div>
     </>
   )

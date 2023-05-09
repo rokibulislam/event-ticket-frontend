@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Table, Space } from 'antd'
 import { getCoupons, deleteCoupon } from '@/store/slices/coupon'
 import { protectRoute } from '@/components/protectRoute'
+import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 
 const Coupons = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,9 @@ const Coupons = () => {
       key: 'action',
       render: (_, item) => (
         <Space size="middle">
-          <Link href={`/dashboard/coupons/${item.id}/edit`}> Edit </Link> 
-          {/* <Link href={`/dashboard/coupons/${item.id}/customedit`}> Custom Edit </Link>  */}
-          <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
+          <Link href={`/dashboard/coupons/${item.id}/edit`}> <EditOutlined />  </Link> 
+          <Link href={`/dashboard/coupons/${item.id}/customedit`}> Custom Edit </Link> 
+          <CloseOutlined onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger' />
         </Space>
       ),
     },
@@ -54,7 +55,7 @@ const Coupons = () => {
         <DashboardLayout>
             <h2> Coupons </h2> 
             <Link href="/dashboard/coupons/create" className="btn btn-primary"> Create Coupon </Link>
-            {/* <Link href="/dashboard/coupons/customcreate" className="btn btn-primary"> Create Custom Coupon </Link> */}
+            <Link href="/dashboard/coupons/customcreate" className="btn btn-primary"> Create Custom Coupon </Link>
             <Table columns={columns} dataSource={coupons}/>
         </DashboardLayout>
     </Layout>

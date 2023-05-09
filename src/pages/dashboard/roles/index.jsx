@@ -7,6 +7,7 @@ import { getUsers, deleteUser } from '@/store/slices/user'
 import { Table, Space } from 'antd'
 import { getRoles, deleteRole } from '@/store/slices/role';
 import { protectRoute } from '@/components/protectRoute';
+import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 
 const Roles = () => {
     const dispatch = useDispatch();
@@ -32,8 +33,9 @@ const Roles = () => {
           key: 'action',
           render: (_, item) => (
             <Space size="middle">
-              <Link href={`/dashboard/roles/${item.id}/edit`}> Edit </Link> 
-              <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
+              <Link href={`/dashboard/roles/${item.id}/edit`}> <EditOutlined /> </Link> 
+              <Link href={`/dashboard/roles/${item.id}/customedit`}> Custom Edit </Link> 
+              <CloseOutlined onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger' />
             </Space>
           ),
         },
@@ -44,7 +46,7 @@ const Roles = () => {
             <DashboardLayout>
                 <h2> Roles </h2>
                 <Link href="/dashboard/roles/create" className='btn btn-primary'> Create Role </Link>
-                {/* <Link href="/dashboard/roles/customcreate" className='btn btn-primary'> Custom Create Role </Link> */}
+                <Link href="/dashboard/roles/customcreate" className='btn btn-primary'> Custom Create Role </Link>
                 <Table columns={columns} dataSource={roles}/>
             </DashboardLayout>
         </Layout>

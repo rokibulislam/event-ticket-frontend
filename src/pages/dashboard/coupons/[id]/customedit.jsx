@@ -12,7 +12,9 @@ import { protectRoute } from '@/components/protectRoute';
 
 let validationSchema = object({
     code: string().required().label("Code"),
-    amount: number().required().label("Amount")
+    amount: number().required().label("Amount"),
+    discount_type: string().required().label('discount_type'),
+    description: string().required().label('description'),
 });
 
 
@@ -20,7 +22,7 @@ const EditCoupon = () => {
     const dispatch = useDispatch();
     let router = useRouter();
     const { id  } = router.query
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
     const coupons =  useSelector( state => state.coupon.items );
     const [ code, setCode ] = useState ('')
     const [ amount, setAmount ] = useState ('')
@@ -32,6 +34,13 @@ const EditCoupon = () => {
           setAmount(coupon.discount_amount);
         }
     },[dispatch, id])
+
+    useEffect(() => {
+        reset({
+            code: code,
+            amount: amount
+        })
+    }, [code,amount])
   
     const onSubmit = ( data ) => {
         console.log(data);
@@ -47,7 +56,7 @@ const EditCoupon = () => {
                     
                     <div className="form-group mb-4">
                         <label htmlFor="code" className='form-label'> Coupon Code </label>
-                        <input {...register('code')} type="text" id="code" value={code} className="form-control"/>
+                        <input {...register('code')} type="text" id="code" className="form-control"/>
                     </div>
 
                     <div className="form-group mb-4">
@@ -69,7 +78,7 @@ const EditCoupon = () => {
                         <div className="col-md-6">
                             <div className="form-group mb-4">
                                 <label htmlFor="amount" className='form-label'> Discount Amount </label>
-                                <input {...register('amount')} type="text" id="amount" className="form-control" value={amount} />
+                                <input {...register('amount')} type="text" id="amount" className="form-control" />
                             </div>
                         </div>
 

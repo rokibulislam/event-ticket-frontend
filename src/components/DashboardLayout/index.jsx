@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSelector, useDispatch  } from 'react-redux';
 import { logout } from  '../../store/slices/auth'
@@ -6,12 +6,15 @@ import auth from '../../services/authService'
 
 import { useRouter } from 'next/navigation';
 import { Menu } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
 
 const DashboardLayout = ( { children }) => {
   
   const router = useRouter();
 
   const user = useSelector( state => state.auth.user );
+  const [current, setCurrent] = useState('/dashboard');
+
   // let roles = user?.roles;
   // let role = roles.find( item =>  item.name == 'Vendor' );
   // console.log(role);
@@ -80,6 +83,11 @@ const DashboardLayout = ( { children }) => {
     {
       label: 'Attendae',
       key: '/dashboard/attendae'
+    },
+    {
+      label: 'Settings',
+      key: '/dashboard/settings',
+      icon: <SettingOutlined />
     }
   ];
 
@@ -94,9 +102,11 @@ const DashboardLayout = ( { children }) => {
         <div className='dashnav'>
           <Menu
             onClick={ (item) => {
+              setCurrent(item.key);
               router.push(item.key);
             }}
             items={items}
+            selectedKeys={[current]}
           />
         </div>
 

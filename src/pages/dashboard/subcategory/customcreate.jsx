@@ -7,24 +7,22 @@ import { useRouter } from "next/router"
 import { createSubEventCategory } from '@/store/slices/eventsubcategory';
 import { getEventCategories } from '@/store/slices/eventcategory';
 import { Select } from 'antd'
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
 
 
 let validationSchema = object({
-    name: string().required().label("Name"),
-    event_category: string().required().label("category"),
+    name: string().required('name is requried').label("Name"),
+    category: number().required('category is required').label("category"),
 });
 
   
 const SubCategoryCreate = () => {
   const dispatch = useDispatch();
   let router = useRouter();
-  const [name, setName] = useState('');
-  const [category, setCategory] = useState('');
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+  const {  control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationSchema)});
   const eventcategories =  useSelector( state => state.eventcategory.items );
 
   useEffect(() => {
@@ -34,10 +32,10 @@ const SubCategoryCreate = () => {
   const onSubmit = (data) => {
     console.log(data);
     dispatch(createSubEventCategory({
-      name: name,
-      category_id: category
+      name: data.name,
+      category_id: data.category
     }));
-    // router.push('/dashboard/category')
+    router.push('/dashboard/category')
   };
 
   return (
@@ -47,24 +45,31 @@ const SubCategoryCreate = () => {
               
               <div className="form-group mb-4">
                 <label htmlFor="name" className='form-label'> SubCategory Name </label>
-                <input {...register('name', { required: true })} type="text" id="name"  className="form-control" />
+                <input {...register('name')} type="text" id="name"  className="form-control" />
+                {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
               </div>
 
               <div className="form-group mb-4">
-                    <label htmlFor="event_category" className='form-label'> Event Category </label>
+                <label htmlFor="category" className='form-label'> Event Category </label> <br/>
+                <Controller
+                  control={control}
+                  name="category"
+                  render={({ field }) => (
                     <Select
-                      style={{ width: 120 }}
-                      onChange={ (value ) => setCategory(value)}
+                      style={{ width: 220 }}
+                      onChange={ (value ) => field.onChange(value) }
                       options={
-                        eventcategories.map( ( item, i ) =>{
+                        eventcategories.length > 0 && ( eventcategories.map( ( item, i ) =>{
                           return { value: item.id, label: item.name }
-                        })
-                      }
+                        })) } 
                     />
-                </div>
+                  )}
+                />
+                {errors.category && <p style={{ color: 'red' }}> { errors.category?.message }  </p>}
+              </div>
   
               <div className="form-group">
-                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
+                  <button  className="btn btn-primary"> Submit </button>
               </div>
   
           </form> 

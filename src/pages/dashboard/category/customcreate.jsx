@@ -11,7 +11,7 @@ import { object, string, number, date, InferType } from 'yup';
 import { protectRoute } from '@/components/protectRoute';
 
 let validationSchema = object({
-  name: string().required().label("Name")
+  name: string().required('Category Name is Required').label("Name")
 });
 
 const CategoryCreate = () => {
@@ -20,6 +20,7 @@ const CategoryCreate = () => {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
 
   const onSubmit = (data) => {
+    console.log(data);
     dispatch(createEventCategory(data.name));
     router.push('/dashboard/category')
   };
@@ -27,18 +28,17 @@ const CategoryCreate = () => {
   return (
     <Layout> 
       <DashboardLayout>        
-          <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-              
-              <div className="form-group mb-4">
-                <label htmlFor="name" className='form-label'> Category Name </label>
-                <input {...register('name')} type="text" id="name" className="form-control" />
-              </div>
-  
-              <div className="form-group">
-                  <button disabled={!isValid} className="btn btn-primary"> Submit </button>
-              </div>
-  
-          </form> 
+        <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
+            <div className="form-group mb-4">
+              <label htmlFor="name" className='form-label'> Category Name </label>
+              <input {...register('name')} type="text" id="name" className="form-control" />
+              {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
+            </div>
+
+            <div className="form-group">
+                <button disabled={!isValid} className="btn btn-primary"> Submit </button>
+            </div>
+        </form> 
       </DashboardLayout> 
     </Layout>
   )
