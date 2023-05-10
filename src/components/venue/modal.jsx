@@ -1,29 +1,47 @@
-import React from 'react'
-import { Modal } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Modal } from 'antd';
 import VenuecreateForm from './createForm';
+import { createVenue } from '@/store/slices/venue';
 
 
-const VenueModal = ( props ) => {
-    console.log(props.isopen);
+const VenueModal = ( { isModalOpen, setIsModalOpen } ) => {
+    let dispatch = useDispatch();
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+    
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    
     const handleOk = () => {
-        props.setIsOpen(false)
-    }
+        setIsModalOpen(false);
+    };
 
-    const handleCancel =  () => {
-        props.setIsOpen(false)
-    }
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
-    const onSubmit = (data ) => {
-        console.log(data);
+    const onSubmit = (data) => {
+        dispatch(createVenue(
+            {
+                name: data.name, 
+                nickname: data.nickname,
+                city: data.city,
+                country: data.country,
+                // state: stateId,
+                country: data.country,
+                state: data.state,
+                postcode: data.postcode
+            }
+        ))
+        setIsModalOpen(false)
     }
 
     return (
-        <div>
-            <Modal title="Basic Modal" open={false}>
-                <VenuecreateForm onSubmit={onSubmit}/>
-            </Modal>
-        </div>
-    )
-}
+        <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}> 
+            <VenuecreateForm onSubmit={onSubmit}/>
+        </Modal>
+    );
+};
 
-export default VenueModal
+export default VenueModal;

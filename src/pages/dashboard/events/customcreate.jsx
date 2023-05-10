@@ -19,8 +19,9 @@ import { select } from 'antd'
 import { getTicketTypes } from '@/store/slices/tickettype';
 import CustomTickethook from '@/components/TicketField/customTickethook';
 import { CloseOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import VenueModal from '@/components/venue/modal';
-
+import VenueModal , { ModalApp } from '@/components/venue/modal';
+import CustomnestedVenueRepeatField from '@/components/VenueRepeatField/customnested';
+import CustomVenuehook from '@/components/VenueRepeatField/customVenuehook';
 
 let validationSchema = object({
   name: string().required('name is required').label("name"),
@@ -55,10 +56,25 @@ const EventCreate = () => {
   const chartkey =  useSelector( state => state.event.chartkey );
 
   // react hook form
-  const { control, register, handleSubmit, watch, trigger, formState: { errors, isValid } } = useForm({
+  const { control, setValue, register, handleSubmit, watch, trigger, formState: { errors, isValid } } = useForm({
     defaultValues: {
       reserve: 0,
-      tickets: { ticketName: '', ticketPrice: '', ticketQty: ''  },
+      tickets: { ticketName: '', ticketPrice: '', ticketQty: '', showSettings: false, settings: {
+        canbepurchase: 0,
+        description: '',
+        minimumticketperorder: 0,
+        maximumticketperorder: 0,
+        serviceFee: 0,
+      }  },
+      venuetickets: { 
+        name: '',
+        price: '',
+        fee: '',
+        showSubPrice: false,
+        subprices: [
+          { name: '', price: '', fee: '' }
+        ]
+      }
       // people: [{ firstName: '', lastName: '' }],
     },
     resolver: yupResolver(validationSchema)
@@ -74,8 +90,22 @@ const EventCreate = () => {
   // use state
   // const [tickets, setTickets] = useState([{ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: ''  }]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  console.log(isModalOpen);
+  const [venuenestedcategory, setNestedvenuecategory] = useState([
+    { 
+      name: '',
+      price: '',
+      fee: '',
+      showSubPrice: false,
+      subprices: [
+        { name: '', price: '', fee: '' }
+      ]
+    },
+  ]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log(errors);
+  
   useEffect( () => {
     dispatch(getEventCategories());
     dispatch(getEventTypes());
@@ -101,6 +131,27 @@ const EventCreate = () => {
     // }));
 
     // router.push('/dashboard/events')
+    const formData = new FormData()
+    formData.append('name', data.name)
+    formData.append('description', data.description)
+    formData.append('image', data.image?.originFileObj)
+    formData.append('type_id', data.type)
+    formData.append('category_id', data.category)
+    if( data.subcategory != undefined) {
+      formData.append('subcategory_id', data.subcategory)
+    }
+    formData.append('venue_id', data.venue)
+    formData.append('startdate', data.startdate)
+    formData.append('enddate', data.enddate)
+    formData.append('starttime', data.starttime)
+    formData.append('endtime', data.endtime)
+    formData.append('tickets', JSON.stringify(data.tickets))
+    // formData.append('venuecategory', JSON.stringify(venuecategory) )
+    formData.append('venuecategory', JSON.stringify(data.venuenestedcategory) )
+    formData.append('reserve', data.reserve)
+
+    dispatch(createEvent(formData));
+  
   }
 
 
@@ -227,7 +278,7 @@ const EventCreate = () => {
                     console.log('showing btn');
                     setIsModalOpen(true);
                   }}> <PlusCircleOutlined /> New Venue </button>
-                  <VenueModal isopen={isModalOpen} setIsOpen={setIsModalOpen} />
+                  <VenueModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             </div>
 
         </div>
@@ -327,59 +378,12 @@ const EventCreate = () => {
           />
         </div>
 
-        <table className='table'>
-            <thead>
-              <tr>
-                {/* <th> Ticket Type </th> */}
-                <th> Ticket Name </th>
-                <th> Qty </th>
-                <th> Ticket Price</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {fields.map((field, index) => (
-                <tr key={field.id}>
-                  <td>
-                    <input
-                      className='form-control'
-                      type="text"
-                      placeholder="Ticket Name"
-                      {...register(`tickets.${index}.ticketName`,{ required: true })}
-                    />
-                    {errors.tickets && errors.tickets[index].ticketName && (
-                     <span style={{ color: 'red' }}> {errors.tickets[index]?.ticketName?.message} </span>
-                    )}
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      placeholder="Ticket Price"
-                      {...register(`tickets.${index}.ticketPrice`,{ required: true })}
-                    />
-                    {errors.tickets && errors.tickets[index].ticketPrice && (
-                      <span style={{ color: 'red' }}> {errors.tickets[index]?.ticketPrice?.message} </span>
-                    )}
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      placeholder="Ticket Quantity"
-                      {...register(`tickets.${index}.ticketQty`,{ required: true })}
-                    />
-                    {errors.tickets && errors.tickets[index.ticketQty] && (
-                      <span style={{ color: 'red' }}> {errors.tickets[index]?.ticketQty?.message} </span>
-                    )}
-                  </td>
-                  <td>
-                  <CloseOutlined onClick={() => remove(index)} className='btn-danger' />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-      <button type="button" className='btn btn-create' onClick={() => append({ ticketName: '', ticketPrice: '', ticketQty: ''  })}> Add Ticket </button>
 
+      {/* <CustomnestedVenueRepeatField fields={venuenestedcategory} setFields={setNestedvenuecategory} /> */}
+      
+      <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} />
+
+      {/* <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} /> */}
 
         {/* <CustomTickethook name="tickets" register={register} /> */}
   

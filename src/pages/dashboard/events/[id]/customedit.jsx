@@ -7,7 +7,7 @@ import event, { getEvent, updateEvent } from '@/store/slices/event';
 import { getEventCategories, getSubCategoriesByCategory } from '@/store/slices/eventcategory'
 import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useFieldArray } from "react-hook-form";
 import { protectRoute } from '@/components/protectRoute';
 
 import { DatePicker, TimePicker, Radio, Upload, Button, Select } from 'antd';
@@ -18,6 +18,8 @@ import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType, mixed } from 'yup'; 
 import { select } from 'antd'
+
+import CustomTickethook from '@/components/TicketField/customTickethook';
 
 
 let validationSchema = object({
@@ -53,11 +55,10 @@ const EditEvents = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('')
   const [reserve, setReserve ] = useState(0)
-  const [tickets, setTickets] = useState([{ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: ''  }]);
+  const [tickets, setTickets] = useState([]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
 
-
-  const { control, register, handleSubmit, reset, formState: { errors, isValid } } = useForm();
+  const { control, register, handleSubmit, reset, setValue, watch, formState: { errors, isValid } } = useForm();
 
   useEffect( () => {
     // dispatch(getEvent(id))
@@ -85,6 +86,7 @@ const EditEvents = () => {
       setDescription(event.description)
       setImage(event.image)
       setReserve(event.isReserved)
+      setTickets(event?.tickets)
     }
   },[dispatch, id])
 
@@ -96,45 +98,21 @@ const EditEvents = () => {
         venue: venue,
         description: description,
         subcategory: subcategory,
-        image: image
+        image: image,
+        tickets: tickets
       })
-  }, [name, type, category, venue, description])
+  }, [name, type, category, venue, description, tickets])
   
+  const { fields, append, remove } = useFieldArray({ control, name: 'tickets' });
 
   const onSubmit = (data) => {
     console.log(data);
   }
 
-  const handleUpload = () => {
-    console.log('start upload');
-  }
-
-  function handleTicketeChange(i, event) {
-    const values = [...tickets];
-    values[i][event.target.name] = event.target.value;
-    console.log(values);
-    setTickets(values);
-  }
-
-  function handleTicketAddField() {
-    const values = [...tickets];
-    values.push({ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: '' });
-    setTickets(values);
-  }
-
-  function handleTicketRemoveField(i) {
-    const values = [...tickets];
-    values.splice(i, 1);
-    setTickets(values);
-  }
 
   const handleCreateEvent = (e) => {
     e.preventDefault();
     console.log('handle update event');
-  }
-
-  const handleChange = () => {
-    
   }
 
   return (
@@ -252,7 +230,7 @@ const EditEvents = () => {
                 control={control}
                 name="image"
                 render={({ field }) => (
-                <Upload.Dragger beforeUpload={handleUpload} multiple={false} onChange= { info =>field.onChange(info.file) }>
+                <Upload.Dragger multiple={false} onChange= { info =>field.onChange(info.file) }>
                   {image ? (
                     <img src={image} alt="avatar" style={{ width: '200px', height: '200px' }} />
                   ) : (
@@ -342,6 +320,9 @@ const EditEvents = () => {
               <Radio value={0}>No</Radio>
             </Radio.Group> */}
           </div>
+
+          <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} values={tickets} />
+
 
 
           {/* {
