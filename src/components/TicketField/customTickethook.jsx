@@ -7,7 +7,16 @@ import { Radio, Select } from 'antd';
 const CustomTickethook = ({ Controller, name, control, register, setValue, watch, errors, values= [] }) => {
     console.log('props');
     console.log(values);
-    const { fields, append, remove } = useFieldArray({ control, name });
+    const { fields, append, remove } = useFieldArray({ control, name, defaultValues: [
+      { ticketName: '', ticketPrice: '', ticketQty: '', showSettings: false, settings: {
+        canbepurchase: 0,
+        description: '',
+        minimumticketperorder: 0,
+        maximumticketperorder: 0,
+        serviceFee: 0,
+      }  }
+
+    ] });
     const watchedField = watch(name);
 
     useEffect(() => {
