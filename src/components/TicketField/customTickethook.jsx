@@ -18,9 +18,9 @@ const CustomTickethook = ({ Controller, name, control, register, setValue, watch
     const watchedField = watch(name);
 
     useEffect(() => {
-      if( values.length > 0 ) {
-          values.forEach((item) => append(item))
-      }
+      // if( values.length > 0 ) {
+      //     values.forEach((item) => append(item))
+      // }
     }, [values]);
 
     console.log("errors");

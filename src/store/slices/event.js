@@ -140,17 +140,13 @@ const eventSlice = createSlice({
         },
 
         [createEvent.fulfilled]: (state, action) => {
-            console.log(action.payload.event);
-            console.log(action.payload?.data);
-        //    let item = {};
-        //     if( action.payload?.data != undefined ) {
-        //         item  = { ...action.payload.event, chartkey: action.payload.data.key }
-        //     } else {
-        //         item = action.payload.event;
-        //     }
-
-            state.items.push(action.payload.event);
-            // state.chartkey = action.payload.data.key;
+            if( action.payload?.data != undefined ) {
+                console.log(action.payload.event);
+                console.log(action.payload?.data);
+                state.items.push({ ...action.payload.event, chartkey: action.payload.data.key });
+            } else {
+                state.items.push(action.payload.event);
+            }
         },
 
         [createEvent.rejected]: (state, action) => {

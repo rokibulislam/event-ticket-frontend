@@ -9,14 +9,14 @@ export const eventvalidationSchema = object({
         ticketQty: number().required('Ticket Price is required'),
       })
     ),
-    venuetickets: array().of(
-      object().shape({
-        name: string().required('Category Name is required'),
-        price: string().required('Price is required'),
-        fee: string().required('Price is required'),
-        qty: string().required('Price is required'),
-      })
-    ),
+    // venuetickets: array().of(
+    //   object().shape({
+    //     name: string().required('Category Name is required'),
+    //     price: string().required('Price is required'),
+    //     fee: string().required('Price is required'),
+    //     qty: string().required('Price is required'),
+    //   })
+    // ),
     type: number().required("type is required").label("type"),
     category: number().required("category is requried").label("category"),
     venue: number().required("venue is required").label("venue"),

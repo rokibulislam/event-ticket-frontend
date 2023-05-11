@@ -1,4 +1,4 @@
-import { object, string, number, date, InferType } from 'yup'; 
+import { object, string, number, date, InferType, array } from 'yup'; 
 
 export const typevalidationSchema = object({
     name: string().required('Type is Required').label("name"),

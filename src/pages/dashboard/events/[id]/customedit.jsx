@@ -16,11 +16,17 @@ import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType, mixed } from 'yup'; 
 import { select } from 'antd'
 
 import CustomTickethook from '@/components/TicketField/customTickethook';
+import CustomVenuehook from '@/components/VenueRepeatField/customVenuehook';
+
+
 import { eventvalidationSchema } from '@/validation/event';
+import CustomSelect from '@/components/Form/select';
+import CustomDatepicker from '@/components/Form/datepicker';
+import CustomTimepicker from '@/components/Form/timepicker';
+import CustomRadio from '@/components/Form/radio';
 
 const EditEvents = () => {
   const router = useRouter()
@@ -32,18 +38,19 @@ const EditEvents = () => {
   const eventcategories =  useSelector( state => state.eventcategory.items );
   const eventsubcategories =  useSelector( state => state.eventsubcategory.items );
   const venues =  useSelector( state => state.venue.items );
-  const chartkey =  useSelector( state => state.event.chartkey );
+  // const chartkey =  useSelector( state => state.event.chartkey );
 
   const [name, setName] = useState('');
   const [type, setType] = useState('');
-  const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
-  const [venue, setVenue] = useState('');
+  const [category, setCategory] = useState({});
+  const [subcategory, setSubcategory] = useState({});
+  const [venue, setVenue] = useState({});
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('')
   const [reserve, setReserve ] = useState(0)
   const [tickets, setTickets] = useState([]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
+  const [chartkey, setChartkey] = useState('');
 
   const { control, register, handleSubmit, reset, setValue, watch, formState: { errors, isValid } } = useForm({ resolver: yupResolver(eventvalidationSchema) });
 
@@ -58,7 +65,7 @@ const EditEvents = () => {
     console.log('calling subcategory');
     if( category !== '') {
       console.log('subcategory fetching');
-      dispatch(getSubCategoriesByCategory(category))
+      dispatch(getSubCategoriesByCategory(category.id))
     }
   }, [category])
 
@@ -66,14 +73,15 @@ const EditEvents = () => {
     if( id !== 'undefined' ) {
       let event  = events.find( item => item.id == id );
       setName(event.name)
-      setType(event.type?.id);
-      setCategory(event.category?.id)
-      setSubcategory(event.subcategory?.id)
-      setVenue(event.venue?.id)
+      setType(event?.type);
+      setCategory(event?.category)
+      setSubcategory(event?.subcategory)
+      setVenue(event?.venue)
       setDescription(event.description)
       setImage(event.image)
       setReserve(event.isReserved)
       setTickets(event?.tickets)
+      setChartkey(event.chartkey)
     }
   },[dispatch, id])
 
@@ -120,7 +128,20 @@ const EditEvents = () => {
 
           <div className='row'>
             <div className="col-md-4">
-              <div className="form-group">
+
+              <CustomSelect 
+                Controller={Controller} 
+                control={control} 
+                label="Event Type"
+                name="type"
+                options={eventtypes}
+                errors={errors}
+                value={ { 
+                  value: type.id,
+                  label: type.name,
+                }}
+              />
+              {/* <div className="form-group">
                 <label htmlFor=""> Event Type </label> <br/>
                 <Controller
                   control={control}
@@ -137,11 +158,23 @@ const EditEvents = () => {
                     />
                   )}
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="col-md-4">
-              <div className="form-group">
+              <CustomSelect 
+                Controller={Controller} 
+                control={control} 
+                label="Event Category"
+                name="category"
+                options={eventcategories}
+                errors={errors}
+                value={ { 
+                  value: category.id,
+                  label: category.name,
+                }}
+              />
+              {/* <div className="form-group">
                   <label htmlFor=""> Event Category </label> <br/>
                   <Controller
                     control={control}
@@ -158,35 +191,48 @@ const EditEvents = () => {
                       />
                     )}
                   />
-                </div>
+                </div> */}
             </div>
-
+           { event.subcategory != null && (
             <div className="col-md-4">
-              <div className="form-group mb-4"> 
-                  <label htmlFor="subcategory" className='form-label'> Event SubCategory </label> <br/>
-                  <Controller
-                    control={control}
-                    name="subcategory"
-                    value={subcategory}
-                    render={({ field }) => (
-                      <Select
-                        value={type}
-                        style={{ width: 220 }}
-                        onChange={ (value ) => field.onChange(value) }
-                        options={
-                          eventsubcategories.map( ( item, i ) =>{
-                            return { value: item.id, label: item.name }
-                          })}
-                      />
-                    )}
-                  />
-              </div>
+            <div className="form-group mb-4"> 
+                <label htmlFor="subcategory" className='form-label'> Event SubCategory </label> <br/>
+                <Controller
+                  control={control}
+                  name="subcategory"
+                  value={subcategory}
+                  render={({ field }) => (
+                    <Select
+                      value={type}
+                      style={{ width: 220 }}
+                      onChange={ (value ) => field.onChange(value) }
+                      options={
+                        eventsubcategories.map( ( item, i ) =>{
+                          return { value: item.id, label: item.name }
+                        })}
+                    />
+                  )}
+                />
             </div>
+          </div>
+           )}     
+
           </div>
 
           <div className='row'>
               <div className="col-md-4">
-                <div className="form-group">
+                <CustomSelect 
+                  Controller={Controller} 
+                  control={control} 
+                  label="Event Venue"
+                  name="venue"
+                  options={venues}
+                  errors={errors}
+                  value=""
+                />
+              </div>
+
+                {/* <div className="form-group">
                   <label htmlFor=""> Event Venue </label> <br/>
                   <Controller
                     control={control}
@@ -203,8 +249,34 @@ const EditEvents = () => {
                       />
                     )}
                   />
-                </div> 
-              </div>
+                </div>  */}
+
+                <div className="col-md-4">
+                  <div className="form-group">
+                      <CustomSelect 
+                        Controller={Controller} 
+                        control={control} 
+                        label="Event Status"
+                        name="status"
+                        options={[ { id: 0, name: 'Draft', id: 1, name: 'Active',  id: 2, name: 'Archived',  id: 3, name: 'Deleted',  }]}
+                        errors={errors}
+                        value=""
+                      />
+                    {/* <label htmlFor=""> Event Status </label> <br/>
+                    <Controller
+                      control={control}
+                      name="status"
+                      render={({ field }) => (
+                        <Select
+                          value={venue}
+                          style={{ width: 220 }}
+                          onChange={ (value ) => field.onChange(value) }
+                          options={[ { value: 0, label: 'Draft', value: 1, label: 'Active',  value: 2, label: 'Archived',  value: 3, label: 'Deleted',  }]}
+                        />
+                      )}
+                    /> */}
+                  </div> 
+                </div>
           </div>
 
           <div className="form-group mb-5">
@@ -232,30 +304,10 @@ const EditEvents = () => {
             />
           </div>
 
-
-          <div className='row'>
-              <div className="col-md-4">
-                <div className="form-group">
-                  <label htmlFor=""> Event Status </label> <br/>
-                  <Controller
-                    control={control}
-                    name="status"
-                    render={({ field }) => (
-                      <Select
-                        value={venue}
-                        style={{ width: 220 }}
-                        onChange={ (value ) => field.onChange(value) }
-                        options={[ { value: 0, label: 'Draft', value: 1, label: 'Active',  value: 2, label: 'Archived',  value: 3, label: 'Deleted',  }]}
-                      />
-                    )}
-                  />
-                </div> 
-              </div>
-          </div>
-
           <div className='row'>
             <div className="col">
-              <div className='form-group mb-4'>
+              <CustomDatepicker control={control} label="Start Date" name="startdate" errors={errors} />
+              {/* <div className='form-group mb-4'>
                 <label htmlFor='' className='form-label'> Start Date </label>
                 <Controller
                   control={control}
@@ -264,12 +316,12 @@ const EditEvents = () => {
                     <DatePicker className="form-control" onChange={ (date, dateString) => field.onChange(dateString)} />
                   )}
                 />
-                {/* <DatePicker className="form-control" onChange={ (date, dateString) => { setStartdate( dateString)  } }/> */}
-              </div>
+              </div> */}
             </div>
 
             <div className="col">
-              <div className='form-group mb-4'>
+              <CustomDatepicker control={control} label="End Date" name="enddate" errors={errors} />
+              {/* <div className='form-group mb-4'>
                 <label htmlFor='' className='form-label'> End Date </label>
                 <Controller
                   control={control}
@@ -278,12 +330,12 @@ const EditEvents = () => {
                     <DatePicker className="form-control" onChange={ (date, dateString) => field.onChange(dateString)} />
                   )}
                 />
-                {/* <DatePicker className="form-control" onChange={ (date, dateString) => { setEnddate( dateString)  } }/> */}
-              </div>
+              </div> */}
             </div>
 
             <div className="col">
-              <div className='form-group mb-4'>
+              <CustomTimepicker control={control} label="Start Time" name="starttime" errors={errors} />
+              {/* <div className='form-group mb-4'>
                 <label htmlFor='' className='form-label'> Start Time </label>
                 <Controller
                   control={control}
@@ -292,12 +344,12 @@ const EditEvents = () => {
                     <DatePicker className="form-control" onChange={ (time, timeString) => field.onChange(dateString)} />
                   )}
                 />
-                {/* <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => { setStarttime( timeString)  } }/> */}
-              </div>
+              </div> */}
             </div>
 
             <div className="col">
-              <div className='form-group mb-4'>
+              <CustomTimepicker control={control} label="End Time" name="endtime" errors={errors} />
+              {/* <div className='form-group mb-4'>
                 <label htmlFor='' className='form-label'> End Time </label>
                 <Controller
                   control={control}
@@ -306,13 +358,13 @@ const EditEvents = () => {
                     <DatePicker className="form-control" onChange={ (time, timeString) => field.onChange(dateString)} />
                   )}
                 />
-                {/* <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => { setEndtime( timeString)  } }/> */}
-              </div>
-            </div>
+              </div> */}
+            </div> 
           </div>
 
           <div className='form-group mb-4'>
-            <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
+            <CustomRadio control={control} errors={errors} options= {[ { value:1, label: 'Yes' }, { value: 0, label: 'No' }]} label="IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS." name="reserve"  />
+            {/* <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
             <Controller
               control={control}
               name="reserve"
@@ -322,15 +374,19 @@ const EditEvents = () => {
                   <Radio value={0}>No</Radio>
                 </Radio.Group>
               )}
-            />
+            /> */}
             {/* <Radio.Group onChange={ (e) => setReserve(e.target.value)} className='form-control'>
               <Radio value={1}>Yes</Radio>
               <Radio value={0}>No</Radio>
             </Radio.Group> */}
           </div>
 
-          <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} values={tickets} />
+          {/* <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} 
+          values={tickets} /> */}
 
+      { reserve === 0 && ( <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} /> ) }
+      { reserve === 1 && ( <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} /> )}
+  
 
 
           {/* {
@@ -355,27 +411,24 @@ const EditEvents = () => {
                 <CustomVenueRepeatField fields={venuecategory} setFields={setVenuecategory}/>
               </>
             ) : ''
-          }
-          {
-            chartkey !== null ? (
+          } */}
+          { chartkey }
+          { chartkey !== '' && (
             <div className="form-group" style={{ 'height': '500px' }}> 
               <SeatsioDesigner
-                secretKey="6e51c7b0-a9ce-4425-9822-831137892ab5"
+                secretKey={process.env.Seatio_Secret}
                 chartKey={chartkey}
                 region="NA"
                 onChartCreated={chart => {
                   console.log('created chart', chart)
                 }}
                 onChartUpdated={chart =>{
-                  setChart(chart);
+                  // setChart(chart);
                   console.log('updated chart', chart)
                 }}
-                pricing= {[
-                  {"category": "test category", 'price': 30},
-              ]}
               />
             </div>
-          ) : ''} */}
+          )} 
 
           <div className="form-group">
               <button className="btn btn-primary"> Submit </button>

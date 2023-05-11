@@ -27,6 +27,8 @@ import CustomInput from '@/components/Form/input';
 import CustomDatepicker from '@/components/Form/datepicker';
 import CustomTimepicker from '@/components/Form/timepicker';
 import CustomUploader from '@/components/Form/uploader';
+import CustomRadio from '@/components/Form/radio';
+
 import { eventvalidationSchema } from '@/validation/event';
 
 const EventCreate = () => {
@@ -136,7 +138,7 @@ const EventCreate = () => {
     formData.append('venuecategory', JSON.stringify(data.venuenestedcategory) )
     formData.append('reserve', data.reserve)
 
-    dispatch(createEvent(formData));
+   dispatch(createEvent(formData));
   
   }
 
@@ -179,24 +181,6 @@ const EventCreate = () => {
               errors={errors}
               value=""
             />
-            {/* <div className="form-group mb-4">
-              <label htmlFor="type" className='form-label'> Event Type </label> <br/>
-              <Controller
-                control={control}
-                name="type"
-                render={({ field }) => (
-                  <Select
-                    style={{ width: 220 }}
-                    onChange={ (value ) => field.onChange(value) }
-                    options={
-                      eventtypes.map( ( item, i ) =>{
-                        return { value: item.id, label: item.name }
-                      })}
-                  />
-                )}
-              />
-              {errors.type && <span style={{ color: 'red' }}> { errors.type?.message }  </span>}
-            </div> */}
           </div>
       
           <div className="col-md-4">
@@ -209,24 +193,24 @@ const EventCreate = () => {
               errors={errors}
               value=""
             />
-            {/* <div className="form-group mb-4">
-              <label htmlFor="category" className='form-label'> Event Category </label> <br/>
-              <Controller
-                control={control}
-                name="category"
-                render={({ field }) => (
-                  <Select
-                    style={{ width: 220 }}
-                    onChange={ (value ) => field.onChange(value) }
-                    options={
-                      eventcategories.length > 0 && ( eventcategories.map( ( item, i ) =>{
-                        return { value: item.id, label: item.name }
-                      })) } 
-                  />
-                )}
-              />
-              {errors.category && <span style={{ color: 'red' }}> { errors.category?.message }  </span>}
-            </div> */}
+            <Select
+              defaultValue={{
+                value: 32,
+                label: 'Auto, Boat & Air',
+              }} 
+              // value={category}
+              style={{ width: 220 }}
+              onChange={ (value ) => field.onChange(value) }
+              options={
+                eventcategories.map( ( item, i ) =>{
+                  return { value: item.id, label: item.name }
+                })}
+            />
+                 {/* defaultValue={{
+                value: 32,
+                label: 'Auto, Boat & Air',
+              }} */}
+
           </div>
 
           { category !== undefined && (
@@ -240,25 +224,7 @@ const EventCreate = () => {
                   errors={errors}
                   value=""
                 />
-              {/* <div className="form-group mb-4"> 
-                <label htmlFor="subcategory" className='form-label'> Event SubCategory </label> <br/>
-                <Controller
-                control={control}
-                name="subcategory"
-                render={({ field }) => (
-                  <Select
-                    style={{ width: 220 }}
-                    onChange={ (value ) => field.onChange(value) }
-                    options={
-                      eventsubcategories.length > 0 && ( eventsubcategories.map( ( item, i ) =>{
-                        return { value: item.id, label: item.name }
-                      })) }
-                  />
-                )}
-              />
-            </div> */}
-          </div>
-
+            </div>
           )}
 
         </div>
@@ -274,24 +240,6 @@ const EventCreate = () => {
                 errors={errors}
                 value=""
               />
-              {/* <div className="form-group mb-4">
-                <label htmlFor="venue" className='form-label'> Event Venue </label> <br/>
-                <Controller
-                  control={control}
-                  name="venue"
-                  render={({ field }) => (
-                    <Select
-                      style={{ width: 220 }}
-                      onChange={ (value ) => field.onChange(value) }
-                      options={
-                        venues.map( ( item, i ) =>{
-                          return { value: item.id, label: item.name }
-                        })}
-                    />
-                  )}
-                />
-                {errors.venue && <span style={{ color: 'red' }}> { errors.venue?.message }  </span>}
-              </div>  */}
             </div>
 
             <div className="col-md-4">
@@ -310,87 +258,27 @@ const EventCreate = () => {
           
         <CustomUploader control={control} label="Event Image" name="image" errors={errors} />
         
-        {/* <div className="form-group mb-5" style={{ 'height': "150px"}}>
-              <Controller
-                control={control}
-                name="image"
-                render={({ field }) => (
-                <Upload.Dragger 
-                  multiple={false}
-                  onChange= { info =>field.onChange(info.file) }
-                >
-                    Drag files here OR <br/>
-                    <Button> Click Upload </Button>
-                </Upload.Dragger>
-                )}
-              />
-            {errors.image && <span style={{ color: 'red' }}> { errors.image?.message }  </span>}
-        </div> */}
-
         <div className='row'>
           <div className="col">
             <CustomDatepicker control={control} label="Start Date" name="startdate" errors={errors} />
-            {/* <div className='form-group mb-4'>
-              <label htmlFor='startdate' className='form-label'> Start Date </label>
-              <Controller
-                control={control}
-                name="startdate"
-                render={({ field }) => (
-                  <DatePicker className="form-control" onChange={ (date, dateString) => field.onChange(dateString)} />
-                )}
-              />
-              {errors.startdate && <span style={{ color: 'red' }}> { errors.startdate?.message }  </span>}
-            </div> */}
           </div>
 
           <div className="col">
             <CustomDatepicker control={control} label="End Date" name="enddate" errors={errors} />
-            {/* <div className='form-group mb-4'>
-              <label htmlFor='' className='form-label'> End Date </label>
-              <Controller
-                control={control}
-                name="enddate"
-                render={({ field }) => (
-                  <DatePicker className="form-control" onChange={ (date, dateString) => field.onChange(dateString)} />
-                )}
-              />
-              {errors.enddate && <span style={{ color: 'red' }}> { errors.enddate?.message }  </span>}
-            </div> */}
           </div>
 
           <div className="col">
             <CustomTimepicker control={control} label="Start Time" name="starttime" errors={errors} />
-            {/* <div className='form-group mb-4'>
-              <label htmlFor='' className='form-label'> Start Time </label>
-              <Controller
-                control={control}
-                name="starttime"
-                render={({ field }) => (
-                  <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => field.onChange(timeString)} />
-                )}
-              />
-              {errors.starttime && <span style={{ color: 'red' }}> { errors.starttime?.message }  </span>}
-            </div> */}
           </div>
 
           <div className="col">
             <CustomTimepicker control={control} label="End Time" name="endtime" errors={errors} />
-            {/* <div className='form-group mb-4'>
-              <label htmlFor='' className='form-label'> End Time </label>
-              <Controller
-                control={control}
-                name="endtime"
-                render={({ field }) => (
-                  <TimePicker className="form-control" mode='time' onChange={ (time, timeString) => field.onChange(timeString)} />
-                )}
-              />
-              {errors.endtime && <span style={{ color: 'red' }}> { errors.endtime?.message }  </span>}
-            </div> */}
           </div>
         </div>
         
         <div className='form-group mb-4'>
-          <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
+          <CustomRadio control={control} errors={errors} options= {[ { value:1, label: 'Yes' }, { value: 0, label: 'No' }]} label="IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS." name="reserve"  />
+          {/* <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
           <Controller
             control={control}
             name="reserve"
@@ -400,14 +288,12 @@ const EventCreate = () => {
                 <Radio value={0}>No</Radio>
               </Radio.Group>
             )}
-          />
+          /> */}
         </div>
 
-      {/* <CustomnestedVenueRepeatField fields={venuenestedcategory} setFields={setNestedvenuecategory} /> */}
-      
-      <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} />
-
-      <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} />
+      {/* <CustomnestedVenueRepeatField fields={venuenestedcategory} setFields={setNestedvenuecategory} /> */}  
+      { reserve === 0 && ( <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} /> ) }
+      { reserve === 1 && ( <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} /> )}
   
     {/*
         {
