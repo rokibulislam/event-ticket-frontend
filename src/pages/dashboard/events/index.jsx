@@ -1,5 +1,5 @@
 import Layout from '@/components/layout';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout';
@@ -10,12 +10,13 @@ import { object } from 'yup';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 
 const Events = () => {
-
   const dispatch = useDispatch();
-
   const events =  useSelector( state => state.event.items );
   const status =  useSelector( state => state.event.status );
   const error  =  useSelector( state => state.event.error );
+
+  //state
+  const [search, setSearch] = useState('')
 
   useEffect( () => {
     // dispatch(getEvents())
@@ -39,19 +40,23 @@ const Events = () => {
     {
       title: 'Name',
       dataIndex: 'name',
+      filteredValue: [search],
+      onFilter: ( value, record ) => {
+        return record.name.includes(search);
+      },
       key: 'name',
     },
     {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (item) => item.name
+      render: (item) => item?.name
     },
     {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
-      render: (item) => item.name
+      render: (item) => item?.name
     },
     {
       title: 'Venue',
@@ -82,6 +87,9 @@ const Events = () => {
         <h2> Events List  </h2> 
         <Link href="/dashboard/events/create" className="btn btn-primary"> Create Events </Link>
         <Link href="/dashboard/events/customcreate" className="btn btn-primary"> Custom Create Events </Link>
+        <div className='form-group mb-4'>
+          <input type='text' className='form-control' placeholder='search' onChange={ e => setSearch(e.target.value)} />
+        </div>
         <Table columns={columns} dataSource={events}/>
       </DashboardLayout>
     </Layout>

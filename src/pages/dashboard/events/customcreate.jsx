@@ -23,6 +23,13 @@ import VenueModal , { ModalApp } from '@/components/venue/modal';
 import CustomnestedVenueRepeatField from '@/components/VenueRepeatField/customnested';
 import CustomVenuehook from '@/components/VenueRepeatField/customVenuehook';
 
+import CustomSelect from '@/components/Form/select';
+import CustomInput from '@/components/Form/input';
+import CustomDatepicker from '@/components/Form/datepicker';
+import CustomTimepicker from '@/components/Form/timepicker';
+import CustomUploader from '@/components/Form/uploader';
+
+
 let validationSchema = object({
   name: string().required('name is required').label("name"),
   tickets: array().of(
@@ -30,13 +37,13 @@ let validationSchema = object({
       ticketName: string().required('Ticket Name is required'),
     })
   ),
-  // type: number().required("type is required").label("type"),
-  // category: number().required("category is requried").label("category"),
-  // venue: number().required("venue is required").label("venue"),
+  type: number().required("type is required").label("type"),
+  category: number().required("category is requried").label("category"),
+  venue: number().required("venue is required").label("venue"),
   // description: string().required("description is required").label('description'),
   // image: mixed().required("Image Required").label('image'),
-  // startdate: mixed().required("Start Date Required").label('startdate'),
-  // enddate: mixed().required("Start Date Required").label('enddate'),
+  startdate: mixed().required("Start Date Required").label('startdate'),
+  enddate: mixed().required("Start Date Required").label('enddate'),
   // starttime: mixed().required("Start Date Required").label('starttime'),
   // endtime: mixed().required("Start Date Required").label('endtime'),
   
@@ -173,6 +180,7 @@ const EventCreate = () => {
         
         <div className='row'>
           <div className="col-md-6">
+            {/* <CustomInput register={register} label="Event Name" name="name" errors={errors}  /> */}
             <div className="form-group mb-4">
               <label htmlFor="name" className='form-label'> Event Name </label>
               <input {...register('name')} type="text" id="name" className="form-control" />
@@ -183,7 +191,16 @@ const EventCreate = () => {
 
         <div className='row'>
           <div className="col-md-4">
-            <div className="form-group mb-4">
+            <CustomSelect 
+              Controller={Controller} 
+              control={control} 
+              label="Event Type"
+              name="type"
+              options={eventtypes}
+              errors={errors}
+              value=""
+            />
+            {/* <div className="form-group mb-4">
               <label htmlFor="type" className='form-label'> Event Type </label> <br/>
               <Controller
                 control={control}
@@ -200,11 +217,20 @@ const EventCreate = () => {
                 )}
               />
               {errors.type && <span style={{ color: 'red' }}> { errors.type?.message }  </span>}
-            </div>
+            </div> */}
           </div>
       
           <div className="col-md-4">
-            <div className="form-group mb-4">
+            <CustomSelect 
+              Controller={Controller} 
+              control={control} 
+              label="Event Category"
+              name="category"
+              options={eventcategories}
+              errors={errors}
+              value=""
+            />
+            {/* <div className="form-group mb-4">
               <label htmlFor="category" className='form-label'> Event Category </label> <br/>
               <Controller
                 control={control}
@@ -221,7 +247,7 @@ const EventCreate = () => {
                 )}
               />
               {errors.category && <span style={{ color: 'red' }}> { errors.category?.message }  </span>}
-            </div>
+            </div> */}
           </div>
 
           {/* { category !== undefined && (
@@ -250,9 +276,17 @@ const EventCreate = () => {
         </div>
 
         <div className='row'>
-
             <div className="col-md-4">
-              <div className="form-group mb-4">
+              <CustomSelect 
+                Controller={Controller} 
+                control={control} 
+                label="Event Venue"
+                name="venue"
+                options={venues}
+                errors={errors}
+                value=""
+              />
+              {/* <div className="form-group mb-4">
                 <label htmlFor="venue" className='form-label'> Event Venue </label> <br/>
                 <Controller
                   control={control}
@@ -269,18 +303,15 @@ const EventCreate = () => {
                   )}
                 />
                 {errors.venue && <span style={{ color: 'red' }}> { errors.venue?.message }  </span>}
-              </div> 
+              </div>  */}
             </div>
 
             <div className="col-md-4">
-                  <button className='btn' onClick={ (e) => {
-                    e.preventDefault();
-                    console.log('showing btn');
+                  <button className='btn' onClick={ (e) => { e.preventDefault();
                     setIsModalOpen(true);
                   }}> <PlusCircleOutlined /> New Venue </button>
                   <VenueModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
             </div>
-
         </div>
       
         <div className="form-group mb-4">
@@ -288,8 +319,10 @@ const EventCreate = () => {
           <textarea {...register('description')} id="description" className="form-control"> </textarea>
           {errors.description && <span style={{ color: 'red' }}> { errors.description?.message }  </span>}
         </div>
-
-        <div className="form-group mb-5" style={{ 'height': "150px"}}>
+          
+        <CustomUploader control={control} label="Event Image" name="image" errors={errors} />
+        
+        {/* <div className="form-group mb-5" style={{ 'height': "150px"}}>
               <Controller
                 control={control}
                 name="image"
@@ -304,12 +337,13 @@ const EventCreate = () => {
                 )}
               />
             {errors.image && <span style={{ color: 'red' }}> { errors.image?.message }  </span>}
-        </div>
+        </div> */}
 
         <div className='row'>
           <div className="col">
-            <div className='form-group mb-4'>
-              <label htmlFor='' className='form-label'> Start Date </label>
+            <CustomDatepicker control={control} label="Start Date" name="startdate" errors={errors} />
+            {/* <div className='form-group mb-4'>
+              <label htmlFor='startdate' className='form-label'> Start Date </label>
               <Controller
                 control={control}
                 name="startdate"
@@ -318,11 +352,12 @@ const EventCreate = () => {
                 )}
               />
               {errors.startdate && <span style={{ color: 'red' }}> { errors.startdate?.message }  </span>}
-            </div>
+            </div> */}
           </div>
 
           <div className="col">
-            <div className='form-group mb-4'>
+            <CustomDatepicker control={control} label="End Date" name="enddate" errors={errors} />
+            {/* <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> End Date </label>
               <Controller
                 control={control}
@@ -332,11 +367,12 @@ const EventCreate = () => {
                 )}
               />
               {errors.enddate && <span style={{ color: 'red' }}> { errors.enddate?.message }  </span>}
-            </div>
+            </div> */}
           </div>
 
           <div className="col">
-            <div className='form-group mb-4'>
+            <CustomTimepicker control={control} label="Start Time" name="starttime" errors={errors} />
+            {/* <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> Start Time </label>
               <Controller
                 control={control}
@@ -346,11 +382,12 @@ const EventCreate = () => {
                 )}
               />
               {errors.starttime && <span style={{ color: 'red' }}> { errors.starttime?.message }  </span>}
-            </div>
+            </div> */}
           </div>
 
           <div className="col">
-            <div className='form-group mb-4'>
+            <CustomTimepicker control={control} label="End Time" name="endtime" errors={errors} />
+            {/* <div className='form-group mb-4'>
               <label htmlFor='' className='form-label'> End Time </label>
               <Controller
                 control={control}
@@ -360,7 +397,7 @@ const EventCreate = () => {
                 )}
               />
               {errors.endtime && <span style={{ color: 'red' }}> { errors.endtime?.message }  </span>}
-            </div>
+            </div> */}
           </div>
         </div>
         
@@ -378,14 +415,11 @@ const EventCreate = () => {
           />
         </div>
 
-
       {/* <CustomnestedVenueRepeatField fields={venuenestedcategory} setFields={setNestedvenuecategory} /> */}
       
       <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} />
 
-      {/* <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} /> */}
-
-        {/* <CustomTickethook name="tickets" register={register} /> */}
+      <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} />
   
     {/*
         {

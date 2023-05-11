@@ -47,11 +47,10 @@ const EventCreate = () => {
   const [ reserve, setReserve ] = useState(null)
 
   const [tickets, setTickets] = useState([{
-     ticket_type: '', 
-     ticket_name: '', 
-     ticket_price: '', 
-     ticket_qty: '',  
-     showSettings: false
+     ticketType: '', 
+     ticketName: '', 
+     ticketPrice: '', 
+     ticketQty: '',  
   }]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
   const [venuenestedcategory, setNestedvenuecategory] = useState([
@@ -100,32 +99,12 @@ const EventCreate = () => {
     // formData.append('venuecategory', JSON.stringify(venuecategory) )
     formData.append('venuecategory', JSON.stringify(venuenestedcategory) )
     formData.append('reserve', reserve)
-
     dispatch(createEvent(formData));
     // router.push('/dashboard/events')
   }
 
-  function handleTicketeChange(i, event) {
-    const values = [...tickets];
-    values[i][event.target.name] = event.target.value;
-    setTickets(values);
-  }
-
-  function handleTicketAddField() {
-    const values = [...tickets];
-    values.push({ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: '' });
-    setTickets(values);
-  }
-
-  function handleTicketRemoveField(i) {
-    const values = [...tickets];
-    values.splice(i, 1);
-    setTickets(values);
-  }
-
   const handleCreateEvent = (e) => {
     e.preventDefault();
-    console.log('handle create event');
     dispatch( createSeatsEvent({
       name: name,
       chartkey: chartkey
@@ -262,19 +241,8 @@ const EventCreate = () => {
         </div>
 
         {
-          reserve == 0 ? ( 
-            <>
-          <h2> Tickets </h2>
-          <CustomTicketRepeatField 
-            fields={tickets} 
-            setFields={setTickets} 
-            handleTicketeChange={handleTicketeChange} 
-            handleTicketAddField={handleTicketAddField} 
-            handleTicketRemoveField={handleTicketRemoveField} 
-          />
-        </>
-
-          ) : '' }
+          reserve == 0 && ( <CustomTicketRepeatField fields={tickets}  setFields={setTickets} /> )}
+        
         {
           reserve == 1 ? (
             <>

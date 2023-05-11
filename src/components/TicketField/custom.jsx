@@ -15,13 +15,15 @@ function CustomTicketRepeatField({ fields, setFields }) {
     function handleTicketeChange(i, event) {
       const values = [...fields];
       values[i][event.target.name] = event.target.value;
+      console.log(event.target.name);
+      console.log(event.target.value);
       console.log(values);
       setFields(values);
     }
   
     function handleTicketAddField() {
       const values = [...fields];
-      values.push({ ticket_type: '', ticket_name: '', ticket_price: '', ticket_qty: '' });
+      values.push({ ticketType: '', ticketName: '', ticketPrice: '', ticketQty: '' });
       setFields(values);
     }
   
@@ -34,6 +36,7 @@ function CustomTicketRepeatField({ fields, setFields }) {
         
     return (
     <>
+          <h2> Tickets </h2>
         <table className='table'>
             <thead>
               <tr>
@@ -50,7 +53,7 @@ function CustomTicketRepeatField({ fields, setFields }) {
           <tr key={i}>
             <td>         
                 { tickettypes.length > 0 ? (
-                    <select className='form-control' name='ticket_type' onChange={ (e) => handleTicketeChange(i,e)}>
+                    <select className='form-control' name='ticketType' onChange={ (e) => handleTicketeChange(i,e)}>
                         { tickettypes.map( item => <option value={item.id} key={item.id}> { item.name  } </option>) }
                     </select>
                 ) : ''}
@@ -59,7 +62,7 @@ function CustomTicketRepeatField({ fields, setFields }) {
             {/* <label htmlFor={`price-${i}`}>Price:</label> */}
             <input
               type="text"
-              name={`ticket_name`}
+              name={`ticketName`}
               value={field[i]?.price}
               className='form-control'
               onChange={(e) => handleTicketeChange(i, e)}
@@ -70,7 +73,7 @@ function CustomTicketRepeatField({ fields, setFields }) {
             {/* <label htmlFor={`qty`}>Quantity:</label> */}
             <input
               type="text"
-              name={`ticket_qty`}
+              name={`ticketQty`}
               value={field[i]?.qty}
               className='form-control'
               onChange={(e) => handleTicketeChange(i, e)}
@@ -81,20 +84,20 @@ function CustomTicketRepeatField({ fields, setFields }) {
             {/* <label htmlFor={`fee`}>Fee:</label> */}
             <input
               type="text"
-              name={`ticket_price`}
+              name={`ticketPrice`}
               value={field[i]?.fee}
               className='form-control'
               onChange={(e) => handleTicketeChange(i, e)}
               placeholder='Enter Ticket Price'
             />
           </td>
-          <td>
+          {/* <td>
             <Switch  onChange={ (e) => {
               console.log('switching');
               console.log(e);
             } } />
 
-          </td>
+          </td> */}
           <td>
             {fields.length > 1 && (
               <CloseOutlined onClick={() => handleTicketRemoveField(i)} />
@@ -103,7 +106,7 @@ function CustomTicketRepeatField({ fields, setFields }) {
 
           </tr>
 
-          <tr>
+          {/* <tr>
               <td> 
                 <label htmlFor=""> Ticket Description </label>
                 <input
@@ -115,7 +118,7 @@ function CustomTicketRepeatField({ fields, setFields }) {
                   placeholder='Enter Ticket Name'
                 />
               </td>
-          </tr>
+          </tr> */}
         </>
         ))}
 

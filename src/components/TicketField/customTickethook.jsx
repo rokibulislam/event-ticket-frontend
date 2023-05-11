@@ -5,8 +5,8 @@ import { CloseOutlined,PlusOutlined } from '@ant-design/icons';
 import { Radio, Select } from 'antd';
 
 const CustomTickethook = ({ Controller, name, control, register, setValue, watch, errors, values= [] }) => {
-    console.log('props');
-    console.log(values);
+    // console.log('props');
+    // console.log(values);
     const { fields, append, remove } = useFieldArray({ control, name, defaultValues: [
       { ticketName: '', ticketPrice: '', ticketQty: '', showSettings: false, settings: {
         canbepurchase: 0,

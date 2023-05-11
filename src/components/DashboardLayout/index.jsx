@@ -81,7 +81,7 @@ const DashboardLayout = ( { children }) => {
       key: '/dashboard/orders'
     },
     {
-      label: 'Attendae',
+      label: 'Attendee',
       key: '/dashboard/attendae'
     },
     {

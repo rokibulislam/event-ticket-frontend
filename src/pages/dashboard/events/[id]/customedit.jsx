@@ -245,6 +245,27 @@ const EditEvents = () => {
             />
           </div>
 
+
+          <div className='row'>
+              <div className="col-md-4">
+                <div className="form-group">
+                  <label htmlFor=""> Event Status </label> <br/>
+                  <Controller
+                    control={control}
+                    name="status"
+                    render={({ field }) => (
+                      <Select
+                        value={venue}
+                        style={{ width: 220 }}
+                        onChange={ (value ) => field.onChange(value) }
+                        options={[ { value: 0, label: 'Draft', value: 1, label: 'Active',  value: 2, label: 'Archived',  value: 3, label: 'Deleted',  }]}
+                      />
+                    )}
+                  />
+                </div> 
+              </div>
+          </div>
+
           <div className='row'>
             <div className="col">
               <div className='form-group mb-4'>

@@ -12,7 +12,7 @@ const EventTimes = () => {
     const { id } = router.query
     const dispatch = useDispatch();
 
-    const [name, setName] = useState('')
+    const [details, setDetails] = useState('')
     const [mode, setMode] = useState('manageCategories')
 
     //redux store
@@ -21,7 +21,7 @@ const EventTimes = () => {
     useEffect( () => {
         if( id !== 'undefined' ) {
           let event  = events.find( item => item.id == id );
-          setName(event.name)
+          setDetails(event.event_details)
         }
       },[dispatch, id])
     
@@ -38,21 +38,25 @@ const EventTimes = () => {
             <DashboardLayout>
                 <h2> EventTimes </h2>
                 <EventTimeList />
-
-                <select name='mode' onChange={ (e) => setMode(e.target.value) }>
+                { details.startdate }
+                { details.starttime }
+                { details.enddate }
+                { details.endtime }
+                { details.startdate }
+                {/* <select name='mode' onChange={ (e) => setMode(e.target.value) }>
                     <option value="manageCategories"> Manage Category </option>
                     <option value="manageTableBooking"> Manage Table Booking </option>
                     <option value="manageForSaleConfig"> Manage For Sale </option>
                 </select>
 
                 <div style={{ 'height': '500px' }}>
-              <SeatsioEventManager
-                  secretKey={process.env.Seatio_Secret}
-                  event={name}
-                  mode={mode}
-                  region="NA"
-              />
-          </div>
+                      <SeatsioEventManager
+                        secretKey={process.env.Seatio_Secret}
+                        event={name}
+                        mode={mode}
+                        region="NA"
+                      />
+                </div> */}
             </DashboardLayout>
         </Layout>
     )
