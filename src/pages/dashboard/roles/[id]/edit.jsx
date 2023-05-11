@@ -7,7 +7,6 @@ import { getRole, updateRole } from '@/store/slices/role'
 import { getPermissions } from '@/store/slices/permission'
 import { protectRoute } from '@/components/protectRoute'
 
-
 const EditRole = () => {
     const router = useRouter()
     const { id  } = router.query

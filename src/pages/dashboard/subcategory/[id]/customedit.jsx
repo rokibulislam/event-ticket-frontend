@@ -11,16 +11,11 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
-
-
-let validationSchema = object({
-  name: string().required('name is requried').label("Name"),
-  category: number().required('category is required').label("category"),
-});
+import { subcategoryvalidationSchema } from '@/validation';
 
 
 const EditSubCategory = () => {
-    const { control, register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const { control, register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(subcategoryvalidationSchema)});
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();

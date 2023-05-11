@@ -3,11 +3,12 @@ import { Switch } from 'antd';
 import {  useFieldArray } from "react-hook-form";
 import { CloseOutlined,PlusOutlined } from '@ant-design/icons';
 
-const CustomVenuehook = ( { Controller, name , control, register, setValue, watch }) => {
+const CustomVenuehook = ( { Controller, name , control, register, setValue, watch, errors }) => {
     const { fields, append, remove } = useFieldArray({ control, name: name });
 
     const watchedField = watch(name);
     // console.log(watchedField);
+    console.log(errors);
     return (
     <>
         {fields.map((field, index) => (
@@ -22,6 +23,9 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                   type="text"
                   {...register(`venuetickets.${index}.name`,{ required: true })}
                 />
+                {errors.venuetickets && errors.venuetickets[index]?.name && (
+                     <span style={{ color: 'red' }}> {errors.venuetickets[index]?.name?.message} </span>
+                )}
               </div>
 
               { !watchedField[index]?.showSubPrice && (
@@ -34,6 +38,9 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                         {...register(`venuetickets.${index}.price`,{ required: true })}
                         value={field.price}
                         />
+                        {errors.venuetickets && errors.venuetickets[index]?.price && (
+                            <span style={{ color: 'red' }}> {errors.venuetickets[index]?.price?.message} </span>
+                        )}
                     </div>
 
                     <div className='col-md-2'>
@@ -44,16 +51,22 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                         {...register(`venuetickets.${index}.fee`,{ required: true })}
                         value={field.fee}
                         />
+                        {errors.venuetickets && errors.venuetickets[index]?.fee && (
+                            <span style={{ color: 'red' }}> {errors.venuetickets[index]?.fee?.message} </span>
+                        )}
                     </div>
 
                     <div className='col-md-2'>
                         <label htmlFor="" className="form-label"> Qty </label>
                         <input
-                        className='form-control'
-                        type="text"
-                        {...register(`venuetickets.${index}.qty`,{ required: true })}
-                        value={field.qty}
+                            className='form-control'
+                            type="text"
+                            {...register(`venuetickets.${index}.qty`,{ required: true })}
+                            value={field.qty}
                         />
+                        {errors.venuetickets && errors.venuetickets[index]?.qty && (
+                            <span style={{ color: 'red' }}> {errors.venuetickets[index]?.qty?.message} </span>
+                        )}
                     </div>
                 </>
             )}

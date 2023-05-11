@@ -1,22 +1,17 @@
-import DashboardLayout from '@/components/DashboardLayout'
-import Layout from '@/components/layout'
-import { protectRoute } from '@/components/protectRoute'
-
-
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType, array } from 'yup'; 
 import { getPermissions } from '@/store/slices/permission';
 import { updateRole } from '@/store/slices/role';
 import { Select } from 'antd'
 
-let validationSchema = object({
-  name: string().required('Role Name is required').label("Name"),
-  permissions: array().of(number()).required('permission is requried').label("Permissions"),
-});
+import { rolevalidationSchema } from '@/validation';
+import DashboardLayout from '@/components/DashboardLayout'
+import Layout from '@/components/layout'
+import { protectRoute } from '@/components/protectRoute'
+
 
 const EditRole = () => {
   const router = useRouter()
@@ -26,7 +21,7 @@ const EditRole = () => {
   const roles =  useSelector( state => state.role.items );
   const [ name, setName ] = useState ('')
   const [selectedpermissions, setSelectedPermissions] = useState([]);
-  const { control, register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+  const { control, register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(rolevalidationSchema)});
 
   useEffect( () => {
       if( id !== undefined ) {

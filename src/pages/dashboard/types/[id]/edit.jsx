@@ -8,17 +8,14 @@ import { getEventType,updateEventType } from '@/store/slices/eventtype'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
-
-let validationSchema = object({
-  name: string().required('Type is Required').label("name"),
-});
+import { typevalidationSchema } from '@/validation';
 
 const EditType = () => {
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
     const types =  useSelector( state => state.eventtype.items );
-    const { register, handleSubmit, reset, formState: { errors, isValid } } =  useForm({resolver: yupResolver(validationSchema)});
+    const { register, handleSubmit, reset, formState: { errors, isValid } } =  useForm({resolver: yupResolver(typevalidationSchema)});
     const [name, setName] = useState('')
 
     useEffect( () => {

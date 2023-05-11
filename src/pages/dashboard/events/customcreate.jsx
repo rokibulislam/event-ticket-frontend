@@ -14,7 +14,6 @@ import { DatePicker, TimePicker, Radio, Upload, Button, Select } from 'antd';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType, mixed, array } from 'yup'; 
 import { select } from 'antd'
 import { getTicketTypes } from '@/store/slices/tickettype';
 import CustomTickethook from '@/components/TicketField/customTickethook';
@@ -28,27 +27,7 @@ import CustomInput from '@/components/Form/input';
 import CustomDatepicker from '@/components/Form/datepicker';
 import CustomTimepicker from '@/components/Form/timepicker';
 import CustomUploader from '@/components/Form/uploader';
-
-
-let validationSchema = object({
-  name: string().required('name is required').label("name"),
-  tickets: array().of(
-    object().shape({
-      ticketName: string().required('Ticket Name is required'),
-    })
-  ),
-  type: number().required("type is required").label("type"),
-  category: number().required("category is requried").label("category"),
-  venue: number().required("venue is required").label("venue"),
-  // description: string().required("description is required").label('description'),
-  // image: mixed().required("Image Required").label('image'),
-  startdate: mixed().required("Start Date Required").label('startdate'),
-  enddate: mixed().required("Start Date Required").label('enddate'),
-  // starttime: mixed().required("Start Date Required").label('starttime'),
-  // endtime: mixed().required("Start Date Required").label('endtime'),
-  
-});
-
+import { eventvalidationSchema } from '@/validation/event';
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -84,7 +63,7 @@ const EventCreate = () => {
       }
       // people: [{ firstName: '', lastName: '' }],
     },
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(eventvalidationSchema)
   });
   
   const { fields, append, remove } = useFieldArray({ control, name: 'tickets' });
@@ -250,9 +229,18 @@ const EventCreate = () => {
             </div> */}
           </div>
 
-          {/* { category !== undefined && (
+          { category !== undefined && (
             <div className="col-md-4">
-            <div className="form-group mb-4"> 
+                <CustomSelect 
+                  Controller={Controller} 
+                  control={control} 
+                  label="Event SubCategory"
+                  name="subcategory"
+                  options={eventsubcategories}
+                  errors={errors}
+                  value=""
+                />
+              {/* <div className="form-group mb-4"> 
                 <label htmlFor="subcategory" className='form-label'> Event SubCategory </label> <br/>
                 <Controller
                 control={control}
@@ -268,10 +256,10 @@ const EventCreate = () => {
                   />
                 )}
               />
-            </div>
+            </div> */}
           </div>
 
-          )} */}
+          )}
 
         </div>
 
@@ -419,7 +407,7 @@ const EventCreate = () => {
       
       <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} />
 
-      <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} />
+      <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} />
   
     {/*
         {

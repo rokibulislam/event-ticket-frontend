@@ -20,20 +20,7 @@ import { object, string, number, date, InferType, mixed } from 'yup';
 import { select } from 'antd'
 
 import CustomTickethook from '@/components/TicketField/customTickethook';
-
-
-let validationSchema = object({
-  name: string().required('name is required').label("name"),
-  type: number().required("type is required").label("type"),
-  category: number().required("category is requried").label("category"),
-  // venue: number().required("venue is required").label("venue"),
-  description: string().required("description is required").label('description'),
-  // image: mixed().required("Image Required").label('image'),
-  // startdate: mixed().required("Start Date Required").label('startdate'),
-  // enddate: mixed().required("Start Date Required").label('enddate'),
-  // starttime: mixed().required("Start Date Required").label('starttime'),
-  // endtime: mixed().required("Start Date Required").label('endtime'),
-});
+import { eventvalidationSchema } from '@/validation/event';
 
 const EditEvents = () => {
   const router = useRouter()
@@ -58,7 +45,7 @@ const EditEvents = () => {
   const [tickets, setTickets] = useState([]);
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
 
-  const { control, register, handleSubmit, reset, setValue, watch, formState: { errors, isValid } } = useForm();
+  const { control, register, handleSubmit, reset, setValue, watch, formState: { errors, isValid } } = useForm({ resolver: yupResolver(eventvalidationSchema) });
 
   useEffect( () => {
     // dispatch(getEvent(id))

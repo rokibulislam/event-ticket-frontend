@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
-import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { createEventCategory, updateEventCategory } from '@/store/slices/eventcategory';
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
+import { categoryvalidationSchema } from '@/validation';
 
-let validationSchema = object({
-  name: string().required('Category Name is Required').label("Name")
-});
 
 const EditCategory = () => {
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
-    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const { register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(categoryvalidationSchema)});
     const categories =  useSelector( state => state.eventcategory.items );
     const [name, setName] = useState('')
 

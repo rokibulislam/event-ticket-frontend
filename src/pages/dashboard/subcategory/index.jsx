@@ -33,7 +33,7 @@ const SubCategory = () => {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
-      render: (item) => item.name
+      render: (item) => item?.name
     },
     {
       title: 'Action',

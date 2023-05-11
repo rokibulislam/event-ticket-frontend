@@ -5,8 +5,6 @@ import { CloseOutlined,PlusOutlined } from '@ant-design/icons';
 import { Radio, Select } from 'antd';
 
 const CustomTickethook = ({ Controller, name, control, register, setValue, watch, errors, values= [] }) => {
-    // console.log('props');
-    // console.log(values);
     const { fields, append, remove } = useFieldArray({ control, name, defaultValues: [
       { ticketName: '', ticketPrice: '', ticketQty: '', showSettings: false, settings: {
         canbepurchase: 0,
@@ -20,16 +18,13 @@ const CustomTickethook = ({ Controller, name, control, register, setValue, watch
     const watchedField = watch(name);
 
     useEffect(() => {
-      console.log('mojaloss')
-
       if( values.length > 0 ) {
-        console.log('mojaloss')
           values.forEach((item) => append(item))
       }
     }, [values]);
 
-    console.log(fields);
-    console.log(watchedField);
+    console.log("errors");
+    console.log(errors.tickets)
 
     return (
     <>
@@ -63,7 +58,6 @@ const CustomTickethook = ({ Controller, name, control, register, setValue, watch
               </tr>
             </thead>
             <tbody>
-              {fields.length }
               {fields.map((field, index) => (
                 <>
                 <tr key={field.id}>
@@ -74,7 +68,7 @@ const CustomTickethook = ({ Controller, name, control, register, setValue, watch
                       placeholder="Ticket Name"
                       {...register(`${name}.${index}.ticketName`,{ required: true })}
                     />
-                    {errors.tickets && errors.tickets[index].ticketName && (
+                    {errors.tickets && errors.tickets[index]?.ticketName && (
                      <span style={{ color: 'red' }}> {errors.tickets[index]?.ticketName?.message} </span>
                     )}
                   </td>
@@ -84,7 +78,7 @@ const CustomTickethook = ({ Controller, name, control, register, setValue, watch
                       placeholder="Ticket Price"
                       {...register(`${name}.${index}.ticketPrice`,{ required: true })}
                     />
-                    {errors.tickets && errors.tickets[index].ticketPrice && (
+                    {errors.tickets && errors.tickets[index]?.ticketPrice && (
                       <span style={{ color: 'red' }}> {errors.tickets[index]?.ticketPrice?.message} </span>
                     )}
                   </td>
@@ -94,7 +88,7 @@ const CustomTickethook = ({ Controller, name, control, register, setValue, watch
                       placeholder="Ticket Quantity"
                       {...register(`${name}.${index}.ticketQty`,{ required: true })}
                     />
-                    {errors.tickets && errors.tickets[index.ticketQty] && (
+                    {errors.tickets && errors.tickets[index]?.ticketQty && (
                       <span style={{ color: 'red' }}> {errors.tickets[index]?.ticketQty?.message} </span>
                     )}
                   </td>

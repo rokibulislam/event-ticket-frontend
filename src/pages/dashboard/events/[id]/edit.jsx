@@ -11,7 +11,7 @@ import { protectRoute } from '@/components/protectRoute';
 import { DatePicker, TimePicker, Radio, Upload, Button, Select } from 'antd';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
-import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
+import { SeatsioDesigner } from '@seatsio/seatsio-react';
 import dayjs from 'dayjs';
 
 const EditEvents = () => {

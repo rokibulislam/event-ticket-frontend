@@ -7,17 +7,13 @@ import { createEventCategory } from '@/store/slices/eventcategory';
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
-
-let validationSchema = object({
-  name: string().required('Category Name is Required').label("Name")
-});
+import { categoryvalidationSchema } from '@/validation';
 
 const CategoryCreate = () => {
   const dispatch = useDispatch();
   let router = useRouter();
-  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+  const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(categoryvalidationSchema)});
 
   const onSubmit = (data) => {
     console.log(data);

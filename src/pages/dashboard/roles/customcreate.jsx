@@ -11,17 +11,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType, array } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
 import { Select } from 'antd'
-
-let validationSchema = object({
-  name: string().required('Role Name is required').label("Name"),
-  permissions: array().of(number()).required('permission is requried').label("Permissions"),
-});
+import { rolevalidationSchema } from '@/validation';
 
 const CreateRole = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const dispatch = useDispatch();
     let router = useRouter();
-    const { control, register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const { control, register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(rolevalidationSchema)});
     const permissions =  useSelector( state => state.premission.items );
 
     useEffect( () => {

@@ -6,16 +6,9 @@ import Layout from '@/components/layout'
 import { useRouter } from "next/router"
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
-import { createCoupon, updateCoupon } from '@/store/slices/coupon';
+import { updateCoupon } from '@/store/slices/coupon';
 import { protectRoute } from '@/components/protectRoute';
 
-let validationSchema = object({
-    code: string().required().label("Code"),
-    amount: number().required().label("Amount"),
-    discount_type: string().required().label('discount_type'),
-    description: string().required().label('description'),
-});
 
 
 const EditCoupon = () => {
@@ -51,7 +44,7 @@ const EditCoupon = () => {
     return (
         <Layout>
             <DashboardLayout>
-                <h2> CreateCoupon </h2> 
+                <h2> UpdateCoupon </h2> 
                 <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
                     
                     <div className="form-group mb-4">

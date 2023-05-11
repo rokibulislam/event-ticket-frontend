@@ -15,6 +15,7 @@ const SubCategoryCreate = () => {
   let router = useRouter();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
+
   const eventcategories =  useSelector( state => state.eventcategory.items );
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const SubCategoryCreate = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault(); 
+    console.log(input);
     dispatch(createSubEventCategory({
       name: name,
       category_id: category

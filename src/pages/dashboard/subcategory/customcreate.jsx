@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
-import Link from 'next/link'
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { useRouter } from "next/router"
@@ -9,20 +8,14 @@ import { getEventCategories } from '@/store/slices/eventcategory';
 import { Select } from 'antd'
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
-
-
-let validationSchema = object({
-    name: string().required('name is requried').label("Name"),
-    category: number().required('category is required').label("category"),
-});
-
+import CustomSelect from '@/components/Form/select';
+import { subcategoryvalidationSchema } from '@/validation';
   
 const SubCategoryCreate = () => {
   const dispatch = useDispatch();
   let router = useRouter();
-  const {  control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(validationSchema)});
+  const {  control, register, handleSubmit, formState: { errors } } = useForm({resolver: yupResolver(subcategoryvalidationSchema)});
   const eventcategories =  useSelector( state => state.eventcategory.items );
 
   useEffect(() => {
@@ -35,7 +28,7 @@ const SubCategoryCreate = () => {
       name: data.name,
       category_id: data.category
     }));
-    router.push('/dashboard/category')
+    router.push('/dashboard/subcategory')
   };
 
   return (
@@ -49,7 +42,16 @@ const SubCategoryCreate = () => {
                 {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
               </div>
 
-              <div className="form-group mb-4">
+              <CustomSelect 
+                Controller={Controller} 
+                control={control} 
+                label="Event Category"
+                name="category"
+                options={eventcategories}
+                errors={errors}
+                value=""
+              />
+              {/* <div className="form-group mb-4">
                 <label htmlFor="category" className='form-label'> Event Category </label> <br/>
                 <Controller
                   control={control}
@@ -66,7 +68,7 @@ const SubCategoryCreate = () => {
                   )}
                 />
                 {errors.category && <p style={{ color: 'red' }}> { errors.category?.message }  </p>}
-              </div>
+              </div> */}
   
               <div className="form-group">
                   <button  className="btn btn-primary"> Submit </button>

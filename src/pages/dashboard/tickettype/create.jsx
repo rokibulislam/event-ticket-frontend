@@ -8,15 +8,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
 import { createTicketType } from '@/store/slices/tickettype';
 import { protectRoute } from '@/components/protectRoute';
+import { tickettypevalidationSchema } from '@/validation';
 
-let validationSchema = object({
-  name: string().required('Ticket Type is Required').label("name"),
-});
 
 const CreateTicketType = () => {
     const dispatch = useDispatch();
     const router = useRouter();
-    const { register, handleSubmit, formState: { errors, isValid } } =  useForm({resolver: yupResolver(validationSchema)});
+    const { register, handleSubmit, formState: { errors, isValid } } =  useForm({resolver: yupResolver(tickettypevalidationSchema)});
 
     const onSubmit = (data) => {
         dispatch(createTicketType(data.name));
