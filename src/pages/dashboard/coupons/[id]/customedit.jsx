@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updateCoupon } from '@/store/slices/coupon';
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 
 
@@ -36,9 +37,13 @@ const EditCoupon = () => {
     }, [code,amount])
   
     const onSubmit = ( data ) => {
-        console.log(data);
-        // dispatch( updateCoupon( { id, code, amount } ));
-        // router.push('/dashboard/coupons')
+        try {
+            let resutlAction = dispatch( updateCoupon( { id, code, amount } ));
+            unwrapResult(resutlAction)
+            router.push('/dashboard/coupons')      
+        } catch (error) {
+            console.log(error);
+        }
     };
     
     return (

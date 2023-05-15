@@ -7,6 +7,7 @@ import { getUsers, deleteUser } from '@/store/slices/user'
 import { Table, Space } from 'antd'
 import { protectRoute } from '@/components/protectRoute';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Users = () => {
 
@@ -22,7 +23,12 @@ const Users = () => {
 
     const handleRemove = (e, id) => {
       e.preventDefault();
-      dispatch(deleteUser(id))
+     try {
+      let resultAction = dispatch(deleteUser(id))
+      unwrapResult(resultAction)
+     } catch (error) {
+        console.log(error)
+     }
     }
 
     const columns = [

@@ -11,6 +11,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { protectRoute } from '@/components/protectRoute';
 import CustomSelect from '@/components/Form/select';
 import { subcategoryvalidationSchema } from '@/validation';
+import CustomInput from '@/components/Form/input';
+import { unwrapResult } from '@reduxjs/toolkit';
   
 const SubCategoryCreate = () => {
   const dispatch = useDispatch();
@@ -19,27 +21,34 @@ const SubCategoryCreate = () => {
   const eventcategories =  useSelector( state => state.eventcategory.items );
 
   useEffect(() => {
-    dispatch(getEventCategories())
+    try {
+      let resultAction = dispatch(getEventCategories())
+      unwrapResult( resultAction );
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch])
   
   const onSubmit = (data) => {
     console.log(data);
-    dispatch(createSubEventCategory({
-      name: data.name,
-      category_id: data.category
-    }));
-    router.push('/dashboard/subcategory')
+    try {
+      let resultAction = dispatch(createSubEventCategory({
+        name: data.name,
+        category_id: data.category
+      }));
+      unwrapResult( resultAction );
+      router.push('/dashboard/subcategory')
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Layout> 
       <DashboardLayout>        
           <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-              
-              <div className="form-group mb-4">
-                <label htmlFor="name" className='form-label'> SubCategory Name </label>
-                <input {...register('name')} type="text" id="name"  className="form-control" />
-                {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
+              <div className='col-md-4'>
+                <CustomInput register={register} label="SubCategory Name" name="name" errors={errors}  />
               </div>
 
               <CustomSelect 
@@ -50,26 +59,7 @@ const SubCategoryCreate = () => {
                 options={eventcategories}
                 errors={errors}
                 value=""
-              />
-              {/* <div className="form-group mb-4">
-                <label htmlFor="category" className='form-label'> Event Category </label> <br/>
-                <Controller
-                  control={control}
-                  name="category"
-                  render={({ field }) => (
-                    <Select
-                      style={{ width: 220 }}
-                      onChange={ (value ) => field.onChange(value) }
-                      options={
-                        eventcategories.length > 0 && ( eventcategories.map( ( item, i ) =>{
-                          return { value: item.id, label: item.name }
-                        })) } 
-                    />
-                  )}
-                />
-                {errors.category && <p style={{ color: 'red' }}> { errors.category?.message }  </p>}
-              </div> */}
-  
+              />  
               <div className="form-group">
                   <button  className="btn btn-primary"> Submit </button>
               </div>

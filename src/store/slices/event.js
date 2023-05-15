@@ -1,6 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import httpService from '../../services/httpService'
 
+export const getSeatsIoChartData = createAsyncThunk('event/getSeatsIoChartData', async ( chartkey, thunkAPI ) => {
+    try {
+        let response  = await httpService.get(`getSeatsIoChartData/${chartkey}`);
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+});
+
+export const cloneSeatsIoChartData = createAsyncThunk('event/getSeatsIoChartData', async ( {
+    
+}, thunkAPI ) => {
+    try {
+        let response  = await httpService.get(`getSeatsIoChartData/${chartkey}`);
+        return response.data;
+    } catch (error) {
+        return error.message;
+    }
+});
+
 export const getEventsbyuser = createAsyncThunk('event/getEventsbyuser', async () => {
     try {
         let response  = await httpService.get('eventsbyuser');
@@ -85,6 +105,7 @@ const eventSlice = createSlice({
         loading : false,
         error: "",
         chartkey: null,
+        chartImage: null
     },
 
     reducers: {
@@ -92,6 +113,18 @@ const eventSlice = createSlice({
     },
 
     extraReducers: {
+        [getSeatsIoChartData.pending]: (state, action) => {
+
+        },
+
+        [getSeatsIoChartData.fulfilled]: (state, action) => {
+            console.log(action.payload);
+            state.chartImage = action.payload;
+        },
+
+        [getSeatsIoChartData.rejected]: (state, action) => {
+
+        },
         [getEventsbyuser.pending]: (state, action) => {
 
         },

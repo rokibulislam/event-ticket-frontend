@@ -11,6 +11,7 @@ import { object, string, number, date, InferType } from 'yup';
 import { getRoles } from '@/store/slices/role';
 import { protectRoute } from '@/components/protectRoute';
 import { Select } from 'antd'
+import { unwrapResult } from '@reduxjs/toolkit';
 
 let validationSchema = object({
   name: string().required().label("name"),
@@ -27,7 +28,12 @@ const UserCreate = () => {
   const roles =  useSelector( state => state.role.items );
 
   useEffect(() => {
-    dispatch( getRoles() );
+    try {
+      let resultAction = dispatch( getRoles() );
+      unwrapResult(resultAction);
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch] )
 
   const onSubmit = data => {

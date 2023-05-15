@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { protectRoute } from '@/components/protectRoute';
 import { permissionvalidationSchema } from '@/validation';
-
+import CustomInput from '@/components/Form/input';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const CreatePermission = () => {
     const dispatch = useDispatch();
@@ -17,8 +18,13 @@ const CreatePermission = () => {
 
     const onSubmit = (data) => {
         console.log(data);
-        dispatch(createPermission(data.name));
-        router.push('/dashboard/permissions')
+        try {
+            let resultAction = dispatch(createPermission(data.name));
+            unwrapResult(resultAction)
+            router.push('/dashboard/permissions')
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     return (
@@ -26,17 +32,10 @@ const CreatePermission = () => {
             <DashboardLayout>
                 <h2>  Create Permission  </h2>
                 <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-            
-                    <div className="form-group mb-4">
-                        <label htmlFor="name" className='form-label'> Permission Name </label>
-                        <input {...register('name')} type="text" id="name" className="form-control" />
-                        {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
-                    </div>
-
+                    <CustomInput register={register} label="Permission Name" name="name" errors={errors}  />
                     <div className="form-group">
                         <button disabled={!isValid} className="btn btn-primary" type='submit'> Submit </button>
                     </div>
-
                 </form> 
             </DashboardLayout>
         </Layout>

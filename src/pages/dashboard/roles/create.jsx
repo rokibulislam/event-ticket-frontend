@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const CreateRole = () => {
     const dispatch = useDispatch();
@@ -15,10 +16,13 @@ const CreateRole = () => {
     const permissions =  useSelector( state => state.premission.items );
 
     useEffect( () => {
-        dispatch(getPermissions())
+        try {
+            let resultAction =  dispatch(getPermissions())
+            unwrapResult(resultAction)
+        } catch (error) {
+            console.log(error)
+        }
     },[dispatch])
-
-    
 
     const handleOptionSelect = (event) => {
       const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
@@ -27,10 +31,15 @@ const CreateRole = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      dispatch(createRole( { 
-        name: name,
-        permissions: selectedOptions
-      }));
+      try {
+        let resultAction = dispatch(createRole( { 
+            name: name,
+            permissions: selectedOptions
+        }));
+        unwrapResult(resultAction) 
+      } catch (error) {
+        console.log(error)
+      }
     };
   
     return (
@@ -38,7 +47,7 @@ const CreateRole = () => {
             <DashboardLayout>
                 <h2>  Create Role  </h2>
                 <form action='' method='post' onSubmit={handleSubmit}>
-              
+                    
                     <div className="form-group mb-4">
                         <label htmlFor="type_name" className='form-label'> Role Name </label>
                         <input type="text" name="type_name" id="" value={name} className="form-control" onChange={ (e) => { setName(e.target.value) }}  />

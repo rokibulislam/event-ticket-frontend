@@ -7,18 +7,29 @@ import { Table, Space } from 'antd'
 import { getPermissions, deletePermission } from '@/store/slices/permission';
 import { protectRoute } from '@/components/protectRoute';
 import { CloseOutlined } from '@ant-design/icons';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Permissions = () => {
     const dispatch = useDispatch();
     const premissions =  useSelector( state => state.premission.items );
   
     useEffect( () => {
-      dispatch(getPermissions())
+      try {
+        let resultAction = dispatch(getPermissions())
+        unwrapResult(resultAction)
+      } catch (error) {
+        console.log(error);
+      }
     },[dispatch])
 
     const handleRemove = (e, id) => {
       e.preventDefault();
-      dispatch(deletePermission(id))
+      try {
+        let resultAction = dispatch(deletePermission(id))
+        unwrapResult(resultAction)
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const columns = [

@@ -2,22 +2,25 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
-
-let validationSchema = object({
-    name: string().required('Name Field Is Required').label("name"),
-    nickname: string().required('Nickname Field Is Required').label("nickname"),
-    postcode: string().required('Postcode Field Is Required').label("postcode"),
-    country: string().required().label("country"),
-    city: string().required().label("city"),
-});
+import { VenuevalidationSchema } from '@/validation';
+import CustomInput from '../Form/input';
 
 const VenuecreateForm = ( { onSubmit }) => {
     
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(VenuevalidationSchema)});
     
     return (
         <div>
             <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>    
+
+                <CustomInput register={register} label="Venue Name" name="name" errors={errors}  />
+                <CustomInput register={register} label="Venue Nickname" name="nickname" errors={errors}  />
+                <CustomInput register={register} label="PostCode" name="postcode" errors={errors}  />
+                <CustomInput register={register} label="Country" name="country" errors={errors}  />
+                <CustomInput register={register} label="State" name="state" errors={errors}  />
+                <CustomInput register={register} label="City" name="city" errors={errors}  />
+                
+{/*             
                 <div className="form-group mb-4">
                     <label htmlFor="name" className='form-label'> Venue Name </label>
                     <input {...register('name')} type="text" id="name" className="form-control"/>
@@ -51,10 +54,10 @@ const VenuecreateForm = ( { onSubmit }) => {
                     <label htmlFor="city" className='form-label'> City </label>
                     <input {...register('city')}  type="text" name="city" id="city" className="form-control"/>
                     {errors.city && <span style={{ color: 'red' }}> { errors.city?.message }  </span>}
-                </div>
+                </div> */}
 
                 <div className="form-group">
-                    <button disabled={!isValid}  className="btn btn-primary"> Submit </button>
+                    <button   className="btn btn-primary"> Submit </button>
                 </div>
             
             </form>

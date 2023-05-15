@@ -22,15 +22,16 @@ export const getCoupon = createAsyncThunk('event/getCoupon', async (id) => {
     }
 })
 
-export const createCoupon = createAsyncThunk('event/createCoupon', async ({ code, amount, discount_type, description, minimum_amount, usage_limit, usage_limit_per_user }, thunkAPI) => {
+export const createCoupon = createAsyncThunk('event/createCoupon', async ({ code, amount, discount_type, expiration_date, description, minimum_order_amount, usage_limit, usage_limit_per_user }, thunkAPI) => {
     try {
-        console.log('create coupon');
+        console.log('create coupon', discount_type);
         let response  = await httpService.post('coupons', {
             code: code,
-            discount_amount: amount,
+            amount: amount,
             // discount_type: discount_type,
+            // expiration_date: expiration_date
             // description: description,
-            // minimum_amount: minimum_amount,
+            // minimum_order_amount: minimum_order_amount,
             // usage_limit: usage_limit,
             // usage_limit_per_user: usage_limit_per_user
         });
@@ -46,7 +47,7 @@ export const updateCoupon = createAsyncThunk('event/updateCoupon', async ( { id,
     try {
         let response  = await httpService.put(`coupons/${id}`, {
             code: code,
-            discount_amount: amount
+            amount: amount
         });
 
         return response;   

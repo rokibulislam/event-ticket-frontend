@@ -8,18 +8,29 @@ import { Table, Space } from 'antd'
 import { getRoles, deleteRole } from '@/store/slices/role';
 import { protectRoute } from '@/components/protectRoute';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Roles = () => {
     const dispatch = useDispatch();
     const roles =  useSelector( state => state.role.items );
   
     useEffect( () => {
-      dispatch(getRoles())
+      try {
+        let resultAction = dispatch(getRoles())
+        unwrapResult(resultAction)
+      } catch (error) {
+        console.log(error)
+      }
     },[dispatch])
 
     const handleRemove = (e, id) => {
       e.preventDefault();
-      dispatch(deleteRole(id))
+      try {
+        let resultAction = dispatch(deleteRole(id))
+        unwrapResult(resultAction)
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     const columns = [

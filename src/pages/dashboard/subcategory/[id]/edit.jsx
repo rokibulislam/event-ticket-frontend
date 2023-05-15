@@ -7,6 +7,7 @@ import { getSubEventCategory, updateSubEventCategory } from '@/store/slices/even
 import { getEventCategories } from '@/store/slices/eventcategory';
 import { Select } from 'antd'
 import { protectRoute } from '@/components/protectRoute'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const EditSubCategory = () => {
     const router = useRouter()
@@ -33,9 +34,13 @@ const EditSubCategory = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      dispatch(updateSubEventCategory({ id, name, category_id: category }))
-
-      router.push('/dashboard/subcategory')
+      try {
+        let resultAction = dispatch(updateSubEventCategory({ id, name, category_id: category }))
+        unwrapResult(resultAction)
+        router.push('/dashboard/subcategory') 
+      } catch (error) {
+        console.log(error);
+      }
     } 
 
     const handleChange = (e) => {

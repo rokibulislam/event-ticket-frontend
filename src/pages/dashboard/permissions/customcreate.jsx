@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector  } from 'react-redux'
 import { useRouter } from "next/router"
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const CreatePermission = () => {
     const dispatch = useDispatch();
@@ -13,8 +14,13 @@ const CreatePermission = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      dispatch(createPermission(name));
-      router.push('/dashboard/permissions')
+      try {
+       let resultAction = dispatch(createPermission(name));
+        unwrapResult(resultAction)
+        router.push('/dashboard/permissions')
+      } catch (error) {
+        console.log(error)
+      }
     };
 
     return (

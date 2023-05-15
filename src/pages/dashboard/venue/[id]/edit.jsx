@@ -5,7 +5,7 @@ import Layout from '@/components/layout'
 import DashboardLayout from '@/components/DashboardLayout'
 import { getVenue, updateVenue } from '@/store/slices/venue'
 import { protectRoute } from '@/components/protectRoute'
-
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const EditVenue = () => {
   const router = useRouter()
@@ -35,16 +35,21 @@ const EditVenue = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateVenue({
-      id: id,
-      name: name,
-      nickname: nickname,
-      city: city,
-      country: country,
-      state: state,
-      postcode: postcode
-    }))
-    // router.push('/dashboard/venue')
+    try {
+      let resultAction = dispatch(updateVenue({
+        id: id,
+        name: name,
+        nickname: nickname,
+        city: city,
+        country: country,
+        state: state,
+        postcode: postcode
+      }))
+      unwrapResult( resultAction);
+      router.push('/dashboard/venue') 
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

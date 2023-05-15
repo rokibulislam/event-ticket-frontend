@@ -8,6 +8,8 @@ import { protectRoute } from '@/components/protectRoute'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
+import VenuecreateForm from '@/components/venue/createForm'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 let validationSchema = object({
   name: string().required().label("name"),
@@ -58,16 +60,21 @@ const EditVenue = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    dispatch(updateVenue({
-      id: id,
-      name: data.name,
-      nickname: data.nickname,
-      city: data.city,
-      country: data.country,
-      state: data.state,
-      postcode: data.postcode
-    }))
-    router.push('/dashboard/venue')
+    try {
+      let resultAction =  dispatch(updateVenue({
+        id: id,
+        name: data.name,
+        nickname: data.nickname,
+        city: data.city,
+        country: data.country,
+        state: data.state,
+        postcode: data.postcode
+      }))
+      unwrapResult(resultAction)
+      router.push('/dashboard/venue') 
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

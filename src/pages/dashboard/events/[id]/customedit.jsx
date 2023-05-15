@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import DashboardLayout from '@/components/DashboardLayout';
-import event, { getEvent, updateEvent } from '@/store/slices/event';
+import { getEvent, updateEvent } from '@/store/slices/event';
 import { getEventCategories, getSubCategoriesByCategory } from '@/store/slices/eventcategory'
 import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
@@ -27,6 +27,7 @@ import CustomSelect from '@/components/Form/select';
 import CustomDatepicker from '@/components/Form/datepicker';
 import CustomTimepicker from '@/components/Form/timepicker';
 import CustomRadio from '@/components/Form/radio';
+import CustomInput from '@/components/Form/input';
 
 const EditEvents = () => {
   const router = useRouter()
@@ -118,11 +119,12 @@ const EditEvents = () => {
         
           <div className='row'>
             <div className="col-md-6">
-              <div className="form-group">
+              <CustomInput register={register} label="Event Name" name="name" errors={errors}  />
+              {/* <div className="form-group">
                 <label htmlFor=""> Event Name </label>
                 <input {...register('name')} type="text" name="name" id="" className="form-control mb-4" />
                 {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
-              </div>
+              </div> */}
             </div>
           </div>
 

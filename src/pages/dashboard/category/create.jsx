@@ -9,6 +9,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { protectRoute } from '@/components/protectRoute';
 import { categoryvalidationSchema } from '@/validation';
+import CustomInput from '@/components/Form/input';
+import { unwrapResult } from '@reduxjs/toolkit';
+
 
 const CategoryCreate = () => {
   const dispatch = useDispatch();
@@ -16,20 +19,27 @@ const CategoryCreate = () => {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(categoryvalidationSchema)});
 
   const onSubmit = (data) => {
-    console.log(data);
-    dispatch(createEventCategory(data.name));
-    router.push('/dashboard/category')
+    try {
+      let resultAction = dispatch(createEventCategory(data.name));
+      unwrapResult(resultAction);
+      router.push('/dashboard/category')
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   return (
     <Layout> 
       <DashboardLayout>        
         <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group mb-4">
+
+            <CustomInput register={register} label="Category Name" name="name" errors={errors}  />
+            
+            {/* <div className="form-group mb-4">
               <label htmlFor="name" className='form-label'> Category Name </label>
               <input {...register('name')} type="text" id="name" className="form-control" />
               {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
-            </div>
+            </div> */}
 
             <div className="form-group">
                 <button disabled={!isValid} className="btn btn-primary"> Submit </button>

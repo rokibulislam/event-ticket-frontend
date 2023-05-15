@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Table, Space } from 'antd'
 import { protectRoute } from '@/components/protectRoute'
 import { CloseOutlined, EditOutlined } from '@ant-design/icons'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const TicketType = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,12 @@ const TicketType = () => {
   const tickettypes =  useSelector( state => state.tickettype.items );
 
   useEffect( () => {
-    dispatch(getTicketTypes())
+    try {
+      let resultAction = dispatch(getTicketTypes())
+      unwrapResult(resultAction)
+    } catch(error) {
+      console.log( error );
+    }
   },[dispatch])
 
   const handleCreate = (e) => {
@@ -23,7 +29,12 @@ const TicketType = () => {
 
   const handleRemove = (e, id) => {
     e.preventDefault();
-    dispatch(deleteTicketType(id));
+    try {
+      let resultAction = dispatch(deleteTicketType(id));
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const columns = [

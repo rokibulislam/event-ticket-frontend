@@ -6,6 +6,7 @@ import DashboardLayout from '@/components/DashboardLayout';
 import { getVenues, deleteVenue } from '../../../store/slices/venue'
 import { Table, Space } from 'antd';
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Venue = () => {
   const dispatch = useDispatch();
@@ -15,12 +16,22 @@ const Venue = () => {
   const error  =  useSelector( state => state.venue.error );
   
   useEffect( () => {
-    dispatch(getVenues())
+    try {
+      let resultAction = dispatch(getVenues())
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error);
+    }
   },[dispatch])
 
   const handleRemove = (e, id) => {
     e.preventDefault();
-    dispatch(deleteVenue(id))
+    try {
+      let resultAction = dispatch(deleteVenue(id))
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const columns = [
@@ -55,8 +66,7 @@ const Venue = () => {
       render: (_, item) => (
         <Space size="middle">
           <Link href={`/dashboard/venue/${item.id}/edit`}> Edit </Link> 
-          {
-            item?.events.length > 0 && ( <Link href={`/dashboard/venue-seatchart/${item.id}`}> Edit Seat </Link>)}
+          {/* { item?.events.length > 0 && ( <Link href={`/dashboard/venue-seatchart/${item.id}`}> Edit Seat </Link>)} */}
           <Link href={`/dashboard/venue/${item.id}/customedit`}> Custom Edit </Link> 
           <button onClick={ (e) => handleRemove(e,item.id)} className='btn btn-danger'> Delete </button>
         </Space>

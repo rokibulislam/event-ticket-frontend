@@ -12,10 +12,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
 import { subcategoryvalidationSchema } from '@/validation';
-
+import CustomSelect from '@/components/Form/select';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const EditSubCategory = () => {
-    const { control, register, handleSubmit, reset, formState: { errors, isValid } } = useForm({resolver: yupResolver(subcategoryvalidationSchema)});
+    const { control, register, handleSubmit, reset, getValues, formState: { errors, isValid } } = useForm({resolver: yupResolver(subcategoryvalidationSchema)});
     const router = useRouter()
     const { id } = router.query
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const EditSubCategory = () => {
       if( id !== 'undefined' ) {
         dispatch(getEventCategories());
         const eventsubcategory  = eventsubcategories.find( item => item.id == id );
+        console.log(eventsubcategory.category);
         setName(eventsubcategory.name)
         setCategory(eventsubcategory.category)
       }
@@ -37,19 +39,26 @@ const EditSubCategory = () => {
     useEffect(() => {
       reset({
         name: name,
-        // category: category
+        category: category
       })
     }, [name, category])
 
     const onSubmit = (data) => {
-        updateSubEventCategory({
+      try {
+        let resultAction = updateSubEventCategory({
           id: id,
           name: data.name,
           category_id: data.category
         })
-        router.push('/dashboard/subcategory');
+        unwrapResult(resultAction)
+        router.push('/dashboard/subcategory'); 
+      } catch (error) {
+        console.log(error);
+      }
     };
 
+  let selectedCat =  { value: getValues('category')?.id, label: getValues('category')?.name } 
+ //             value={ { value: category.id, label: category.name } }
   return (
     <Layout> 
       <DashboardLayout>        
@@ -61,27 +70,8 @@ const EditSubCategory = () => {
                 {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
             </div>
 
-            <div className="form-group mb-4">
-                <label htmlFor="category" className='form-label'> Event Category </label> <br/>
-                <Controller
-                  control={control}
-                  name="category"
-                  render={({ field }) => (
-                    <Select
-                      style={{ width: 220 }}
-                      defaultValue={ { value: category.id, label: category.name } }
-                      onChange={ (value ) => field.onChange(value) }
-                      options={
-                        eventcategories.length > 0 && ( eventcategories.map( ( item, i ) =>{
-                          return { value: item.id, label: item.name }
-                        })) 
-                      } 
-                    />
-                  )}
-                />
-                {errors.category && <p style={{ color: 'red' }}> { errors.category?.message }  </p>}
-            </div>
-  
+            <CustomSelect options={eventcategories} control={control} label="Event Category" name="category" errors={errors}  value={selectedCat} />
+
             <div className="form-group">
                 <button className="btn btn-primary"> Submit </button>
             </div>

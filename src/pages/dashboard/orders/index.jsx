@@ -9,22 +9,6 @@ const Orders = () => {
   <Layout>
     <DashboardLayout>
       <h2> Orders </h2>
-
-      {/* <table className='table'>
-        <thead>
-          <th>
-            <td>Order Number</td>
-            <td>First Name</td>
-            <td>Last Name</td>
-            <td>Total Tickets</td>
-            <td>Buy Date</td>
-            <td>Original Total</td>
-            <td>Refund</td>
-            <td>Payment</td>
-            <td>Source</td>
-          </th>
-        </thead>
-      </table> */}
     </DashboardLayout>
   </Layout>
   )

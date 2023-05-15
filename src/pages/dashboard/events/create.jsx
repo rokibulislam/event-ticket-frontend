@@ -17,6 +17,7 @@ import { protectRoute } from '@/components/protectRoute';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 import CustomnestedVenueRepeatField from '@/components/VenueRepeatField/customnested'
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -52,6 +53,7 @@ const EventCreate = () => {
      ticketPrice: '', 
      ticketQty: '',  
   }]);
+
   const [venuecategory, setVenuecategory] = useState([{ name: '', price: '', qty: '', fee: '' }]);
   const [venuenestedcategory, setNestedvenuecategory] = useState([
     { 
@@ -66,10 +68,14 @@ const EventCreate = () => {
 ]);
 
   useEffect( () => {
-    dispatch(getEventCategories());
-    dispatch(getEventTypes());
-    dispatch(getVenues());
-    dispatch(getTicketTypes());
+    try {
+      dispatch(getEventCategories());
+      dispatch(getEventTypes());
+      dispatch(getVenues());
+      dispatch(getTicketTypes()); 
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch])
 
 
@@ -105,10 +111,15 @@ const EventCreate = () => {
 
   const handleCreateEvent = (e) => {
     e.preventDefault();
-    dispatch( createSeatsEvent({
-      name: name,
-      chartkey: chartkey
-    }))
+    try {
+      let resultAction = dispatch( createSeatsEvent({
+        name: name,
+        chartkey: chartkey
+      }))
+      unwrapResult(resultAction) 
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -154,7 +165,7 @@ const EventCreate = () => {
                 </div>
             </div>
 
-            <div className="col-md-4">
+            {/* <div className="col-md-4">
               <div className="form-group mb-4"> 
                   <label htmlFor="subcategory" className='form-label'> Event SubCategory </label> <br/>
                   <Select
@@ -165,7 +176,7 @@ const EventCreate = () => {
                     }) : [] }
                   /> 
               </div>
-            </div>
+            </div> */}
             
             <div className="col-md-4">
              <div className="form-group mb-4">

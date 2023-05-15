@@ -8,25 +8,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string, number, date, InferType } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute'
 import { createVenue } from '../../../store/slices/venue'
-
-
-let validationSchema = object({
-    name: string().required().label("name"),
-    nickname: string().required().label("nickname"),
-    postcode: string().required().label("postcode"),
-    country: string().required().label("country"),
-    city: string().required().label("city"),
-});
+import VenuecreateForm from '@/components/venue/createForm'
+import { VenuevalidationSchema } from '@/validation';
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const VenueCreate = () => {
     let dispatch = useDispatch();
     let router = useRouter();
-    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(validationSchema)});
+    const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(VenuevalidationSchema)});
 
     const onSubmit = (data) => {
-        console.log(data);
-        dispatch(createVenue(
-            {
+        try {
+            let resultAction = dispatch(createVenue({
                 name: data.name, 
                 nickname: data.nickname,
                 city: data.city,
@@ -35,17 +28,21 @@ const VenueCreate = () => {
                 country: data.country,
                 state: data.state,
                 postcode: data.postcode
-            }
-        ))
-
-        router.push('/dashboard/venue')
+            }))
+            unwrapResult( resultAction);
+            router.push('/dashboard/venue')   
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
         <Layout>
             <DashboardLayout>
 
-                <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>    
+                <VenuecreateForm onSubmit={onSubmit} />
+
+                {/* <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>    
                     <div className="form-group mb-4">
                         <label htmlFor="name" className='form-label'> Venue Name </label>
                         <input {...register('name')} type="text" id="name" className="form-control"/>
@@ -85,7 +82,7 @@ const VenueCreate = () => {
                         <button disabled={!isValid}  className="btn btn-primary"> Submit </button>
                     </div>
                 
-                </form>
+                </form> */}
 
             </DashboardLayout>
         </Layout>

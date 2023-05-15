@@ -9,6 +9,7 @@ import { getEventCategories } from '@/store/slices/eventcategory';
 import { Select } from 'antd'
 import { protectRoute } from '@/components/protectRoute';
 import CustomSelect from '@/components/Form/select';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const SubCategoryCreate = () => {
   const dispatch = useDispatch();
@@ -19,17 +20,27 @@ const SubCategoryCreate = () => {
   const eventcategories =  useSelector( state => state.eventcategory.items );
 
   useEffect(() => {
-    dispatch(getEventCategories())
+    try {
+      let resultAction = dispatch(getEventCategories())
+      unwrapResult( resultAction );
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch])
   
   const handleSubmit = (e) => {
     e.preventDefault(); 
     console.log(input);
-    dispatch(createSubEventCategory({
-      name: name,
-      category_id: category
-    }));
-    // router.push('/dashboard/category')
+    try {
+      dispatch(createSubEventCategory({
+        name: name,
+        category_id: category
+      }));
+      // router.push('/dashboard/category')  
+    } catch (error) {
+      console.log(error);
+    }
+
   };
 
   return (

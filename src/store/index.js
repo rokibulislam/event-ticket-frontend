@@ -17,6 +17,7 @@ import couponReducer from './slices/coupon'
 import countryReducer from './slices/countries'
 import eventtimeReducer from './slices/eventtime'
 import cartReducer from './slices/cart';
+import ticketsReducer from './slices/tickets'
 
 const persistConfig = {
     key: 'auth',
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
     coupon: couponReducer,
     country: countryReducer,
     cart: cartReducer,
-    eventtimeReducer: eventtimeReducer
+    eventtimeReducer: eventtimeReducer,
+    tickets: ticketsReducer
 });
 
   

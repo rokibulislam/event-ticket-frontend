@@ -4,11 +4,31 @@ import {  useFieldArray } from "react-hook-form";
 import { CloseOutlined,PlusOutlined } from '@ant-design/icons';
 
 const CustomVenuehook = ( { Controller, name , control, register, setValue, watch, errors }) => {
-    const { fields, append, remove } = useFieldArray({ control, name: name });
+    const { fields: rawFields, append, remove, insert, update } = useFieldArray({ control, name: name });
 
     const watchedField = watch(name);
+
+    const fields = rawFields.map((field, index) => {
+        return {
+          ...field,
+          ...watchedField[index]
+        };
+      });
     // console.log(watchedField);
     console.log(errors);
+
+    const addSubprice = (index, object ) => {
+        // console.log('add Subprice',  fields[index].subprices.push({ name: '', price: '', fee: '' }) );
+        // console.log(watchedField);
+        update(index,  fields[index].subprices.push({ name: '', price: '', fee: '' }) )
+        console.log(watchedField);
+    }
+
+    const handleRemoveNestedField = (index, addressIndex) => {
+        console.log(index);
+        console.log(addressIndex);
+    }
+
     return (
     <>
         {fields.map((field, index) => (
@@ -16,7 +36,7 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
             
             <div className='row' key={index}>
               
-              <div className='col-md-4'>
+              <div className='col-md-2'>
                 <label htmlFor="" className="form-label"> Category Name {field.showSubPrice} </label>
                 <input
                   className='form-control'
@@ -35,7 +55,7 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                         <input
                         className='form-control'
                         type="text"
-                        {...register(`venuetickets.${index}.price`,{ required: true })}
+                        {...register(`venuetickets.${index}.price`)}
                         value={field.price}
                         />
                         {errors.venuetickets && errors.venuetickets[index]?.price && (
@@ -48,7 +68,7 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                         <input
                         className='form-control'
                         type="text"
-                        {...register(`venuetickets.${index}.fee`,{ required: true })}
+                        {...register(`venuetickets.${index}.fee`)}
                         value={field.fee}
                         />
                         {errors.venuetickets && errors.venuetickets[index]?.fee && (
@@ -61,7 +81,7 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                         <input
                             className='form-control'
                             type="text"
-                            {...register(`venuetickets.${index}.qty`,{ required: true })}
+                            {...register(`venuetickets.${index}.qty`)}
                             value={field.qty}
                         />
                         {errors.venuetickets && errors.venuetickets[index]?.qty && (
@@ -73,9 +93,9 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
 
             <div className='col-md-2'>
               <label htmlFor="" className="form-label"> Add Subprice </label>
-              <Switch  onChange={ (e) => {
+              <Switch  onChange={ (value) => {
                 console.log('mojaloss')
-                setValue(`venuetickets.${index}..showSubPrice`, !field.showSubPrice) 
+                setValue(`venuetickets.${index}..showSubPrice`, value) 
               }} />
 
             </div>
@@ -141,7 +161,7 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
                     </> 
                 ))}
 
-                <button className='btn btn-create' style={{ maxWidth: '200px' }} type="button"> <PlusOutlined /> Add SubPrice </button>
+                <button className='btn btn-create' style={{ maxWidth: '200px' }} type="button" onClick={ () => addSubprice(index) }> <PlusOutlined /> Add SubPrice </button>
             </>
             ) }  
 
@@ -149,11 +169,13 @@ const CustomVenuehook = ( { Controller, name , control, register, setValue, watc
     
         ))}
 
+        <br />
         
         <button type="button" className='btn btn-create' onClick={() => append({ 
             name: '',
             price: '',
             fee: '',
+            qty: '',
             showSubPrice: false,
             subprices: [
             { name: '', price: '', fee: '' }

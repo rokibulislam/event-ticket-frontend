@@ -2,11 +2,6 @@ import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioD
 import React from 'react'
 
 const SeatingChart = () => {
-  const pricing = [
-    {'category' : 1, 'price': 30},
-    {'category': 2, 'price': 40},
-    {'category': 3, 'price': 50}
-]
   return (
     <div style={{ 'height': '500px' }}>
         <SeatsioDesigner

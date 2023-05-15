@@ -11,6 +11,7 @@ import Layout from '@/components/layout'
 import { protectRoute } from '@/components/protectRoute'
 import { getRoles } from '@/store/slices/role';
 import { updateUser } from '@/store/slices/user';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 let validationSchema = object({
   name: string().required().label("name"),
@@ -34,7 +35,12 @@ const EditUser = () => {
   const [role, setRole] = useState('')
 
   useEffect(() => {
-    dispatch( getRoles() );
+    try { 
+      let resultAction = dispatch( getRoles() );
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error)
+    }
   }, [dispatch] )
 
   useEffect( () => {

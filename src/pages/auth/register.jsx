@@ -5,23 +5,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register as registerAction } from '../../store/slices/auth'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType, ref as yupref } from 'yup'; 
 import { unwrapResult } from "@reduxjs/toolkit";
-
-let validationSchema = object({
-  username: string().required().min(3).label("username"),
-  email: string().required().email().label("email"),
-  password: string().min(4).required().label("Password"),
-  confirmPassword: string()
-    .oneOf([yupref('password'), null], 'Passwords must match') // added password confirmation validation
-    .required('Please confirm your password')
-});
+import { registervalidationSchema } from '@/validation'
+import CustomInput from '@/components/Form/input'
+import CustomPassword from '@/components/Form/password'
 
 const Register = () => {
   const dispatch = useDispatch()
   const router = useRouter();
   const auth =  useSelector( state => state.auth )
-  const { register, handleSubmit, formState: { errors, isValid }, setError } = useForm({resolver: yupResolver(validationSchema)});
+  const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitting }, setError } = useForm({resolver: yupResolver(registervalidationSchema)});
 
   const onSubmit = async data =>{
     try {
@@ -48,12 +41,16 @@ const Register = () => {
       {/* { auth.error } */}
       <div className='col-md-4 offset-md-4'>
         <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-
-          <div className='form-group mb-4'>
+          <CustomInput register={register} label="Username" name="username" placeholder="Enter Username" errors={errors} />
+          <CustomInput register={register} label="Email Address" name="email" placeholder="Enter Email Address" errors={errors} />
+          <CustomPassword register={register} label="Password" name="password" placeholder="Enter Password" errors={errors} />
+          <CustomPassword register={register} label="Confirm Password " name="confirmPassword" placeholder="Confirm Password " errors={errors} />
+         
+          {/* <div className='form-group mb-4'>
             <label htmlFor="username" className='form-label'> Username </label>
             <input {...register('username')} type="text" id="username" className="form-control"/>
             {errors.username && <p style={{ color: 'red'}}>{errors.username.message}</p>}
-          </div>
+          </div> 
 
           <div className='form-group mb-4'>
             <label htmlFor="email" className='form-label'> Email Address </label>
@@ -72,9 +69,10 @@ const Register = () => {
             <input {...register('confirmPassword')} type="text" id="confirmPassword" className="form-control mb-4"/>
             {errors.confirmPassword && <p style={{ color: 'red'}}>{errors.confirmPassword.message}</p>}
           </div>
+        */}
 
           <div className="form-group">
-            <button  disabled={!isValid} className="btn btn-primary" type='submit'> Register </button>
+            <button disabled={!isValid} className="btn btn-primary" type='submit'> Register </button>
           </div>
         </form>
       </div>

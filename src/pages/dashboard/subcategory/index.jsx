@@ -15,12 +15,22 @@ const SubCategory = () => {
   const error  =  useSelector( state => state.eventsubcategory.error );
 
   useEffect( () => {
-    dispatch(getSubEventCategories())
+    try {
+      let resultAction  = dispatch(getSubEventCategories())
+      unwrapResult( resultAction );
+    } catch (error) {
+      console.log(error)
+    }
   },[dispatch])
 
   const handleRemove = (e, id) => {
     e.preventDefault();
-    dispatch( deleteSubEventCategory(id) );
+    try {
+      let resultAction  = dispatch( deleteSubEventCategory(id) );
+      unwrapResult( resultAction );
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const columns = [

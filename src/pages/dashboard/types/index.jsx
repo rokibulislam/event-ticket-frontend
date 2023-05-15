@@ -7,6 +7,7 @@ import { getEventTypes, deleteEventType } from '@/store/slices/eventtype'
 import { Table, Space } from 'antd';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Types = () => {
 
@@ -22,7 +23,12 @@ const Types = () => {
 
     const handleRemove = (e, id) => {
       e.preventDefault();
-      dispatch( deleteEventType(id) );
+      try {
+        let resultAction  = dispatch( deleteEventType(id) );
+        unwrapResult( resultAction );
+      } catch (error) {
+        console.log(error);
+      }
     }
 
 

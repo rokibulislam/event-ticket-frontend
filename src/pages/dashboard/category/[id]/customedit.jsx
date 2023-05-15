@@ -25,7 +25,6 @@ const EditCategory = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
       dispatch(updateEventCategory({ id, name }))
-
       router.push('/dashboard/category')
     } 
   
@@ -37,7 +36,7 @@ const EditCategory = () => {
 
               <div className="form-group">
                 <label htmlFor=""> Category Name </label>
-                <input type="text" name="type_name" id="" value={name} className="form-control mb-4" onChange={ (e) => { setName(e.target.value) }}  />
+                <input type="text" name="name" id="" value={name} className="form-control mb-4" onChange={ (e) => { setName(e.target.value) }}  />
               </div>
   
               <div className="form-group">

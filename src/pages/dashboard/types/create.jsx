@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { protectRoute } from '@/components/protectRoute';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { typevalidationSchema } from '@/validation';
+import CustomInput from '@/components/Form/input';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const TypesCreate = () => {
   const dispatch = useDispatch();
@@ -15,21 +17,20 @@ const TypesCreate = () => {
   const { register, handleSubmit, formState: { errors, isValid } } = useForm({resolver: yupResolver(typevalidationSchema)});
   
   const onSubmit = (data) => {
-    // console.log(data);
-    dispatch(createEventType(data.name));
-    router.push('/dashboard/types')
+    try {
+      let resultAction = dispatch(createEventType(data.name));
+      unwrapResult(resultAction);
+      router.push('/dashboard/types')
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <Layout> 
         <DashboardLayout> 
         <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-group mb-4">
-              <label htmlFor="name" className='form-label'> Type Name </label>
-                <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
-                {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
-            </div>
-
+            <CustomInput register={register} label="Type Name" name="name" errors={errors}  />
             <div className="form-group">
               <button className="btn btn-primary"> Submit </button>
             </div>

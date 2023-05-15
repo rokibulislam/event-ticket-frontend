@@ -6,18 +6,15 @@ import { login } from '../../store/slices/auth'
 import Link from 'next/link';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType } from 'yup'; 
-
-let validationSchema = object({
-  email: string().required().email().label("email"),
-  password: string().required().min(4).label("password")
-});
+import { loginvalidationSchema } from '@/validation';
+import CustomInput from '@/components/Form/input';
+import CustomPassword from '@/components/Form/password';
 
 const Login = () => {
   const dispatch = useDispatch()
   const router = useRouter();
   const auth =  useSelector( state => state.auth )
-  const { register, handleSubmit, formState: { errors, isValid }, setError } = useForm({resolver: yupResolver(validationSchema)});
+  const { register, handleSubmit, formState: { errors, isValid, isDirty, isSubmitting }, setError } = useForm({resolver: yupResolver(loginvalidationSchema)});
 
   const onSubmit = data =>{
     try {
@@ -41,8 +38,10 @@ const Login = () => {
         <div className='col-md-4 offset-md-4'>
             
             <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
+                <CustomInput register={register} label="Email Address" name="email" placeholder="Enter Email Address" errors={errors} />
+                <CustomPassword register={register} label="Password" name="password" placeholder="Enter password" errors={errors} />
                 
-                <div className="form-group mb-4">
+                {/* <div className="form-group mb-4">
                     <label htmlFor="email" className='form-label'> Email Address </label>
                     <input 
                         {...register('email')}
@@ -58,16 +57,16 @@ const Login = () => {
                     <label htmlFor="password" className='form-label'> Password </label>
                     <input 
                         {...register('password')}
-                        type="text"
+                        type="password"
                         id="password" 
                         className="form-control" 
                         placeholder='Enter password'
                     />
                     {errors.password && <p style={{ color: 'red'}}>{errors.password.message}</p>}
-                </div>
+                </div> */}
 
                 <div className="form-group">
-                    <button disabled={!isValid} type='submit' className="btn btn-primary btn-lg btn-block"> Login </button>
+                    <button disabled={!isValid || isSubmitting } type='submit' className="btn btn-primary btn-lg btn-block"> Login </button>
                 </div>
 
             </form>

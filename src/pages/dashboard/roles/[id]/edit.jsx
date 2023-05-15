@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { getRole, updateRole } from '@/store/slices/role'
 import { getPermissions } from '@/store/slices/permission'
 import { protectRoute } from '@/components/protectRoute'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const EditRole = () => {
     const router = useRouter()
@@ -34,14 +35,18 @@ const EditRole = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        dispatch(updateRole( { 
-            id: id,
-            name: name,
-            permissions: selectedOptions
-        }));
-
-        router.push('/dashboard/roles');
+    
+        try {
+            let resultAction = dispatch(updateRole( { 
+                id: id,
+                name: name,
+                permissions: selectedOptions
+            }));
+            unwrapResult(resultAction)
+            router.push('/dashboard/roles');   
+        } catch (error) {
+            console.log(error);
+        }
     } 
     
 

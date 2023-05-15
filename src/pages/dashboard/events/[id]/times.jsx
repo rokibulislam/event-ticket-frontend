@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { SeatsioEventManager } from '@seatsio/seatsio-react';
 import { useRouter } from 'next/router'
 
+
 const EventTimes = () => {
     const router = useRouter()
     const { id } = router.query
@@ -25,38 +26,28 @@ const EventTimes = () => {
         }
       },[dispatch, id])
     
-    const columns = [
+      const columns = [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-        }
-    ];
+          title: 'Startdate',
+          dataIndex: 'startdate',
+          key: 'startdate',
+        },
+        {
+          title: 'Starttime',
+          dataIndex: 'starttime',
+          key: 'starttime'
+        },
+      ];
 
     return (
         <Layout>
             <DashboardLayout>
                 <h2> EventTimes </h2>
                 <EventTimeList />
-                { details.startdate }
-                { details.starttime }
-                { details.enddate }
-                { details.endtime }
-                { details.startdate }
-                {/* <select name='mode' onChange={ (e) => setMode(e.target.value) }>
-                    <option value="manageCategories"> Manage Category </option>
-                    <option value="manageTableBooking"> Manage Table Booking </option>
-                    <option value="manageForSaleConfig"> Manage For Sale </option>
-                </select>
-
-                <div style={{ 'height': '500px' }}>
-                      <SeatsioEventManager
-                        secretKey={process.env.Seatio_Secret}
-                        event={name}
-                        mode={mode}
-                        region="NA"
-                      />
-                </div> */}
+                { details?.startdate }
+                { details?.starttime }
+                { details?.enddate }
+                { details?.endtime } 
             </DashboardLayout>
         </Layout>
     )

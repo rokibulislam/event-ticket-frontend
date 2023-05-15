@@ -7,6 +7,7 @@ import { createUser } from '@/store/slices/user'
 import { useRouter } from 'next/router';
 import { getRoles } from '@/store/slices/role';
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const UserCreate = () => {
   
@@ -23,7 +24,12 @@ const UserCreate = () => {
   const roles =  useSelector( state => state.role.items );
 
   useEffect(() => {
-    dispatch( getRoles() );
+    try {
+      let resultAction = dispatch( getRoles() );
+      unwrapResult(resultAction);
+    } catch (error) {
+      console.log(error);
+    }
   }, [dispatch] )
   
 
@@ -38,7 +44,12 @@ const UserCreate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    dispatch(createUser(input));
+    try {
+      let resultAction = dispatch(createUser(input));
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (

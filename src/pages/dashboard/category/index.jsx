@@ -7,22 +7,31 @@ import { getEventCategories, deleteEventCategory } from '@/store/slices/eventcat
 import { Table, Space } from 'antd';
 import { protectRoute } from '@/components/protectRoute';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Category = () => {
-
     const dispatch = useDispatch();
-
     const eventcategories =  useSelector( state => state.eventcategory.items );
     const status =  useSelector( state => state.eventcategory.status );
     const error  =  useSelector( state => state.eventcategory.error );
   
     useEffect( () => {
-      dispatch(getEventCategories())
+      try {
+        let resultAction = dispatch(getEventCategories())
+        unwrapResult(resultAction);
+      } catch (error) {
+        console.log(error);
+      }
     },[dispatch])
 
     const handleRemove = (e, id) => {
       e.preventDefault();
-      dispatch( deleteEventCategory(id) );
+      try {
+        let resultAction = dispatch( deleteEventCategory(id) );
+        unwrapResult(resultAction);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const columns = [

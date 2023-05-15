@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from "next/router"
 import { createCoupon } from '@/store/slices/coupon';
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const CreateCoupon = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,20 @@ const CreateCoupon = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    dispatch(createCoupon({code,amount}));
-    setCode("");
-    setAmount("");
-    setDescription("");
-    setUsagelimit("");
-    setUsagelimitperuser("");
-    setMinimumamount("");
-    setDiscounttype("");
-    router.push('/dashboard/coupons')
+    try {
+      let resultAction  = dispatch(createCoupon({code,amount}));
+      unwrapResult(resultAction)
+      setCode("");
+      setAmount("");
+      setDescription("");
+      setUsagelimit("");
+      setUsagelimitperuser("");
+      setMinimumamount("");
+      setDiscounttype("");
+      router.push('/dashboard/coupons') 
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

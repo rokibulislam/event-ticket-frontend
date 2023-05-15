@@ -9,6 +9,7 @@ import { object, string, number, date, InferType } from 'yup';
 import { updateTicketType } from '@/store/slices/tickettype';
 import { protectRoute } from '@/components/protectRoute';
 import { tickettypevalidationSchema } from '@/validation';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const CustomTicketType = () => {
     const router = useRouter()
@@ -35,11 +36,16 @@ const CustomTicketType = () => {
     
 
     const onSubmit = (data) => {
-        dispatch(updateTicketType({ 
+      try {
+        let resultAction =  dispatch(updateTicketType({ 
           id: id, 
           name: data.name 
         } ));
-        router.push('/dashboard/tickettype')
+        unwrapResult(resultAction)
+        router.push('/dashboard/tickettype') 
+      } catch (error) {
+        console.log(error);
+      }
     };
 
   return (

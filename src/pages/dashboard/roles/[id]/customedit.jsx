@@ -11,6 +11,7 @@ import { rolevalidationSchema } from '@/validation';
 import DashboardLayout from '@/components/DashboardLayout'
 import Layout from '@/components/layout'
 import { protectRoute } from '@/components/protectRoute'
+import CustomSelect from '@/components/Form/select';
 
 
 const EditRole = () => {
@@ -64,11 +65,12 @@ const EditRole = () => {
                   render={({ field }) => (
                     <Select
                       mode="multiple"
-                      defaultValue={
-                        selectedpermissions.length > 0 && ( selectedpermissions.map( ( item, i ) =>{
-                          return { value: item.id, label: item.name }
-                        })) 
-                      } 
+                      // value={
+                      //   selectedpermissions.length > 0 && ( selectedpermissions.map( ( item, i ) =>{
+                      //     console.log(item);
+                      //     return { value: item.id, label: item.name }
+                      //   })) 
+                      // } 
                       style={{ width: 220 }}
                       onChange={ (value ) => field.onChange(value) }
                       options={

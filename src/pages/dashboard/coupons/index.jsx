@@ -7,22 +7,29 @@ import { Table, Space } from 'antd'
 import { getCoupons, deleteCoupon } from '@/store/slices/coupon'
 import { protectRoute } from '@/components/protectRoute'
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const Coupons = () => {
   const dispatch = useDispatch();
   const coupons =  useSelector( state => state.coupon.items );
 
   useEffect( () => {
-    dispatch(getCoupons())
+    try {
+      let resultAction = dispatch(getCoupons())
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error)
+    }
   },[dispatch])
-
-  const handleCreate = (e) => {
-    e.preventDefault();
-  }
-
+  
   const handleRemove = (e, id) => {
     e.preventDefault();
-    dispatch(deleteCoupon(id));
+    try {
+      let resultAction  = dispatch(deleteCoupon(id));
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const columns = [
@@ -33,8 +40,8 @@ const Coupons = () => {
     },
     {
       title: 'Discount Amount',
-      dataIndex: 'discount_amount',
-      key: 'discount_amount',
+      dataIndex: 'amount',
+      key: 'amount',
     },
     {
       title: 'Action',

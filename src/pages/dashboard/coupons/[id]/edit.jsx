@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from "next/router"
 import { updateCoupon, getCoupon } from '@/store/slices/coupon';
 import { protectRoute } from '@/components/protectRoute';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const EditCoupon = () => {
   const dispatch = useDispatch();
@@ -33,10 +34,15 @@ const EditCoupon = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    dispatch(updateCoupon({ id, code,amount}));
-    setCode("");
-    setAmount("");
-    router.push('/dashboard/coupons')
+    try {
+      let resultAction = dispatch(updateCoupon({ id, code,amount}));
+      unwrapResult(resultAction)
+      setCode("");
+      setAmount("");
+      router.push('/dashboard/coupons') 
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (

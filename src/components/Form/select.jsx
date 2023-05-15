@@ -2,7 +2,7 @@ import React from 'react'
 import { Select } from 'antd'
 import { Controller } from "react-hook-form";
 
-const CustomSelect = ( { control, name, label, options, errors, value } ) => {
+const CustomSelect = ( { control, name, label, options, errors, value = {} } ) => {
   return (
 
     <div className="form-group mb-4">
@@ -12,9 +12,12 @@ const CustomSelect = ( { control, name, label, options, errors, value } ) => {
             name={name}
             render={({ field }) => (
                 <Select
-                    value={value}
+                    // value={value}
                     style={{ width: 220 }}
-                    onChange={ (value ) => field.onChange(value) }
+                    onChange={ (value ) => {
+                        console.log(value);
+                        // field.onChange(value) 
+                    }}
                     options={
                         options.map( ( item, i ) =>{
                             return { value: item.id, label: item.name }

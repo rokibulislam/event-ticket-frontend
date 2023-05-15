@@ -7,29 +7,31 @@ import { createEvent, createSeatsEvent } from '@/store/slices/event'
 import { getEventCategories, getSubCategoriesByCategory } from '@/store/slices/eventcategory'
 import { getEventTypes } from '@/store/slices/eventtype'
 import { getVenues } from '@/store/slices/venue';
-import { SeatsioSeatingChart, SeatsioEventManager, SeatsioChartManager, SeatsioDesigner } from '@seatsio/seatsio-react';
+import { SeatsioDesigner } from '@seatsio/seatsio-react';
 import { Controller, useForm, useFieldArray } from "react-hook-form";
 import { protectRoute } from '@/components/protectRoute';
 import { DatePicker, TimePicker, Radio, Upload, Button, Select } from 'antd';
 import CustomTicketRepeatField from '@/components/TicketField/custom';
 import CustomVenueRepeatField from '@/components/VenueRepeatField/custom';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { select } from 'antd'
 import { getTicketTypes } from '@/store/slices/tickettype';
 import CustomTickethook from '@/components/TicketField/customTickethook';
 import { CloseOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import VenueModal , { ModalApp } from '@/components/venue/modal';
+import VenueModal from '@/components/venue/modal';
 import CustomnestedVenueRepeatField from '@/components/VenueRepeatField/customnested';
 import CustomVenuehook from '@/components/VenueRepeatField/customVenuehook';
-
 import CustomSelect from '@/components/Form/select';
 import CustomInput from '@/components/Form/input';
 import CustomDatepicker from '@/components/Form/datepicker';
 import CustomTimepicker from '@/components/Form/timepicker';
 import CustomUploader from '@/components/Form/uploader';
 import CustomRadio from '@/components/Form/radio';
+import { Modal } from 'antd';
 
 import { eventvalidationSchema } from '@/validation/event';
+import Venueclone from '@/components/venue/clone';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { DevTool } from "@hookform/devtools";
 
 const EventCreate = () => {
   let dispatch = useDispatch();
@@ -43,8 +45,9 @@ const EventCreate = () => {
   const tickettypes =  useSelector( state => state.tickettype.items );
   const chartkey =  useSelector( state => state.event.chartkey );
 
+
   // react hook form
-  const { control, setValue, register, handleSubmit, watch, trigger, formState: { errors, isValid } } = useForm({
+  const { control, setValue, getValues, register, handleSubmit, watch, trigger, formState: { errors, isValid } } = useForm({
     defaultValues: {
       reserve: 0,
       tickets: { ticketName: '', ticketPrice: '', ticketQty: '', showSettings: false, settings: {
@@ -90,9 +93,9 @@ const EventCreate = () => {
     },
   ]);
 
+  //state
+  const [isclonepopup, setIsclonepopup] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  console.log(errors);
   
   useEffect( () => {
     dispatch(getEventCategories());
@@ -138,8 +141,12 @@ const EventCreate = () => {
     formData.append('venuecategory', JSON.stringify(data.venuenestedcategory) )
     formData.append('reserve', data.reserve)
 
-   dispatch(createEvent(formData));
-  
+    try {
+      let resultAction = dispatch(createEvent(formData));
+      unwrapResult(resultAction);
+    } catch (error) {
+      console.log(error)
+    }  
   }
 
 
@@ -155,18 +162,14 @@ const EventCreate = () => {
   return (
     <Layout> 
       <DashboardLayout>
-        <h2> Events Create  </h2> 
+      
+      <h2> Events Create  </h2> 
 
       <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
         
         <div className='row'>
           <div className="col-md-6">
-            {/* <CustomInput register={register} label="Event Name" name="name" errors={errors}  /> */}
-            <div className="form-group mb-4">
-              <label htmlFor="name" className='form-label'> Event Name </label>
-              <input {...register('name')} type="text" id="name" className="form-control" />
-              {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
-            </div>
+            <CustomInput register={register} label="Event Name" name="name" errors={errors}  />
           </div>
         </div>
 
@@ -193,7 +196,7 @@ const EventCreate = () => {
               errors={errors}
               value=""
             />
-            <Select
+            {/* <Select
               defaultValue={{
                 value: 32,
                 label: 'Auto, Boat & Air',
@@ -205,12 +208,7 @@ const EventCreate = () => {
                 eventcategories.map( ( item, i ) =>{
                   return { value: item.id, label: item.name }
                 })}
-            />
-                 {/* defaultValue={{
-                value: 32,
-                label: 'Auto, Boat & Air',
-              }} */}
-
+            /> */}
           </div>
 
           { category !== undefined && (
@@ -277,24 +275,32 @@ const EventCreate = () => {
         </div>
         
         <div className='form-group mb-4'>
-          <CustomRadio control={control} errors={errors} options= {[ { value:1, label: 'Yes' }, { value: 0, label: 'No' }]} label="IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS." name="reserve"  />
-          {/* <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
+          {/* <CustomRadio control={control} errors={errors} options= {[ { value:1, label: 'Yes' }, { value: 0, label: 'No' }]} label="IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS." name="reserve"  /> */}
+          <label htmlFor="" className='form-label'> IS THIS RESERVED SEATING? WHERE CUSTOMERS PICK THEIR OWN SEATS. </label>
           <Controller
             control={control}
             name="reserve"
             render={({ field }) => (
-              <Radio.Group onChange={ (e) => field.onChange(e.target.value)} className='form-control'>
+              <Radio.Group onChange={ (e) => {
+                field.onChange(e.target.value)
+                if( e.target.value == 1) {
+                  setIsclonepopup(true);
+                }
+              }} className='form-control'>
                 <Radio value={1}>Yes</Radio>
                 <Radio value={0}>No</Radio>
               </Radio.Group>
             )}
-          /> */}
+          />
         </div>
 
       {/* <CustomnestedVenueRepeatField fields={venuenestedcategory} setFields={setNestedvenuecategory} /> */}  
       { reserve === 0 && ( <CustomTickethook Controller={Controller} name="tickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} /> ) }
       { reserve === 1 && ( <CustomVenuehook Controller={Controller} name="venuetickets" control={control} register={register} setValue={setValue} watch={watch} errors={errors} /> )}
-  
+              
+      <Modal open={isclonepopup} onOk={ () => setIsclonepopup(false) } onCancel={ () => setIsclonepopup(false) }> 
+            <Venueclone id={getValues('venue')} setClone={setIsclonepopup}  />
+      </Modal>
     {/*
         {
           reserve == 0 ? ( 
@@ -351,6 +357,7 @@ const EventCreate = () => {
             <button className="btn btn-create"> Submit </button>
           </div>
       </form>
+      <DevTool control={control} />
 
       </DashboardLayout>
     </Layout>

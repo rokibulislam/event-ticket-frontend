@@ -7,6 +7,7 @@ import DashboardLayout from '@/components/DashboardLayout'
 import { Select } from 'antd'
 import { getCountries, getStates } from '@/store/slices/countries'
 import { protectRoute } from '@/components/protectRoute'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const VenueCreate = () => {
     let dispatch = useDispatch();
@@ -36,19 +37,22 @@ const VenueCreate = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        dispatch(createVenue({ 
-          name: input.name, 
-          nickname: input.nickname,
-          city: input.city,
-          country: countryId,
-          state: stateId,
-          country: input.country,
-          state: input.state,
-          postcode: input.postcode
-        }));
-    
-        // router.push('/dashboard/venue')
+        try {
+            let resultAction = dispatch(createVenue({ 
+                name: input.name, 
+                nickname: input.nickname,
+                city: input.city,
+                country: countryId,
+                state: stateId,
+                country: input.country,
+                state: input.state,
+                postcode: input.postcode
+            }));
+            unwrapResult( resultAction);
+            router.push('/dashboard/venue')
+        } catch (error) {
+            console.log(error);
+        }    
     }
 
     useEffect(() => {

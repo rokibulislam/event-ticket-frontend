@@ -8,10 +8,12 @@ import { getPermissions } from '@/store/slices/permission'
 import { useRouter } from "next/router"
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string, number, date, InferType, array } from 'yup'; 
 import { protectRoute } from '@/components/protectRoute';
 import { Select } from 'antd'
 import { rolevalidationSchema } from '@/validation';
+import CustomSelect from '@/components/Form/select';
+import CustomInput from '@/components/Form/input';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const CreateRole = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -21,28 +23,48 @@ const CreateRole = () => {
     const permissions =  useSelector( state => state.premission.items );
 
     useEffect( () => {
-        dispatch(getPermissions())
+      try {
+        let resultAction =  dispatch(getPermissions())
+        unwrapResult(resultAction)
+      } catch (error) {
+        console.log(error)
+      }
     },[dispatch])
     
     const onSubmit = (data) => {
-      dispatch(createRole( { 
+      try {
+        let resultAction = dispatch(createRole( { 
           name: data.name,
           permissions: data.permissions
-      }));
-      router.push('/dashboard/roles')
+        }));
+        unwrapResult(resultAction)
+        router.push('/dashboard/roles') 
+      } catch (error) {
+        console.log(error)
+      }
     };
 
   return (
     <Layout> 
       <DashboardLayout>        
           <form action='' method='post' onSubmit={handleSubmit(onSubmit)}>
-              
-              <div className="form-group mb-4">
+              <CustomInput register={register} label="Role Name" name="name" errors={errors}  />
+              {/* <div className="form-group mb-4">
                 <label htmlFor="name" className='form-label'> Role Name </label>
                 <input {...register('name', { required: true })} type="text" id="name" className="form-control" />
                 {errors.name && <span style={{ color: 'red' }}> { errors.name?.message }  </span>}
-              </div>
+              </div> */}
 
+              <CustomSelect 
+                control={control} 
+                label="Permissions" 
+                name="permissions" 
+                options={permissions}
+                errors={errors} 
+                value=""
+              />
+
+{/*               
               <div className="form-group mb-4">
                 <label htmlFor="permissions" className='form-label'> Permissions </label> <br/>
                 <Controller
@@ -61,7 +83,7 @@ const CreateRole = () => {
                   )}
                 />
                 {errors.permissions && <p style={{ color: 'red' }}> { errors.permissions?.message }  </p>}
-            </div> 
+              </div>  */}
   
               <div className="form-group">
                   <button disabled={!isValid} className="btn btn-primary"> Submit </button>

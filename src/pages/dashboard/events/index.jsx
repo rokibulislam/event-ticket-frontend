@@ -8,6 +8,7 @@ import { Table, Space } from 'antd'
 import { protectRoute } from '@/components/protectRoute';
 import { object } from 'yup';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const Events = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,14 @@ const Events = () => {
   const [search, setSearch] = useState('')
 
   useEffect( () => {
-    // dispatch(getEvents())
-    dispatch(getEventsbyuser())
+    try {
+      // dispatch(getEvents())
+      let resultAction = dispatch(getEventsbyuser())
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error)
+    }
+
   },[dispatch])
 
   const handleCreate = (e) => {
@@ -29,11 +36,12 @@ const Events = () => {
 
   const handleRemove = (e, id) => {
     e.preventDefault();
-    dispatch(deleteEvent(id));
-  }
-
-  const handleUpdate = (e) => {
-    e.preventDefault();
+    try {
+      let resultAction = dispatch(deleteEvent(id));
+      unwrapResult(resultAction)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const columns = [
@@ -71,6 +79,8 @@ const Events = () => {
         <Space size="middle">
           <Link href={`/dashboard/events/${item.id}/edit`}> <EditOutlined>  Edit </EditOutlined> </Link> 
           <Link href={`/dashboard/events/${item.id}/times`}> Event Times </Link> 
+          <Link href={`/dashboard/events/${item.id}/details`}> Event Details </Link> 
+          <Link href={`/dashboard/events/${item.id}/tickets`}> Event Tickets </Link> 
           <Link href={`/dashboard/events/${item.id}/orders`}> Event Orders </Link> 
           <Link href={`/dashboard/events/${item.id}/attendae`}> Event Attendae </Link> 
           <Link href={`/dashboard/events/${item.id}/manager`}> Event Manager </Link> 

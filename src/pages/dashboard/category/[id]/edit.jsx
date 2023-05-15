@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { protectRoute } from '@/components/protectRoute';
 import { categoryvalidationSchema } from '@/validation';
-
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const EditCategory = () => {
     const router = useRouter()
@@ -33,12 +33,16 @@ const EditCategory = () => {
   }, [name])
 
   const onSubmit = (data) => {
-    console.log(data);
-    dispatch(updateEventCategory({
-      id: id,
-      name: data.name
-    }));
-    router.push('/dashboard/category')
+    try {
+      let resultAction = dispatch(updateEventCategory({
+        id: id,
+        name: data.name
+      }));
+      unwrapResult(resultAction)
+      router.push('/dashboard/category')
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
